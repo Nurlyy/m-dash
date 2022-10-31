@@ -52,6 +52,8 @@ class SiteController extends Controller
         ];
     }
 
+    // public $layout = 'inspinia';
+
     /**
      * {@inheritdoc}
      */
@@ -75,6 +77,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
         return $this->render('index');
     }
 

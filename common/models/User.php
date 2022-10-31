@@ -18,6 +18,7 @@ use yii\web\IdentityInterface;
  * @property string $verification_token
  * @property string $email
  * @property string $auth_key
+ * @property string $accessToken
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
@@ -25,6 +26,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+
+    public $accessToken;
+
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
@@ -72,7 +76,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['access_token'=>$token,'status'=>self::STATUS_ACTIVE]);
     }
 
     /**
@@ -185,6 +189,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function generateAuthKey()
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Generates access token for REST api
+     */
+    public function generateAccessToken()
+    {
+        $this->accessToken = Yii::$app->security->generateRandomString();
     }
 
     /**
