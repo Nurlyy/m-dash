@@ -23,13 +23,13 @@ use yii\helpers\Html;
                 <a onclick="openurl('instagram', start_date, end_date)"><i class="fa fa-instagram"></i> <span class="nav-label">Instagram</span> </a>
             </li>
             <li>
-                <a href="<?= Url::to('/main/telegram') ?>"><i class="fa fa-telegram"></i> <span class="nav-label">Telegram</span> </a>
+                <a onclick="openurl('telegram', start_date, end_date)"><i class="fa fa-telegram"></i> <span class="nav-label">Telegram</span> </a>
             </li>
             <li>
-                <a href="<?= Url::to('/main/sites') ?>"><i class="fa fa-newspaper-o"></i> <span class="nav-label">WEB-sites</span> </a>
+                <a onclick="openurl('sites', start_date, end_date)"><i class="fa fa-newspaper-o"></i> <span class="nav-label">WEB-sites</span> </a>
             </li>
             <li>
-                <a href="<?= Url::to('/main/resources') ?>"><i class="fa fa-compass"></i> <span class="nav-label">Источники</span> </a>
+                <a onclick="openurl('resources', start_date, end_date)"><i class="fa fa-compass"></i> <span class="nav-label">Источники</span> </a>
             </li>
             <li>
                 <a href="<?= Url::to('/main/regions') ?>"><i class="fa fa-globe"></i> <span class="nav-label">Регионы</span> </a>

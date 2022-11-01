@@ -9,7 +9,7 @@ use yii\filters\AccessControl;
 
 class MainController extends AuthController
 {
-    public static $total_posts = 0;
+    public static $total_posts = [];
     public static $total_views = 0;
     public static $total_likes = 0;
     public static $total_reposts = 0;
@@ -24,6 +24,7 @@ class MainController extends AuthController
     public static $date_subs = [];
     public static $organization_data = [];
     public static $regions_data = [];
+    public static $resources_sentiments = [];
 
 
     private function split_data($result){
@@ -42,6 +43,7 @@ class MainController extends AuthController
         $this::$date_subs = [];
         $this::$organization_data = [];
         $this::$regions_data = [];
+        $this::$resources_sentiments = [];
 
         foreach($result['organizations_data'] as $data){
             array_push($this::$organization_data, $data[0]);
@@ -51,7 +53,6 @@ class MainController extends AuthController
         foreach($result['all_data'] as $data){
 
             foreach($this::$organization_data as $key=>$value){
-                // var_dump($value['id']);
                 if($value['id'] == $data['organization_id']){
                     
                     $this::$regions_data[$value['region']]['posts']['fb'] = (isset($this::$regions_data[$value['region']]['posts']['fb'])?$this::$regions_data[$value['region']]['posts']['fb']:0) + (isset($data['fb_posts'])?$data['fb_posts']:0);
@@ -72,7 +73,6 @@ class MainController extends AuthController
                 }
 
             }
-            // exit;
             
             array_push($this::$dates, $data['date']);
             $this::$total_posts[$data['organization_id']]['fb'] = (isset($this::$total_posts[$data['organization_id']]['fb'])?$this::$total_posts[$data['organization_id']]['fb']:0) + (isset($data['fb_posts'])?$data['fb_posts']:0);
@@ -105,19 +105,37 @@ class MainController extends AuthController
             $this::$date_subs[$data['organization_id']][$data['date']]['fb'] = (isset($data['fb_sub'])?$data['fb_sub']:0);
             $this::$date_subs[$data['organization_id']][$data['date']]['ig'] = (isset($data['ig_sub'])?$data['ig_sub']:0);
             $this::$date_subs[$data['organization_id']][$data['date']]['tg'] = (isset($data['tg_sub'])?$data['tg_sub']:0);
+
+            if(isset($data['fb_positive']) && isset($data['fb_neutral']) && isset($data['fb_negative'])){
+                $this::$resources_sentiments['fb_positive'] = (isset($this::$resources_sentiments['fb_positive'])?$this::$resources_sentiments['fb_positive']:0) + $data['fb_positive'];
+                $this::$resources_sentiments['fb_neutral'] = (isset($this::$resources_sentiments['fb_neutral'])?$this::$resources_sentiments['fb_neutral']:0) + $data['fb_neutral'];
+                $this::$resources_sentiments['fb_negative'] = (isset($this::$resources_sentiments['fb_negative'])?$this::$resources_sentiments['fb_negative']:0) + $data['fb_negative'];
+                // echo "TRUE\n";
+            }
+            if(isset($data['ig_positive']) && isset($data['ig_neutral']) && isset($data['ig_negative'])){
+                $this::$resources_sentiments['ig_positive'] = (isset($this::$resources_sentiments['ig_positive'])?$this::$resources_sentiments['ig_positive']:0) + $data['ig_positive'];
+                $this::$resources_sentiments['ig_neutral'] = (isset($this::$resources_sentiments['ig_neutral'])?$this::$resources_sentiments['ig_neutral']:0) + $data['ig_neutral'];
+                $this::$resources_sentiments['ig_negative'] = (isset($this::$resources_sentiments['ig_negative'])?$this::$resources_sentiments['ig_negative']:0) + $data['ig_negative'];
+                // echo "FALSE\n";
+            }
+            if(isset($data['tg_positive']) && isset($data['tg_neutral']) && isset($data['tg_negative'])){
+                $this::$resources_sentiments['tg_positive'] = (isset($this::$resources_sentiments['tg_positive'])?$this::$resources_sentiments['tg_positive']:0) + $data['tg_positive'];
+                $this::$resources_sentiments['tg_neutral'] = (isset($this::$resources_sentiments['tg_neutral'])?$this::$resources_sentiments['tg_neutral']:0) + $data['tg_neutral'];
+                $this::$resources_sentiments['tg_negative'] = (isset($this::$resources_sentiments['tg_negative'])?$this::$resources_sentiments['tg_negative']:0) + $data['tg_negative'];
+            }
+            if(isset($data['web_positive']) && isset($data['web_neutral']) && isset($data['web_negative'])){
+                $this::$resources_sentiments['web_positive'] = (isset($this::$resources_sentiments['web_positive'])?$this::$resources_sentiments['web_positive']:0) + $data['web_positive'];
+                $this::$resources_sentiments['web_neutral'] = (isset($this::$resources_sentiments['web_neutral'])?$this::$resources_sentiments['web_neutral']:0) + $data['web_neutral'];
+                $this::$resources_sentiments['web_negative'] = (isset($this::$resources_sentiments['web_negative'])?$this::$resources_sentiments['web_negative']:0) + $data['web_negative'];
+            }
+
+            // var_dump($data);
+            // exit;
             
         }  
-        // foreach($this::$date_posts as $value){
-        //     foreach($value as $date=>$data){
-        //         var_dump($date);
-        //         echo '<br>';
-        //     }
-            
-        // }
-        // exit;
         
         $this::$dates = array_unique($this::$dates);
-    //     var_dump($this::$regions_data);
+        // var_dump(array_unique($this::$resources_sentiments));
     // exit;
         
     }
@@ -175,15 +193,14 @@ class MainController extends AuthController
         $this->layout = 'empty';
         $start_date = Yii::$app->request->get('start_date');
         $end_date = Yii::$app->request->get('end_date');
-        $result = json_decode(get_web_page("backend.localhost/main/search?start_date={$start_date}&end_date={$end_date}"), true);
-        $temp = [];        
+        $result = json_decode(get_web_page("backend.localhost/main/search?type=0&start_date={$start_date}&end_date={$end_date}"), true);       
         $temp_posts = [];
         $temp_likes = [];
         $temp_comments = [];
         $temp_reposts = [];
         $temp_subs = [];
         $temp_views = [];
-        
+        // var_dump("backend.localhost/main/search?type=0&start_date={$start_date}&end_date={$end_date}");
         // exit;
         $this->split_data($result);
         // return var_dump($this::$total_subs);
@@ -289,6 +306,11 @@ class MainController extends AuthController
 
     public function actionFacebook()
     {
+        $temp_posts = [];
+        $temp_likes = [];
+        $temp_comments = [];
+        $temp_reposts = [];
+        $temp_subs = [];
         $this->layout = 'empty';
         $start_date = Yii::$app->request->get('start_date');
         $end_date = Yii::$app->request->get('end_date');
@@ -343,6 +365,11 @@ class MainController extends AuthController
 
     public function actionInstagram()
     {
+        $temp_posts = [];
+        $temp_likes = [];
+        $temp_comments = [];
+        $temp_reposts = [];
+        $temp_subs = [];
         $this->layout = 'empty';
         $start_date = Yii::$app->request->get('start_date');
         $end_date = Yii::$app->request->get('end_date');
@@ -407,16 +434,140 @@ class MainController extends AuthController
 
     public function actionTelegram()
     {
-        return $this->render('telegram');
+        $temp_posts = [];
+        $temp_reposts = [];
+        $temp_subs = [];
+        $this->layout = 'empty';
+        $start_date = Yii::$app->request->get('start_date');
+        $end_date = Yii::$app->request->get('end_date');
+        $result = json_decode(get_web_page("backend.localhost/main/search?type=3&start_date={$start_date}&end_date={$end_date}"), true);
+        // var_dump($result);
+        // exit;
+        
+        $this->split_data($result);
+        foreach($this::$organization_data as $organization){
+            foreach($this::$date_posts[$organization['id']] as $date=>$values){
+                $temp_posts[$date] = (isset($temp_posts[$date])?$temp_posts[$date]:0) + $values['tg'];
+            }
+            foreach($this::$date_reposts[$organization['id']] as $date=>$values){
+                $temp_reposts[$date] = (isset($temp_reposts[$date])?$temp_reposts[$date]:0) + $values['tg'];
+            }
+            foreach($this::$date_subs[$organization['id']] as $date=>$values){
+                $temp_subs[$date] = (isset($temp_subs[$date])?$temp_subs[$date]:0) + $values['tg'];
+            }
+        }
+        $this::$date_posts = $temp_posts;
+        $this::$date_reposts = $temp_reposts;
+        $this::$date_subs = $temp_subs;
+        return $this->render('telegram', [
+            // 'result' => $result,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            "total_posts" => $this::$total_posts,
+            "total_reposts" => $this::$total_reposts,
+            "total_subs" => $this::$total_subs,
+            "dates" => $this::$dates,
+            "date_posts" => $this::$date_posts,
+            "date_reposts" => $this::$date_reposts,
+            "date_subs" => $this::$date_subs,
+            "organization_data" => $this::$organization_data,
+            "regions_data" => $this::$regions_data, 
+        ]);
     }
 
     public function actionSites()
     {
-        return $this->render('sites');
+        $temp_posts = [];
+        $temp_views = [];
+        $this->layout = 'empty';
+        $start_date = Yii::$app->request->get('start_date');
+        $end_date = Yii::$app->request->get('end_date');
+        $result = json_decode(get_web_page("backend.localhost/main/search?type=4&start_date={$start_date}&end_date={$end_date}"), true);
+        // var_dump($result);
+        // exit;
+        
+        $this->split_data($result);
+        foreach($this::$organization_data as $organization){
+            foreach($this::$date_posts[$organization['id']] as $date=>$values){
+                $temp_posts[$date] = (isset($temp_posts[$date])?$temp_posts[$date]:0) + $values['web'];
+            }
+            foreach($this::$date_views[$organization['id']] as $date=>$values){
+                $temp_views[$date] = (isset($temp_views[$date])?$temp_views[$date]:0) + $values['web'];
+            }
+        }
+        $this::$date_posts = $temp_posts;
+        $this::$date_views = $temp_views;
+        return $this->render('sites', [
+            // 'result' => $result,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            "total_posts" => $this::$total_posts,
+            "total_views" => $this::$total_views,
+            "dates" => $this::$dates,
+            "date_posts" => $this::$date_posts,
+            "date_views" => $this::$date_views,
+            "organization_data" => $this::$organization_data,
+            "regions_data" => $this::$regions_data, 
+        ]);
     }
 
     public function actionResources()
     {
-        return $this->render('resources');
+        $temp_posts = [];
+        $this->layout = 'empty';
+        $start_date = Yii::$app->request->get('start_date');
+        $end_date = Yii::$app->request->get('end_date');
+        $result = json_decode(get_web_page("backend.localhost/main/search?type=5&start_date={$start_date}&end_date={$end_date}"), true);
+        // var_dump($result);
+        // exit;
+        
+        
+        $this->split_data($result);
+
+
+        foreach($this::$organization_data as $organization){
+            foreach($this::$date_posts[$organization['id']] as $date=>$values){
+                $temp_posts[$date]['fb'] = (isset($temp_posts[$date]['fb'])?$temp_posts[$date]['fb']:0) + $values['fb'];
+                $temp_posts[$date]['ig'] = (isset($temp_posts[$date]['ig'])?$temp_posts[$date]['ig']:0) + $values['ig'];
+                $temp_posts[$date]['tg'] = (isset($temp_posts[$date]['tg'])?$temp_posts[$date]['tg']:0) + $values['tg'];
+                $temp_posts[$date]['web'] = (isset($temp_posts[$date]['web'])?$temp_posts[$date]['web']:0) + $values['web'];
+            }
+        }
+
+        $this::$date_posts = $temp_posts;
+
+        // foreach($this::$total_posts as $posts){
+
+        // }
+        $temp_posts = [];
+        foreach($this::$total_posts as $post){
+            $temp_posts['fb'] = (isset($temp_posts['fb'])?$temp_posts['fb']:0) + (isset($post['fb'])?$post['fb']:0);
+            $temp_posts['ig'] = (isset($temp_posts['ig'])?$temp_posts['ig']:0) + (isset($post['ig'])?$post['ig']:0);
+            $temp_posts['tg'] = (isset($temp_posts['tg'])?$temp_posts['tg']:0) + (isset($post['tg'])?$post['tg']:0);
+            $temp_posts['web'] = (isset($temp_posts['web'])?$temp_posts['web']:0) + (isset($post['web'])?$post['web']:0);
+        }
+        // sort($temp_posts);
+        $this::$total_posts = $temp_posts;
+        uasort($this::$total_posts, function ($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a > $b) ? -1 : 1;
+        });
+        // var_dump($this::$total_posts);
+        // exit;
+
+
+        return $this->render('resources', [
+            // 'result' => $result,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            "total_posts" => $this::$total_posts,
+            "dates" => $this::$dates,
+            "date_posts" => $this::$date_posts,
+            "organization_data" => $this::$organization_data,
+            "regions_data" => $this::$regions_data, 
+            "resources_sentiments" => $this::$resources_sentiments,
+        ]);
     }
 }

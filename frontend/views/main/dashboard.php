@@ -39,6 +39,7 @@
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins"><?php $sum=0;
+                    if(isset($total_posts))
                     foreach($total_posts as $values){
                         $sum += (isset($values['fb'])?$values['fb']:0)+(isset($values['ig'])?$values['ig']:0)+(isset($values['tg'])?$values['tg']:0) + (isset($values['web'])?$values['web']:0);
                     } echo $sum; ?></h1>
@@ -53,6 +54,7 @@
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins"><?php $sum=0;
+                    if(isset($total_views))
                     foreach($total_views as $values){
                         $sum += (isset($values['web'])?$values['web']:0);
                     } echo $sum; ?></h1>
@@ -81,6 +83,7 @@
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins"><?php $sum=0;
+                    if(isset($total_reposts))
                     foreach($total_reposts as $values){
                         $sum += (isset($values['fb'])?$values['fb']:0)+(isset($values['ig'])?$values['ig']:0)+(isset($values['tg'])?$values['tg']:0);
                     } echo $sum; ?></h1>
@@ -95,6 +98,7 @@
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins"><?php $sum=0;
+                    if(isset($total_comments))
                     foreach($total_comments as $values){
                         $sum += (isset($values['fb'])?$values['fb']:0)+(isset($values['ig'])?$values['ig']:0);
                     } echo $sum; ?></h1>
@@ -109,6 +113,7 @@
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins"><?php $sum=0;
+                    if(isset($total_subs))
                     foreach($total_subs as $values){
                         $sum += (isset($values['fb'])?$values['fb']:0)+(isset($values['ig'])?$values['ig']:0)+(isset($values['tg'])?$values['tg']:0);
                     } echo $sum; ?></h1>

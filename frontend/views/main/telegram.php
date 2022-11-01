@@ -49,7 +49,12 @@
                         <h5><i class="fa fa-newspaper-o"></i> Публикаций</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">1 169</h1>
+                        <h1 class="no-margins"><?php $sum = 0;
+                                                if (isset($total_posts))
+                                                    foreach ($total_posts as $values) {
+                                                        $sum += (isset($values['tg']) ? $values['tg'] : 0);
+                                                    }
+                                                echo $sum; ?></h1>
                         <div class="stat-percent font-bold text-info">17% <i class="fa fa-level-up"></i></div>
                     </div>
                 </div>
@@ -60,7 +65,12 @@
                         <h5><i class="fa fa-share"></i> Ответов</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">146</h1>
+                        <h1 class="no-margins"><?php $sum = 0;
+                                                if (isset($total_reposts))
+                                                    foreach ($total_reposts as $values) {
+                                                        $sum += (isset($values['tg']) ? $values['tg'] : 0);
+                                                    }
+                                                echo $sum; ?></h1>
                         <div class="stat-percent font-bold text-info">7% <i class="fa fa-level-up"></i></div>
                     </div>
                 </div>
@@ -71,7 +81,12 @@
                         <h5><i class="fa fa-users"></i> Подписчиков</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">1.2 млн</h1>
+                        <h1 class="no-margins"><?php $sum = 0;
+                                                if (isset($total_subs))
+                                                    foreach ($total_subs as $values) {
+                                                        $sum += (isset($values['tg']) ? $values['tg'] : 0);
+                                                    }
+                                                echo $sum; ?></h1>
                         <div class="stat-percent font-bold text-info">2% <i class="fa fa-level-up"></i></div>
                     </div>
                 </div>
@@ -100,7 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div role="tabpanel" id="tab-reposts" class="tab-pane active">
+                                <div role="tabpanel" id="tab-reposts" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="col-lg-8">
@@ -112,7 +127,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div role="tabpanel" id="tab-members" class="tab-pane active">
+                                <div role="tabpanel" id="tab-members" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="col-lg-8">
@@ -134,7 +149,7 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
                         <h5>Рейтинг Facebook</h5>
@@ -168,139 +183,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Школа №180 Алматы</td>
-                                        <td>2134</td>
-                                        <td>24635</td>
-                                        <td>242</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Школа-лицей №64 Нур-Султан</td>
-                                        <td>985</td>
-                                        <td>23811</td>
-                                        <td>113</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Школа-лицей №59 Нур-Султан</td>
-                                        <td>621</td>
-                                        <td>14284</td>
-                                        <td>36</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Школа №170 Алматы</td>
-                                        <td>487</td>
-                                        <td>21754</td>
-                                        <td>29</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Гимназия №46 Алматы</td>
-                                        <td>170</td>
-                                        <td>22133</td>
-                                        <td>42</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>Школа Гимназия №2 Нур-Султан</td>
-                                        <td>86</td>
-                                        <td>17779</td>
-                                        <td>28</td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>Школа №115 Алматы</td>
-                                        <td>199</td>
-                                        <td>23099</td>
-                                        <td>42</td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>Школа №127 Алматы</td>
-                                        <td>133</td>
-                                        <td>16747</td>
-                                        <td>28</td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>Школа №101 Алматы</td>
-                                        <td>57</td>
-                                        <td>16368</td>
-                                        <td>21</td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>Школа №135 Алматы</td>
-                                        <td>22</td>
-                                        <td>17038</td>
-                                        <td>20</td>
-                                    </tr>
-                                    <tr>
-                                        <td>11</td>
-                                        <td>Школа №52 Алматы</td>
-                                        <td>26</td>
-                                        <td>4981</td>
-                                        <td>19</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12</td>
-                                        <td>Школа-Гимназия №1 им. Пушкина Шымкент</td>
-                                        <td>109</td>
-                                        <td>4408</td>
-                                        <td>10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>13</td>
-                                        <td>Школа Гимназия №1 Алматы</td>
-                                        <td>26</td>
-                                        <td>2550</td>
-                                        <td>29</td>
-                                    </tr>
-                                    <tr>
-                                        <td>14</td>
-                                        <td>Школа Гимназия №6 Нур-Султан</td>
-                                        <td>40</td>
-                                        <td>3053</td>
-                                        <td>16</td>
-                                    </tr>
-                                    <tr>
-                                        <td>15</td>
-                                        <td>Школа-лицей №37 Нур-Султан</td>
-                                        <td>66</td>
-                                        <td>2621</td>
-                                        <td>18</td>
-                                    </tr>
-                                    <tr>
-                                        <td>16</td>
-                                        <td>Школа Гимназия №144 Алматы</td>
-                                        <td>27</td>
-                                        <td>2395</td>
-                                        <td>17</td>
-                                    </tr>
-                                    <tr>
-                                        <td>17</td>
-                                        <td>Школа-интернат ДАРЫН Караганда</td>
-                                        <td>62</td>
-                                        <td>2137</td>
-                                        <td>42</td>
-                                    </tr>
-                                    <tr>
-                                        <td>18</td>
-                                        <td>Лицей-интернат для одаренных юношей Нур-Султан</td>
-                                        <td>22</td>
-                                        <td>2214</td>
-                                        <td>155</td>
-                                    </tr>
-                                    <tr>
-                                        <td>19</td>
-                                        <td>Лицей №134 Алматы</td>
-                                        <td>8</td>
-                                        <td>1762</td>
-                                        <td>68</td>
-                                    </tr>
+                                    <?php $counter = 1;
+                                    if (isset($organization_data))
+                                        foreach ($organization_data as $org_data) {
+                                            if (isset($org_data)) {
+                                                $name = $org_data['name'];
+                                                echo "<tr><td>{$counter}</td><td>{$name}</td><td>"
+                                                    . $total_posts[$org_data['id']]['tg']
+                                                    . "</td><td>"
+                                                    . $total_subs[$org_data['id']]['tg']
+                                                    . "</td><td>"
+                                                    . $total_reposts[$org_data['id']]['tg']
+                                                    . "</td><td>";
+                                                $counter++;
+                                            }
+                                        } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -317,513 +214,522 @@
     </div>
 
 
-    <?php
+    <script>
+        function addState(sdate, edate) {
+        let stateObj = {
+            id: '456498'
+        };
 
-    $this->registerJs("
-  
-
-function do_daterangepicker_stuff(start, end, label) {
-    $('#reportrange span').html(start.format('D.MM.YYYY') + ' - ' + end.format('D.MM.YYYY'));
-}
-function create_daterangepicker(){
-    // v:004-92M
-    const string_date = '15.10.2021 - 15.11.2021';
-    const daterangepicker_setting = {
-        format: 'DD.MM.YYYY',
-        startDate: '15.10.2021',
-        endDate: '15.11.2021',
-        minDate: '01.10.2021',
-        maxDate: '31.12.2021',
-        showDropdowns: true,
-        // showWeekNumbers: true,
-        timePicker: false,
-        timePickerIncrement: 1,
-        timePicker12Hour: true,
-        
-        opens: 'right',
-        drops: 'down',
-        buttonClasses: ['btn', 'btn-sm'],
-        applyClass: 'btn-primary daterangepicker-apply-button',
-        cancelClass: 'btn-default daterangepicker-cancel-button',
-        separator: ' to ',
-        locale: {
-            applyLabel: 'Ок',
-            cancelLabel: 'Отмена',
-            fromLabel: 'от',
-            toLabel: 'по',
-            customRangeLabel: 'Период',
-            daysOfWeek: [
-                'Вс', 
-                'Пн', 
-                'Вт', 
-                'Ср', 
-                'Чт', 
-                'Пт', 
-                'Сб'
-            ],
-            monthNames: [
-                'Январь', 
-                'Февраль', 
-                'Март', 
-                'Апрель', 
-                'Май', 
-                'Июнь', 
-                'Июль', 
-                'Август', 
-                'Сентябрь', 
-                'Октябрь', 
-                'Ноябрь', 
-                'Декабрь'
-            ],
-            firstDay: 1
-        }
-    };
-    // Формирование календаря для больших экаранов
-    $('#reportrange span').html(string_date);
-    $('#reportrange').daterangepicker(daterangepicker_setting, do_daterangepicker_stuff);
-    // Формирование календаря для малых экаранов
-    $('#reportrange-header span').html(string_date);
-    $('#reportrange-header').daterangepicker(daterangepicker_setting, do_daterangepicker_stuff);
-}
-");
-
-    $this->registerJs("
-$(document).ready(function() {
-    create_daterangepicker();
-    // Instantiate the map
-    // Prepare demo data
-    // Data is joined to map using value of 'hc-key' property by default.
-    // See API docs for 'joinBy' for more info on linking data and map.
-    var map_data = [
-        ['kz-qo', 3278],
-        ['kz-qs', 2145],
-        ['kz-nk', 2413],
-        ['kz-pa', 3245],
-        ['kz-am', 4825],
-        ['kz-zm', 2265],
-        ['kz-aa', 5876],
-        ['kz-ar', 2168],
-        ['kz-mg', 3102],
-        ['kz-ek', 3961],
-        ['kz-at', 3556],
-        ['kz-wk', 1984],
-        ['kz-sk', 2978],
-        ['kz-qg', 3642]
-    ];
-
-    // Create the chart
-    Highcharts.mapChart('container_map_posts', {
-        chart: {
-            map: 'countries/kz/kz-all'
-        },
-
-        title: {
-            text: 'Кол-во публикаций по областям'
-        },
-        mapNavigation: {
-            enabled: true,
-            buttonOptions: {
-                verticalAlign: 'bottom'
+        $.ajax({
+            url: '/main/telegram?start_date=' + sdate + '&end_date=' + edate,
+            type: 'GET',
+            success: function(data) {
+                $('#page-wrapper').html(data);
             }
-        },
+        });
 
-        colorAxis: {
-            min: 0
-        },
+        window.history.pushState(stateObj,
+            'Page 2', '/main/index#telegram?start_date=' + sdate + '&end_date=' + edate);
 
-        series: [{
-            data: map_data,
-            name: 'Кол-во публикаций',
-            states: {
-                hover: {
-                    color: '#BADA55'
+    }
+
+    function openurl(type, start_date, end_date){
+        $.ajax({
+            url: '/main/'+type+'?start_date='+start_date.split(".")[2]+"-"+start_date.split(".")[1]+"-"+start_date.split(".")[0]+'&end_date='+end_date.split(".")[2]+"-"+end_date.split(".")[1]+"-"+end_date.split(".")[0],
+            type: 'GET',
+            success: function(data) {
+                // $('#page-wrapper').html("");
+                history.pushState("/main/index#" + type, "/main/index#" + type, "/main/index#" + type);
+                $('#page-wrapper').html(data);
+                // console.log(data);
+            }
+        });
+    }
+
+    function do_daterangepicker_stuff(start, end, label) {
+
+        $('#reportrange span').html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
+        addState(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+    }
+
+    
+
+    function create_daterangepicker(start, end) {
+        // v:004-92M
+        // if(start==null && end==null){
+        let edate = new Date(end);
+        let sdate = new Date(start);
+        start_date = sdate.getDate() + '.' + parseInt(sdate.getMonth() + 1) + '.' + sdate.getFullYear();
+        end_date = edate.getDate() + '.' + parseInt(edate.getMonth() + 1) + '.' + edate.getFullYear();
+
+        // }else {
+        //     start_date = start;
+        //     end_date = end;
+        // }
+
+
+        const string_date = start_date + ' - ' + end_date;
+        console.log(string_date);
+        const daterangepicker_setting = {
+            format: 'DD.MM.YYYY',
+            startDate: start_date,
+            endDate: end_date,
+            minDate: '01.01.2022',
+            maxDate: '31.11.2022',
+            showDropdowns: true,
+            // showWeekNumbers: true,
+            timePicker: false,
+            timePickerIncrement: 1,
+            timePicker12Hour: true,
+
+            opens: 'right',
+            drops: 'down',
+            buttonClasses: ['btn', 'btn-sm'],
+            applyClass: 'btn-primary daterangepicker-apply-button',
+            cancelClass: 'btn-default daterangepicker-cancel-button',
+            separator: ' to ',
+            locale: {
+                applyLabel: 'Ок',
+                cancelLabel: 'Отмена',
+                fromLabel: 'от',
+                toLabel: 'по',
+                customRangeLabel: 'Период',
+                daysOfWeek: [
+                    'Вс',
+                    'Пн',
+                    'Вт',
+                    'Ср',
+                    'Чт',
+                    'Пт',
+                    'Сб'
+                ],
+                monthNames: [
+                    'Январь',
+                    'Февраль',
+                    'Март',
+                    'Апрель',
+                    'Май',
+                    'Июнь',
+                    'Июль',
+                    'Август',
+                    'Сентябрь',
+                    'Октябрь',
+                    'Ноябрь',
+                    'Декабрь'
+                ],
+                firstDay: 1
+            }
+        };
+        // Формирование календаря для больших экаранов
+        $('#reportrange span').html(start_date + ' - ' + end_date);
+        $('#reportrange').daterangepicker(daterangepicker_setting, do_daterangepicker_stuff);
+        // Формирование календаря для малых экаранов
+        // $('#reportrange-header span').html(string_date);
+        $('#reportrange-header span').html(start_date + ' - ' + end_date);
+        $('#reportrange-header').daterangepicker(daterangepicker_setting, do_daterangepicker_stuff);
+    }
+
+    $(document).ready(function() {
+        create_daterangepicker('<?= $start_date ?>', '<?= $end_date ?>');
+            // Instantiate the map
+            // Prepare demo data
+            // Data is joined to map using value of 'hc-key' property by default.
+            // See API docs for 'joinBy' for more info on linking data and map.
+            var map_data_posts = [
+                ['kz-qo', <?php echo isset($regions_data[11]['posts']['tg']) ? $regions_data[11]['posts']['tg'] : 0 ?>],
+                ['kz-qs', <?php echo isset($regions_data[10]['posts']['tg']) ? $regions_data[10]['posts']['tg'] : 0 ?>],
+                ['kz-nk', <?php echo isset($regions_data[15]['posts']['tg']) ? $regions_data[15]['posts']['tg'] : 0 ?>],
+                ['kz-pa', <?php echo isset($regions_data[14]['posts']['tg']) ? $regions_data[14]['posts']['tg'] : 0 ?>],
+                ['kz-am', <?php echo isset($regions_data[3]['posts']['tg']) ? $regions_data[3]['posts']['tg'] : 0 ?>],
+                ['kz-zm', <?php echo isset($regions_data[8]['posts']['tg']) ? $regions_data[8]['posts']['tg'] : 0 ?>],
+                ['kz-aa', <?php echo isset($regions_data[5]['posts']['tg']) ? $regions_data[5]['posts']['tg'] : 0 ?>],
+                ['kz-ar', <?php echo isset($regions_data[6]['posts']['tg']) ? $regions_data[6]['posts']['tg'] : 0 ?>],
+                ['kz-mg', <?php echo isset($regions_data[12]['posts']['tg']) ? $regions_data[12]['posts']['tg'] : 0 ?>],
+                ['kz-ek', <?php echo isset($regions_data[16]['posts']['tg']) ? $regions_data[16]['posts']['tg'] : 0 ?>],
+                ['kz-at', <?php echo isset($regions_data[4]['posts']['tg']) ? $regions_data[4]['posts']['tg'] : 0 ?>],
+                ['kz-wk', <?php echo isset($regions_data[7]['posts']['tg']) ? $regions_data[7]['posts']['tg'] : 0 ?>],
+                ['kz-sk', <?php echo isset($regions_data[13]['posts']['tg']) ? $regions_data[13]['posts']['tg'] : 0 ?>],
+                ['kz-qg', <?php echo isset($regions_data[9]['posts']['tg']) ? $regions_data[9]['posts']['tg'] : 0 ?>]
+            ];
+
+            // Create the chart
+            Highcharts.mapChart('container_map_posts', {
+                chart: {
+                    map: 'countries/kz/kz-all'
+                },
+
+                title: {
+                    text: 'Кол-во публикаций по областям'
+                },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+
+                colorAxis: {
+                    min: 0
+                },
+
+                series: [{
+                    data: map_data_posts,
+                    name: 'Кол-во публикаций',
+                    states: {
+                        hover: {
+                            color: '#BADA55'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    }
+                }]
+            });
+
+            var map_data_reposts = [
+                ['kz-qo', <?php echo (isset($regions_data[11]['reposts']['tg']) ? $regions_data[11]['reposts']['tg'] : 0) ?>],
+                ['kz-qs', <?php echo (isset($regions_data[10]['reposts']['tg']) ? $regions_data[10]['reposts']['tg'] : 0) ?>],
+                ['kz-nk', <?php echo (isset($regions_data[15]['reposts']['tg']) ? $regions_data[15]['reposts']['tg'] : 0) ?>],
+                ['kz-pa', <?php echo (isset($regions_data[14]['reposts']['tg']) ? $regions_data[14]['reposts']['tg'] : 0) ?>],
+                ['kz-am', <?php echo (isset($regions_data[3]['reposts']['tg']) ? $regions_data[3]['reposts']['tg'] : 0) ?>],
+                ['kz-zm', <?php echo (isset($regions_data[8]['reposts']['tg']) ? $regions_data[8]['reposts']['tg'] : 0) ?>],
+                ['kz-aa', <?php echo (isset($regions_data[5]['reposts']['tg']) ? $regions_data[5]['reposts']['tg'] : 0) ?>],
+                ['kz-ar', <?php echo (isset($regions_data[6]['reposts']['tg']) ? $regions_data[6]['reposts']['tg'] : 0) ?>],
+                ['kz-mg', <?php echo (isset($regions_data[12]['reposts']['tg']) ? $regions_data[12]['reposts']['tg'] : 0) ?>],
+                ['kz-ek', <?php echo (isset($regions_data[16]['reposts']['tg']) ? $regions_data[16]['reposts']['tg'] : 0) ?>],
+                ['kz-at', <?php echo (isset($regions_data[4]['reposts']['tg']) ? $regions_data[4]['reposts']['tg'] : 0) ?>],
+                ['kz-wk', <?php echo (isset($regions_data[7]['reposts']['tg']) ? $regions_data[7]['reposts']['tg'] : 0) ?>],
+                ['kz-sk', <?php echo (isset($regions_data[13]['reposts']['tg']) ? $regions_data[13]['reposts']['tg'] : 0) ?>],
+                ['kz-qg', <?php echo (isset($regions_data[9]['reposts']['tg']) ? $regions_data[9]['reposts']['tg'] : 0) ?>]
+            ];
+
+
+            Highcharts.mapChart('container_map_reposts', {
+                chart: {
+                    map: 'countries/kz/kz-all'
+                },
+
+                title: {
+                    text: 'Кол-во ответов по областям'
+                },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+
+                colorAxis: {
+                    min: 0
+                },
+
+                series: [{
+                    data: map_data_reposts,
+                    name: 'Кол-во ответов',
+                    states: {
+                        hover: {
+                            color: '#BADA55'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    }
+                }]
+            });
+
+            var map_data_subs = [
+                ['kz-qo', <?php echo (isset($regions_data[11]['subs']['tg']) ? $regions_data[11]['subs']['tg'] : 0) ?>],
+                ['kz-qs', <?php echo (isset($regions_data[10]['subs']['tg']) ? $regions_data[10]['subs']['tg'] : 0) ?>],
+                ['kz-nk', <?php echo (isset($regions_data[15]['subs']['tg']) ? $regions_data[15]['subs']['tg'] : 0) ?>],
+                ['kz-pa', <?php echo (isset($regions_data[14]['subs']['tg']) ? $regions_data[14]['subs']['tg'] : 0) ?>],
+                ['kz-am', <?php echo (isset($regions_data[3]['subs']['tg']) ? $regions_data[3]['subs']['tg'] : 0) ?>],
+                ['kz-zm', <?php echo (isset($regions_data[8]['subs']['tg']) ? $regions_data[8]['subs']['tg'] : 0) ?>],
+                ['kz-aa', <?php echo (isset($regions_data[5]['subs']['tg']) ? $regions_data[5]['subs']['tg'] : 0) ?>],
+                ['kz-ar', <?php echo (isset($regions_data[6]['subs']['tg']) ? $regions_data[6]['subs']['tg'] : 0) ?>],
+                ['kz-mg', <?php echo (isset($regions_data[12]['subs']['tg']) ? $regions_data[12]['subs']['tg'] : 0) ?>],
+                ['kz-ek', <?php echo (isset($regions_data[16]['subs']['tg']) ? $regions_data[16]['subs']['tg'] : 0) ?>],
+                ['kz-at', <?php echo (isset($regions_data[4]['subs']['tg']) ? $regions_data[4]['subs']['tg'] : 0) ?>],
+                ['kz-wk', <?php echo (isset($regions_data[7]['subs']['tg']) ? $regions_data[7]['subs']['tg'] : 0) ?>],
+                ['kz-sk', <?php echo (isset($regions_data[13]['subs']['tg']) ? $regions_data[13]['subs']['tg'] : 0) ?>],
+                ['kz-qg', <?php echo (isset($regions_data[9]['subs']['tg']) ? $regions_data[9]['subs']['tg'] : 0) ?>]
+            ];
+
+            Highcharts.mapChart('container_map_members', {
+                chart: {
+                    map: 'countries/kz/kz-all'
+                },
+
+                title: {
+                    text: 'Кол-во подписчиков по областям'
+                },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+
+                colorAxis: {
+                    min: 0
+                },
+
+                series: [{
+                    data: map_data_subs,
+                    name: 'Кол-во подписчиков',
+                    states: {
+                        hover: {
+                            color: '#BADA55'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    }
+                }]
+            });
+
+
+
+            Highcharts.chart('container_dynamic_posts', {
+
+                title: {
+                    text: ''
+                },
+
+                yAxis: [{
+                        title: {
+                            text: 'Кол-во'
+                        }
+                    },
+                    {
+                        title: {
+                            text: 'Кол-во подписчиков'
+                        },
+                        opposite: true
+                    }
+                ],
+
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Показатель'
+                    },
+                    categories: ['<?= isset($dates) ? implode("', '", $dates) : 0 ?>']
+                },
+
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                    }
+                },
+
+                series: [{
+                    name: 'Посты',
+                    data: [<?php
+                            foreach ($dates as $d) {
+                                foreach ($date_posts as $date => $value) {
+                                    if ($d == $date) echo $value . ", ";
+                                }
+                            }
+
+                            ?>]
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
                 }
-            },
-            dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-            }
-        }]
-    });
-    
-    
-    Highcharts.mapChart('container_map_reposts', {
-        chart: {
-            map: 'countries/kz/kz-all'
-        },
 
-        title: {
-            text: 'Кол-во ответов по областям'
-        },
-        mapNavigation: {
-            enabled: true,
-            buttonOptions: {
-                verticalAlign: 'bottom'
-            }
-        },
+            });
 
-        colorAxis: {
-            min: 0
-        },
 
-        series: [{
-            data: map_data,
-            name: 'Кол-во ответов',
-            states: {
-                hover: {
-                    color: '#BADA55'
+            Highcharts.chart('container_dynamic_members', {
+
+                title: {
+                    text: ''
+                },
+
+                yAxis: [{
+                    title: {
+                        text: 'Кол-во подписчиков'
+                    }
+                }],
+
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Показатель'
+                    },
+                    categories: ['<?= isset($dates) ? implode("', '", $dates) : 0 ?>']
+                },
+
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                    }
+                },
+
+                series: [{
+                    name: 'Подписчики',
+                    data: [<?php
+                            foreach ($dates as $d) {
+                                foreach ($date_subs as $date => $value) {
+                                    if ($d == $date) echo $value . ", ";
+                                }
+                            }
+
+                            ?>]
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
                 }
-            },
-            dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-            }
-        }]
-    });
-    
-    Highcharts.mapChart('container_map_members', {
-        chart: {
-            map: 'countries/kz/kz-all'
-        },
 
-        title: {
-            text: 'Кол-во подписчиков по областям'
-        },
-        mapNavigation: {
-            enabled: true,
-            buttonOptions: {
-                verticalAlign: 'bottom'
-            }
-        },
+            });
 
-        colorAxis: {
-            min: 0
-        },
+            Highcharts.chart('container_dynamic_reposts', {
 
-        series: [{
-            data: map_data,
-            name: 'Кол-во подписчиков',
-            states: {
-                hover: {
-                    color: '#BADA55'
+                title: {
+                    text: ''
+                },
+
+                yAxis: [{
+                        title: {
+                            text: 'Кол-во'
+                        }
+                    },
+                    {
+                        title: {
+                            text: 'Кол-во подписчиков'
+                        },
+                        opposite: true
+                    }
+                ],
+
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Показатель'
+                    },
+                    categories: ['<?= isset($dates) ? implode("', '", $dates) : 0 ?>']
+                },
+
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                    }
+                },
+
+                series: [{
+                    name: 'Ответов',
+                    data: [<?php
+                            foreach ($dates as $d) {
+                                foreach ($date_reposts as $date => $value) {
+                                    if ($d == $date) echo $value . ", ";
+                                }
+                            }
+
+                            ?>]
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
                 }
-            },
-            dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-            }
-        }]
-    });
-    
-    
-    
-    Highcharts.chart('container_dynamic_posts', {
 
-      title: {
-        text: ''
-      },
+            });
+        });
 
-      yAxis: [
-        {
-            title: {
-              text: 'Кол-во'
-            }
-        },
-        {
-            title: {
-              text: 'Кол-во подписчиков'
-            },
-            opposite: true
-        }
-      ],
+        $(document).ready(function() {
+            $('.dataTables-example').DataTable({
+                pageLength: 15,
+                responsive: false,
+                searching: false,
+                lengthChange: false,
+                dom: '<\"html5buttons\"B>lTfgitp',
+                buttons: [{
+                        extend: 'copy'
+                    },
+                    {
+                        extend: 'csv'
+                    },
+                    {
+                        extend: 'excel',
+                        title: 'ExampleFile'
+                    },
+                    {
+                        extend: 'pdf',
+                        title: 'ExampleFile'
+                    },
 
-      xAxis: {
-        accessibility: {
-          rangeDescription: 'Показатель'
-        },
-        categories: [
-                '21.9.2022',
-                '22.9.2022',
-                '23.9.2022',
-                '24.9.2022',
-                '25.9.2022',
-                '26.9.2022',
-                '27.9.2022',
-                '28.9.2022',
-                '29.9.2022',
-                '30.9.2022',
-                '31.9.2022',
-                '01.10.2022',
-                '02.10.2022',
-                '03.10.2022',
-                '04.10.2022',
-                '05.10.2022',
-                '06.10.2022',
-                '07.10.2022',
-                '08.10.2022',
-                '09.10.2022',
-                '10.10.2022',
-                '11.10.2022',
-                '12.10.2022',
-                '13.10.2022',
-                '14.10.2022',
-                '15.10.2022',
-                '16.10.2022',
-                '17.10.2022',
-                '18.10.2022',
-                '19.10.2022',
-            ]
-      },
+                    {
+                        extend: 'print',
+                        customize: function(win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
 
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-      },
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
 
-      plotOptions: {
-        series: {
-          label: {
-            connectorAllowed: false
-          },
-        }
-      },
+            });
 
-      series: [{
-        name: 'Посты',
-        data: [124, 96, 125, 112, 62, 113, 67, 56, 111, 118, 86, 127, 126, 76, 120, 94, 56, 128, 87, 105, 54, 101, 110, 100, 112, 76, 116, 102, 88, 106]
-      }],
-
-      responsive: {
-        rules: [{
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: 'horizontal',
-              align: 'center',
-              verticalAlign: 'bottom'
-            }
-          }
-        }]
-      }
-
-    });
-    
-    
-    Highcharts.chart('container_dynamic_members', {
-
-      title: {
-        text: ''
-      },
-
-      yAxis: [
-        {
-            title: {
-              text: 'Кол-во подписчиков'
-            }
-        }
-      ],
-
-      xAxis: {
-        accessibility: {
-          rangeDescription: 'Показатель'
-        },
-        categories: [
-                '21.9.2022',
-                '22.9.2022',
-                '23.9.2022',
-                '24.9.2022',
-                '25.9.2022',
-                '26.9.2022',
-                '27.9.2022',
-                '28.9.2022',
-                '29.9.2022',
-                '30.9.2022',
-                '31.9.2022',
-                '01.10.2022',
-                '02.10.2022',
-                '03.10.2022',
-                '04.10.2022',
-                '05.10.2022',
-                '06.10.2022',
-                '07.10.2022',
-                '08.10.2022',
-                '09.10.2022',
-                '10.10.2022',
-                '11.10.2022',
-                '12.10.2022',
-                '13.10.2022',
-                '14.10.2022',
-                '15.10.2022',
-                '16.10.2022',
-                '17.10.2022',
-                '18.10.2022',
-                '19.10.2022',
-            ]
-      },
-
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-      },
-
-      plotOptions: {
-        series: {
-          label: {
-            connectorAllowed: false
-          },
-        }
-      },
-
-      series: [{
-        name: 'Подписчики',
-        data: [960271, 995715, 1026703, 1108701, 1138843, 1145809, 1185331, 1283446, 1297439, 1396714, 1406531, 1488713, 1582278, 1648898, 1694744, 1727927, 1799319, 1816785, 1912428, 1981498, 2058356, 2072991, 2091460, 2118252, 2189074, 2273387, 2363048, 2420255, 2455378]
-      }],
-
-      responsive: {
-        rules: [{
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: 'horizontal',
-              align: 'center',
-              verticalAlign: 'bottom'
-            }
-          }
-        }]
-      }
-
-    });
-    
-    Highcharts.chart('container_dynamic_reposts', {
-
-      title: {
-        text: ''
-      },
-
-      yAxis: [
-        {
-            title: {
-              text: 'Кол-во'
-            }
-        },
-        {
-            title: {
-              text: 'Кол-во подписчиков'
-            },
-            opposite: true
-        }
-      ],
-
-      xAxis: {
-        accessibility: {
-          rangeDescription: 'Показатель'
-        },
-        categories: [
-                '21.9.2022',
-                '22.9.2022',
-                '23.9.2022',
-                '24.9.2022',
-                '25.9.2022',
-                '26.9.2022',
-                '27.9.2022',
-                '28.9.2022',
-                '29.9.2022',
-                '30.9.2022',
-                '31.9.2022',
-                '01.10.2022',
-                '02.10.2022',
-                '03.10.2022',
-                '04.10.2022',
-                '05.10.2022',
-                '06.10.2022',
-                '07.10.2022',
-                '08.10.2022',
-                '09.10.2022',
-                '10.10.2022',
-                '11.10.2022',
-                '12.10.2022',
-                '13.10.2022',
-                '14.10.2022',
-                '15.10.2022',
-                '16.10.2022',
-                '17.10.2022',
-                '18.10.2022',
-                '19.10.2022',
-            ]
-      },
-
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-      },
-
-      plotOptions: {
-        series: {
-          label: {
-            connectorAllowed: false
-          },
-        }
-      },
-
-      series: [{
-        name: 'Ответов',
-        data: [3, 10, 15, 14, 5, 6, 7, 1, 13, 4, 10, 11, 9, 5, 9, 8, 7, 6, 9, 9, 7, 13, 9, 9, 0, 4, 8, 3, 13, 6]
-      }],
-
-      responsive: {
-        rules: [{
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: 'horizontal',
-              align: 'center',
-              verticalAlign: 'bottom'
-            }
-          }
-        }]
-      }
-
-    });
-});
-");
-
-    $this->registerJs("
-$(document).ready(function(){
-    $('.dataTables-example').DataTable({
-        pageLength: 15,
-        responsive: false,
-        searching: false,
-        lengthChange: false,
-        dom: '<\"html5buttons\"B>lTfgitp',
-        buttons: [
-            { extend: 'copy'},
-            {extend: 'csv'},
-            {extend: 'excel', title: 'ExampleFile'},
-            {extend: 'pdf', title: 'ExampleFile'},
-
-            {extend: 'print',
-             customize: function (win){
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-
-                    $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
-            }
-            }
-        ]
-
-    });
-
-});
-
-");
+        });
+    </script>

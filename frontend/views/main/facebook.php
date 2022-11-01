@@ -273,13 +273,13 @@
 
 
 <script>
-    function addState(start_date, end_date) {
+    function addState(sdate, edate) {
         let stateObj = {
             id: '456498'
         };
 
         $.ajax({
-            url: '/main/facebook?start_date=' + start_date + '&end_date=' + end_date,
+            url: '/main/facebook?start_date=' + sdate + '&end_date=' + edate,
             type: 'GET',
             success: function(data) {
                 $('#page-wrapper').html(data);
@@ -287,15 +287,11 @@
         });
 
         window.history.pushState(stateObj,
-            'Page 2', '/main/index#facebook?start_date=' + start_date + '&end_date=' + end_date);
+            'Page 2', '/main/index#facebook?start_date=' + sdate + '&end_date=' + edate);
 
     }
 
     function openurl(type, start_date, end_date){
-        // st_date = start_date.split(".");
-        // e_date = end_date.split(".");
-        // st_date = st_date[2] + "-" + st_date[1] + "-" + st_date[0];
-        // e_date = e_date[2] + "-" +e_date[1] + "-" + e_date[0];
         $.ajax({
             url: '/main/'+type+'?start_date='+start_date.split(".")[2]+"-"+start_date.split(".")[1]+"-"+start_date.split(".")[0]+'&end_date='+end_date.split(".")[2]+"-"+end_date.split(".")[1]+"-"+end_date.split(".")[0],
             type: 'GET',
@@ -311,8 +307,7 @@
     function do_daterangepicker_stuff(start, end, label) {
 
         $('#reportrange span').html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
-        addState(start.format('YYYY-MM-D'), end.format('YYYY-MM-D'));
-
+        addState(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     }
 
     
@@ -322,8 +317,9 @@
         // if(start==null && end==null){
         let edate = new Date(end);
         let sdate = new Date(start);
-        let start_date = sdate.getDate() + '.' + parseInt(sdate.getMonth() + 1) + '.' + sdate.getFullYear();
-        let end_date = edate.getDate() + '.' + parseInt(edate.getMonth() + 1) + '.' + edate.getFullYear();
+        start_date = sdate.getDate() + '.' + parseInt(sdate.getMonth() + 1) + '.' + sdate.getFullYear();
+        end_date = edate.getDate() + '.' + parseInt(edate.getMonth() + 1) + '.' + edate.getFullYear();
+
         // }else {
         //     start_date = start;
         //     end_date = end;
