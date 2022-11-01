@@ -14,13 +14,13 @@ use yii\helpers\Html;
                 </div>
             </li>
             <li>
-                <a href="<?= Url::to('/main/index') ?>"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span> </a>
+                <a onclick="openurl('dashboard', start_date, end_date)"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span> </a>
             </li>
             <li>
-                <a onclick="openurl('facebook')"><i class="fa fa-facebook-square"></i> <span class="nav-label">Facebook</span> </a>
+                <a onclick="openurl('facebook', start_date, end_date)"><i class="fa fa-facebook-square"></i> <span class="nav-label">Facebook</span> </a>
             </li>
             <li>
-                <a href="<?= Url::to('/main/instagram') ?>"><i class="fa fa-instagram"></i> <span class="nav-label">Instagram</span> </a>
+                <a onclick="openurl('instagram', start_date, end_date)"><i class="fa fa-instagram"></i> <span class="nav-label">Instagram</span> </a>
             </li>
             <li>
                 <a href="<?= Url::to('/main/telegram') ?>"><i class="fa fa-telegram"></i> <span class="nav-label">Telegram</span> </a>
@@ -55,20 +55,8 @@ use yii\helpers\Html;
             url: '/main/dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>',
             type: 'GET',
             success: function(data) {
+                history.pushState("/main/index#dashboard", "/main/index#dashboard", "/main/index#dashboard")
                 $('#page-wrapper').html(data);
-            }
-        });
-    }
-
-    function openurl(type){
-        $.ajax({
-            url: '/main/'+type+'?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>',
-            type: 'GET',
-            success: function(data) {
-                // $('#page-wrapper').html("");
-                history.pushState("/main/index#facebook", "/main/index#facebook", "/main/index#facebook");
-                $('#page-wrapper').html(data);
-                // console.log(data);
             }
         });
     }

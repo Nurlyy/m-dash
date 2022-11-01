@@ -339,13 +339,14 @@
 
 
 <script>
-    function addState(start_date, end_date) {
+    
+    function addState(sdate, edate) {
         let stateObj = {
             id: '456498'
         };
 
         $.ajax({
-            url: '/main/dashboard?start_date=' + start_date + '&end_date=' + end_date,
+            url: '/main/dashboard?start_date=' + sdate + '&end_date=' + edate,
             type: 'GET',
             success: function(data) {
                 $('#page-wrapper').html(data);
@@ -353,24 +354,39 @@
         });
 
         window.history.pushState(stateObj,
-            'Page 2', '/main/index?start_date=' + start_date + '&end_date=' + end_date);
+            'Page 2', '/main/index?start_date=' + sdate + '&end_date=' + edate);
 
+    }
+
+    function openurl(type, start_date, end_date){
+        $.ajax({
+            url: '/main/'+type+'?start_date='+start_date.split(".")[2]+"-"+start_date.split(".")[1]+"-"+start_date.split(".")[0]+'&end_date='+end_date.split(".")[2]+"-"+end_date.split(".")[1]+"-"+end_date.split(".")[0],
+            type: 'GET',
+            success: function(data) {
+                // $('#page-wrapper').html("");
+                history.pushState("/main/index#" + type, "/main/index#" + type, "/main/index#" + type);
+                $('#page-wrapper').html(data);
+                // console.log(data);
+            }
+        });
     }
 
     function do_daterangepicker_stuff(start, end, label) {
 
-        $('#reportrange span').html(start.format('D.MM.YYYY') + ' - ' + end.format('D.MM.YYYY'));
-        addState(start.format('YYYY-MM-D'), end.format('YYYY-MM-D'));
-
+        $('#reportrange span').html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
+        addState(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     }
+
+    
 
     function create_daterangepicker(start, end) {
         // v:004-92M
         // if(start==null && end==null){
         let edate = new Date(end);
         let sdate = new Date(start);
-        let start_date = sdate.getDate() + '.' + parseInt(sdate.getMonth() + 1) + '.' + sdate.getFullYear();
-        let end_date = edate.getDate() + '.' + parseInt(edate.getMonth() + 1) + '.' + edate.getFullYear();
+        start_date = sdate.getDate() + '.' + parseInt(sdate.getMonth() + 1) + '.' + sdate.getFullYear();
+        end_date = edate.getDate() + '.' + parseInt(edate.getMonth() + 1) + '.' + edate.getFullYear();
+
         // }else {
         //     start_date = start;
         //     end_date = end;
@@ -430,11 +446,11 @@
             }
         };
         // Формирование календаря для больших экаранов
-        $('#reportrange span').html(start + ' - ' + end);
+        $('#reportrange span').html(start_date + ' - ' + end_date);
         $('#reportrange').daterangepicker(daterangepicker_setting, do_daterangepicker_stuff);
         // Формирование календаря для малых экаранов
         // $('#reportrange-header span').html(string_date);
-        $('#reportrange-header span').html(start + ' - ' + end);
+        $('#reportrange-header span').html(start_date + ' - ' + end_date);
         $('#reportrange-header').daterangepicker(daterangepicker_setting, do_daterangepicker_stuff);
     }
 
@@ -445,28 +461,21 @@
         // Data is joined to map using value of 'hc-key' property by default.
         // See API docs for 'joinBy' for more info on linking data and map.
         var map_data = [
-            <?php
-                foreach($organization_data as $organization){
-                    $sum=0;
-                    foreach($total_posts as $values){
-                        $sum += (isset($values['fb'])?$values['fb']:0)+(isset($values['ig'])?$values['ig']:0)+(isset($values['tg'])?$values['tg']:0) + (isset($values['web'])?$values['web']:0);
-                    }
-                }
-                ?>
-            ['kz-qo', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-qs', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-nk', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
+            
+            ['kz-qo', <?php echo (isset($regions_data[11]['posts']['fb'])?$regions_data[11]['posts']['fb']:0) + (isset($regions_data[11]['posts']['ig'])?$regions_data[11]['posts']['ig']:0) + (isset($regions_data[11]['posts']['tg'])?$regions_data[11]['posts']['tg']:0) + (isset($regions_data[11]['posts']['web'])?$regions_data[11]['posts']['web']:0)?>],
+            ['kz-qs', <?php echo (isset($regions_data[10]['posts']['fb'])?$regions_data[10]['posts']['fb']:0) + (isset($regions_data[10]['posts']['ig'])?$regions_data[10]['posts']['ig']:0) + (isset($regions_data[10]['posts']['tg'])?$regions_data[10]['posts']['tg']:0) + (isset($regions_data[10]['posts']['web'])?$regions_data[10]['posts']['web']:0)?>],
+            ['kz-nk', <?php echo (isset($regions_data[15]['posts']['fb'])?$regions_data[15]['posts']['fb']:0) + (isset($regions_data[15]['posts']['ig'])?$regions_data[15]['posts']['ig']:0) + (isset($regions_data[15]['posts']['tg'])?$regions_data[15]['posts']['tg']:0) + (isset($regions_data[15]['posts']['web'])?$regions_data[15]['posts']['web']:0)?>],
             ['kz-pa', <?php echo (isset($regions_data[14]['posts']['fb'])?$regions_data[14]['posts']['fb']:0) + (isset($regions_data[14]['posts']['ig'])?$regions_data[14]['posts']['ig']:0) + (isset($regions_data[14]['posts']['tg'])?$regions_data[14]['posts']['tg']:0) + (isset($regions_data[14]['posts']['web'])?$regions_data[14]['posts']['web']:0)?>],
-            ['kz-am', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-zm', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-aa', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-ar', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-mg', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
+            ['kz-am', <?php echo (isset($regions_data[3]['posts']['fb'])?$regions_data[3]['posts']['fb']:0) + (isset($regions_data[3]['posts']['ig'])?$regions_data[3]['posts']['ig']:0) + (isset($regions_data[3]['posts']['tg'])?$regions_data[3]['posts']['tg']:0) + (isset($regions_data[3]['posts']['web'])?$regions_data[3]['posts']['web']:0)?>],
+            ['kz-zm', <?php echo (isset($regions_data[8]['posts']['fb'])?$regions_data[8]['posts']['fb']:0) + (isset($regions_data[8]['posts']['ig'])?$regions_data[8]['posts']['ig']:0) + (isset($regions_data[8]['posts']['tg'])?$regions_data[8]['posts']['tg']:0) + (isset($regions_data[8]['posts']['web'])?$regions_data[8]['posts']['web']:0)?>],
+            ['kz-aa', <?php echo (isset($regions_data[5]['posts']['fb'])?$regions_data[5]['posts']['fb']:0) + (isset($regions_data[5]['posts']['ig'])?$regions_data[5]['posts']['ig']:0) + (isset($regions_data[5]['posts']['tg'])?$regions_data[5]['posts']['tg']:0) + (isset($regions_data[5]['posts']['web'])?$regions_data[5]['posts']['web']:0)?>],
+            ['kz-ar', <?php echo (isset($regions_data[6]['posts']['fb'])?$regions_data[6]['posts']['fb']:0) + (isset($regions_data[6]['posts']['ig'])?$regions_data[6]['posts']['ig']:0) + (isset($regions_data[6]['posts']['tg'])?$regions_data[6]['posts']['tg']:0) + (isset($regions_data[6]['posts']['web'])?$regions_data[6]['posts']['web']:0)?>],
+            ['kz-mg', <?php echo (isset($regions_data[12]['posts']['fb'])?$regions_data[12]['posts']['fb']:0) + (isset($regions_data[12]['posts']['ig'])?$regions_data[12]['posts']['ig']:0) + (isset($regions_data[12]['posts']['tg'])?$regions_data[12]['posts']['tg']:0) + (isset($regions_data[12]['posts']['web'])?$regions_data[12]['posts']['web']:0)?>],
             ['kz-ek', <?php echo (isset($regions_data[16]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[16]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[16]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[16]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-at', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-wk', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-sk', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>],
-            ['kz-qg', <?php echo (isset($regions_data[45]['posts']['fb'])?$regions_data[16]['posts']['fb']:0) + (isset($regions_data[45]['posts']['ig'])?$regions_data[16]['posts']['ig']:0) + (isset($regions_data[45]['posts']['tg'])?$regions_data[16]['posts']['tg']:0) + (isset($regions_data[45]['posts']['web'])?$regions_data[16]['posts']['web']:0)?>]
+            ['kz-at', <?php echo (isset($regions_data[4]['posts']['fb'])?$regions_data[4]['posts']['fb']:0) + (isset($regions_data[4]['posts']['ig'])?$regions_data[4]['posts']['ig']:0) + (isset($regions_data[4]['posts']['tg'])?$regions_data[4]['posts']['tg']:0) + (isset($regions_data[4]['posts']['web'])?$regions_data[4]['posts']['web']:0)?>],
+            ['kz-wk', <?php echo (isset($regions_data[7]['posts']['fb'])?$regions_data[7]['posts']['fb']:0) + (isset($regions_data[7]['posts']['ig'])?$regions_data[7]['posts']['ig']:0) + (isset($regions_data[7]['posts']['tg'])?$regions_data[7]['posts']['tg']:0) + (isset($regions_data[7]['posts']['web'])?$regions_data[7]['posts']['web']:0)?>],
+            ['kz-sk', <?php echo (isset($regions_data[13]['posts']['fb'])?$regions_data[13]['posts']['fb']:0) + (isset($regions_data[13]['posts']['ig'])?$regions_data[13]['posts']['ig']:0) + (isset($regions_data[13]['posts']['tg'])?$regions_data[13]['posts']['tg']:0) + (isset($regions_data[13]['posts']['web'])?$regions_data[13]['posts']['web']:0)?>],
+            ['kz-qg', <?php echo (isset($regions_data[9]['posts']['fb'])?$regions_data[9]['posts']['fb']:0) + (isset($regions_data[9]['posts']['ig'])?$regions_data[9]['posts']['ig']:0) + (isset($regions_data[9]['posts']['tg'])?$regions_data[9]['posts']['tg']:0) + (isset($regions_data[9]['posts']['web'])?$regions_data[9]['posts']['web']:0)?>]
         ];
 
         // Create the chart

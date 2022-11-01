@@ -1,6 +1,3 @@
-<?php use yii\bootstrap5\Html as Html; ?>
-
-<div id="page-wrapper" class="gray-bg">
     <div class="row border-bottom">
         <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -17,7 +14,7 @@
                     </li>
                 </ul>
             </div>
-            
+
             <ul class="nav navbar-top-links navbar-right">
                 <li>
                     <a href="info.html">
@@ -129,7 +126,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -161,145 +158,168 @@
                     </div>
                     <div class="ibox-content">
                         <div class="tabs-container">
-                            <table class="table table-striped table-bordered table-hover dataTables-example" >
+                            <table class="table table-striped table-bordered table-hover dataTables-example">
                                 <tr>
-                                                <th>№</th>
-                                                <th>Канал</th>
-                                                <th>Публикаций</th>
-                                                <th>Подписчиков</th>
-                                                <th>Ответов</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr><td>1</td><td>Школа №180 Алматы</td><td>2134</td><td>24635</td><td>242</td></tr>
-                                                <tr><td>2</td><td>Школа-лицей №64 Нур-Султан</td><td>985</td><td>23811</td><td>113</td></tr>
-                                                <tr><td>3</td><td>Школа-лицей №59 Нур-Султан</td><td>621</td><td>14284</td><td>36</td></tr>
-                                                <tr><td>4</td><td>Школа №170 Алматы</td><td>487</td><td>21754</td><td>29</td></tr>
-                                                <tr><td>5</td><td>Гимназия №46 Алматы</td><td>170</td><td>22133</td><td>42</td></tr>
-                                                <tr><td>6</td><td>Школа Гимназия №2 Нур-Султан</td><td>86</td><td>17779</td><td>28</td></tr>
-                                                <tr><td>7</td><td>Школа №115 Алматы</td><td>199</td><td>23099</td><td>42</td></tr>
-                                                <tr><td>8</td><td>Школа №127 Алматы</td><td>133</td><td>16747</td><td>28</td></tr>
-                                                <tr><td>9</td><td>Школа №101 Алматы</td><td>57</td><td>16368</td><td>21</td></tr>
-                                                <tr><td>10</td><td>Школа №135 Алматы</td><td>22</td><td>17038</td><td>20</td></tr>
-                                                <tr><td>11</td><td>Школа №52 Алматы</td><td>26</td><td>4981</td><td>19</td></tr>
-                                                <tr><td>12</td><td>Школа-Гимназия №1 им. Пушкина Шымкент</td><td>109</td><td>4408</td><td>10</td></tr>
-                                                <tr><td>13</td><td>Школа Гимназия №1 Алматы</td><td>26</td><td>2550</td><td>29</td></tr>
-                                                <tr><td>14</td><td>Школа Гимназия №6 Нур-Султан</td><td>40</td><td>3053</td><td>16</td></tr>
-                                                <tr><td>15</td><td>Школа-лицей №37 Нур-Султан</td><td>66</td><td>2621</td><td>18</td></tr>
-                                                <tr><td>16</td><td>Школа Гимназия №144 Алматы</td><td>27</td><td>2395</td><td>17</td></tr>
-                                                <tr><td>17</td><td>Школа-интернат ДАРЫН Караганда</td><td>62</td><td>2137</td><td>42</td></tr>
-                                                <tr><td>18</td><td>Лицей-интернат для одаренных юношей Нур-Султан</td><td>22</td><td>2214</td><td>155</td></tr>
-                                                <tr><td>19</td><td>Лицей №134 Алматы</td><td>8</td><td>1762</td><td>68</td></tr>			
+                                    <th>№</th>
+                                    <th>Канал</th>
+                                    <th>Публикаций</th>
+                                    <th>Подписчиков</th>
+                                    <th>Ответов</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Школа №180 Алматы</td>
+                                        <td>2134</td>
+                                        <td>24635</td>
+                                        <td>242</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Школа-лицей №64 Нур-Султан</td>
+                                        <td>985</td>
+                                        <td>23811</td>
+                                        <td>113</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Школа-лицей №59 Нур-Султан</td>
+                                        <td>621</td>
+                                        <td>14284</td>
+                                        <td>36</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Школа №170 Алматы</td>
+                                        <td>487</td>
+                                        <td>21754</td>
+                                        <td>29</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Гимназия №46 Алматы</td>
+                                        <td>170</td>
+                                        <td>22133</td>
+                                        <td>42</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Школа Гимназия №2 Нур-Султан</td>
+                                        <td>86</td>
+                                        <td>17779</td>
+                                        <td>28</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Школа №115 Алматы</td>
+                                        <td>199</td>
+                                        <td>23099</td>
+                                        <td>42</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>Школа №127 Алматы</td>
+                                        <td>133</td>
+                                        <td>16747</td>
+                                        <td>28</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>Школа №101 Алматы</td>
+                                        <td>57</td>
+                                        <td>16368</td>
+                                        <td>21</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>Школа №135 Алматы</td>
+                                        <td>22</td>
+                                        <td>17038</td>
+                                        <td>20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>Школа №52 Алматы</td>
+                                        <td>26</td>
+                                        <td>4981</td>
+                                        <td>19</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>Школа-Гимназия №1 им. Пушкина Шымкент</td>
+                                        <td>109</td>
+                                        <td>4408</td>
+                                        <td>10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td>Школа Гимназия №1 Алматы</td>
+                                        <td>26</td>
+                                        <td>2550</td>
+                                        <td>29</td>
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td>Школа Гимназия №6 Нур-Султан</td>
+                                        <td>40</td>
+                                        <td>3053</td>
+                                        <td>16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>15</td>
+                                        <td>Школа-лицей №37 Нур-Султан</td>
+                                        <td>66</td>
+                                        <td>2621</td>
+                                        <td>18</td>
+                                    </tr>
+                                    <tr>
+                                        <td>16</td>
+                                        <td>Школа Гимназия №144 Алматы</td>
+                                        <td>27</td>
+                                        <td>2395</td>
+                                        <td>17</td>
+                                    </tr>
+                                    <tr>
+                                        <td>17</td>
+                                        <td>Школа-интернат ДАРЫН Караганда</td>
+                                        <td>62</td>
+                                        <td>2137</td>
+                                        <td>42</td>
+                                    </tr>
+                                    <tr>
+                                        <td>18</td>
+                                        <td>Лицей-интернат для одаренных юношей Нур-Султан</td>
+                                        <td>22</td>
+                                        <td>2214</td>
+                                        <td>155</td>
+                                    </tr>
+                                    <tr>
+                                        <td>19</td>
+                                        <td>Лицей №134 Алматы</td>
+                                        <td>8</td>
+                                        <td>1762</td>
+                                        <td>68</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="ibox ">
-                    <div class="ibox-title">
-                        <h5>Последние публикации</h5>
-                        <div class="ibox-tools">
-                       </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div>
-                            <div class="feed-activity-list">
-                                <div class="feed-element">
-                                    <a class="float-left" href="profile.html">
-                                        <!-- <img alt="image" class="rounded-circle" src="img/a3.jpg"> -->
-                                        <?= Html::img('@web/img/a3.jpg', ['class'=>'rounded-circle']) ?>
-
-                                    </a>
-                                    <div class="media-body ">
-                                        <strong>Гимназия №46 Алматы</strong> <br>
-                                        <small class="text-muted">17:02, 29 Сентября 2022, Понедельник</small>
-                                        <div class="well">
-                                            В КГУ "Гимназия № 46" города Алматы прошли классные часы "Молодёжь против коррупции", а также мероприятие в актовом зале "Роль молодежи в реализации государственной политики по противодействию коррупции"
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="feed-element">
-                                    <a class="float-left" href="profile.html">
-                                        <!-- <img alt="image" class="rounded-circle" src="img/a3.jpg"> -->
-                                        <?= Html::img('@web/img/a3.jpg', ['class'=>'rounded-circle']) ?>
-
-                                    </a>
-                                    <div class="media-body ">
-                                        <strong>Школа Гимназия №2 Нур-Султан</strong> <br>
-                                        <small class="text-muted">01:10, 04 Октября 2022, Вторник</small>
-                                        <div class="well">
-                                            Сегодня, 04.10, в нашей школе начался месяц методического объединения учителей английского языка. С утра, до уроков, ученики 8-9 классов делились своим хорошим настроением с ребя...
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="feed-element">
-                                    <a class="float-left" href="profile.html">
-                                        <!-- <img alt="image" class="rounded-circle" src="img/a5.jpg"> -->
-                                        <?= Html::img('@web/img/a5.jpg', ['class'=>'rounded-circle']) ?>
-
-                                    </a>
-                                    <div class="media-body ">
-                                        <strong>Школа-лицей №59 Нур-Султан</strong> <br>
-                                        <small class="text-muted">15:02, 22 Сентября 2022, Четверг</small>
-                                        <div class="well">
-                                            30 марта 2022 года в столице Республики Казахстан – городе Нур-Султан ГУ «Институт истории государства» КН МОН РК совместно с ГКП на ПХВ «Школа-лицей №59» акимата гор...
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="feed-element">
-                                    <a class="float-left" href="profile.html">
-                                        <!-- <img alt="image" class="rounded-circle" src="img/a6.jpg"> -->
-                                        <?= Html::img('@web/img/a6.jpg', ['class'=>'rounded-circle']) ?>
-
-                                    </a>
-                                    <div class="media-body ">
-                                        <strong>Школа Гимназия №1 Алматы</strong> <br>
-                                        <small class="text-muted">14:37, 16 Сентября 2022, Понедельник</small>
-                                        <div class="well">
-                                            Алматы облысының тілдерді дамыту жөніндегі басқармасының ұйымдастырылуымен «Қазақстан халқы тілдері күні» аясындағы  «Тіл шебері» байқауының қорытынд...
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="feed-element">
-                                    <a class="float-left" href="profile.html">
-                                        <!-- <img alt="image" class="rounded-circle" src="img/a6.jpg"> -->
-                                        <?= Html::img('@web/img/a6.jpg', ['class'=>'rounded-circle']) ?>
-
-                                    </a>
-                                    <div class="media-body ">
-                                        <strong>Школа-гимназия № 6 им. Абая Кунанбаева</strong> <br>
-                                        <small class="text-muted">10:37, 02 Сентября 2022, Пятница</small>
-                                        <div class="well">
-                                            02 сентября 2022 года в КГУ "Школа-гимназия № 6 имени Абая Кунанбаева" состоялся кинопоказ документального фильма известного российского режиссёра Константина Харалампидиса "Батыры Великой Отечественной", посвяще..
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
         </div>
     </div>
-    
+
     <div class="footer">
         <div>
             Смыслы и послания данного сайта созданы командой iMAS, не пытайтесь их повторить. "iMAS GROUP". 2014 - ∞
         </div>
     </div>
 
-</div>
 
+    <?php
 
-
-<?php
-
-$this->registerJs("
+    $this->registerJs("
   
 
 function do_daterangepicker_stuff(start, end, label) {
@@ -367,7 +387,7 @@ function create_daterangepicker(){
 }
 ");
 
-$this->registerJs("
+    $this->registerJs("
 $(document).ready(function() {
     create_daterangepicker();
     // Instantiate the map
@@ -776,7 +796,7 @@ $(document).ready(function() {
 });
 ");
 
-$this->registerJs("
+    $this->registerJs("
 $(document).ready(function(){
     $('.dataTables-example').DataTable({
         pageLength: 15,
