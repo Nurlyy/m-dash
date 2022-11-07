@@ -1,37 +1,3 @@
-<div class="row border-bottom">
-    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-            <ul class="nav navbar-top-links navbar-left m-t-15">
-                <li>
-                    <div class="filter_datetime p-t-0 f-l">
-                        <!-- v:004-92M -->
-                        <div id="reportrange" class="form-control b-none">
-                            <i class="fa fa-calendar p-r-5"></i>
-                            <span></span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <ul class="nav navbar-top-links navbar-right">
-            <li>
-                <a href="info.html">
-                    <i class="fa fa-info-circle" style="color: #1ab394;"></i>
-                </a>
-            </li>
-            <li>
-                <a href="logout.html">
-                    <i class="fa fa-sign-out"></i> Log out
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-
-
-<div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-lg-2">
             <div class="ibox ">
@@ -55,7 +21,7 @@
                                                     $sum += (isset($values['ig']) ? $values['ig'] : 0);
                                                 }
                                             echo $sum; ?></h1>
-                    <div class="stat-percent font-bold text-info">17% <i class="fa fa-level-up"></i></div>
+                    <?= (end($date_posts) > prev($date_posts)?'<div class="stat-percent font-bold text-info">'.end($date_posts)-prev($date_posts).' <i style="margin-left: 5px;" class="fa fa-level-up"></i>':'<div class="stat-percent font-bold text-danger">'.end($date_posts)-prev($date_posts).'<i style="margin-left: 5px;" class="fa fa-level-down"></i>') ?></div>
                 </div>
             </div>
         </div>
@@ -71,7 +37,7 @@
                                                     $sum += (isset($values['ig']) ? $values['ig'] : 0);
                                                 }
                                             echo $sum; ?></h1>
-                    <div class="stat-percent font-bold text-danger">4% <i class="fa fa-level-down"></i></div>
+                    <?= (end($date_likes) > prev($date_likes)?'<div class="stat-percent font-bold text-info">'.end($date_likes)-prev($date_likes).' <i style="margin-left: 5px;" class="fa fa-level-up"></i>':'<div class="stat-percent font-bold text-danger">'.end($date_likes)-prev($date_likes).'<i style="margin-left: 5px;" class="fa fa-level-down"></i>') ?></div>
                 </div>
             </div>
         </div>
@@ -87,7 +53,7 @@
                                                     $sum += (isset($values['ig']) ? $values['ig'] : 0);
                                                 }
                                             echo $sum; ?></h1>
-                    <div class="stat-percent font-bold text-info">7% <i class="fa fa-level-up"></i></div>
+                    <?= (end($date_reposts) > prev($date_reposts)?'<div class="stat-percent font-bold text-info">'.end($date_reposts)-prev($date_reposts).' <i style="margin-left: 5px;" class="fa fa-level-up"></i>':'<div class="stat-percent font-bold text-danger">'.end($date_reposts)-prev($date_reposts).'<i style="margin-left: 5px;" class="fa fa-level-down"></i>') ?></div>
                 </div>
             </div>
         </div>
@@ -103,7 +69,7 @@
                                                     $sum += (isset($values['ig']) ? $values['ig'] : 0);
                                                 }
                                             echo $sum; ?></h1>
-                    <div class="stat-percent font-bold text-danger">5% <i class="fa fa-level-down"></i></div>
+                    <?= (end($date_comments) > prev($date_comments)?'<div class="stat-percent font-bold text-info">'.end($date_comments)-prev($date_comments).' <i style="margin-left: 5px;" class="fa fa-level-up"></i>':'<div class="stat-percent font-bold text-danger">'.end($date_comments)-prev($date_comments).'<i style="margin-left: 5px;" class="fa fa-level-down"></i>') ?></div>
                 </div>
             </div>
         </div>
@@ -119,7 +85,7 @@
                                                     $sum += (isset($values['ig']) ? $values['ig'] : 0);
                                                 }
                                             echo $sum; ?></h1>
-                    <div class="stat-percent font-bold text-info">2% <i class="fa fa-level-up"></i></div>
+                    <?= (end($date_subs) > prev($date_subs)?'<div class="stat-percent font-bold text-info">'.end($date_subs)-prev($date_subs).' <i style="margin-left: 5px;" class="fa fa-level-up"></i>':'<div class="stat-percent font-bold text-danger">'.end($date_subs)-prev($date_subs).'<i style="margin-left: 5px;" class="fa fa-level-down"></i>') ?></div>
                 </div>
             </div>
         </div>
@@ -271,14 +237,6 @@
         </div>
 
     </div>
-</div>
-
-<div class="footer">
-    <div>
-        Смыслы и послания данного сайта созданы командой iMAS, не пытайтесь их повторить. "iMAS GROUP". 2014 - ∞
-    </div>
-</div>
-
 
 <script>
     function addState(sdate, edate) {
@@ -290,7 +248,7 @@
             url: '/main/instagram?start_date=' + sdate + '&end_date=' + edate,
             type: 'GET',
             success: function(data) {
-                $('#page-wrapper').html(data);
+                $('.wrapper-content').html(data);
             }
         });
 
@@ -306,7 +264,7 @@
             success: function(data) {
                 // $('#page-wrapper').html("");
                 history.pushState("/main/index#" + type, "/main/index#" + type, "/main/index#" + type);
-                $('#page-wrapper').html(data);
+                $('.wrapper-content').html(data);
                 // console.log(data);
             }
         });

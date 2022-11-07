@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         "js/jquery-3.1.1.min.js",
+        "js/scripts.js",
         "js/popper.min.js",
         "js/bootstrap.js",
         "js/plugins/metisMenu/jquery.metisMenu.js",

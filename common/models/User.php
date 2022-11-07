@@ -18,7 +18,7 @@ use yii\web\IdentityInterface;
  * @property string $verification_token
  * @property string $email
  * @property string $auth_key
- * @property string $accessToken
+ * @property string $access_token
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
@@ -26,9 +26,6 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-
-    public $accessToken;
-
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
@@ -196,7 +193,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generateAccessToken()
     {
-        $this->accessToken = Yii::$app->security->generateRandomString();
+        $this->access_token = Yii::$app->security->generateRandomString();
     }
 
     /**

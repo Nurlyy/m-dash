@@ -2,172 +2,128 @@
 
 use yii\bootstrap5\Html as Html; ?>
 
-<div class="row border-bottom">
-    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-            <ul class="nav navbar-top-links navbar-left m-t-15">
-                <li>
-                    <div class="filter_datetime p-t-0 f-l">
-                        <!-- v:004-92M -->
-                        <div id="reportrange" class="form-control b-none">
-                            <i class="fa fa-calendar p-r-5"></i>
-                            <span></span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <ul class="nav navbar-top-links navbar-right">
-            <li>
-                <a href="info.html">
-                    <i class="fa fa-info-circle" style="color: #1ab394;"></i>
-                </a>
-            </li>
-            <li>
-                <a href="logout.html">
-                    <i class="fa fa-sign-out"></i> Log out
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-
-
-<div class="wrapper wrapper-content">
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox ">
-                <div class="ibox-content">
-                    <div id="container_dynamic"></div>
-                </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-content">
+                <div id="container_dynamic"></div>
             </div>
         </div>
-
-
     </div>
 
-    <div class="row">
 
-        <div class="col-lg-6">
-            <div class="ibox ">
-                <div class="ibox-title">
-                    <h5><strong>Топ источников</strong></h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#" class="dropdown-item">Config option 1</a>
-                            </li>
-                            <li><a href="#" class="dropdown-item">Config option 2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="tabs-container">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th>Ресурс </th>
-                                    <th>Публикации</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+</div>
 
-                                <?php
-                                    $counter=1;
-                                    foreach($total_posts as $key=>$value){
-                                        if($key == 'web' && $value > 0){
-                                            echo "<tr>
-                                                <td>{$counter}</td>
-                                                <td>".Html::img('@web/img/icons/web.png', ['width' => '20px'])." Web-sites</td>
-                                                <td><i class='fa fa-arrow-up' style='color:#1ab394' aria-hidden='true'></i> {$value}</td>
-                                            </tr>";
-                                        }
-                                        if($key == 'fb' && $value > 0){
-                                            echo "<tr>
-                                                <td>{$counter}</td>
-                                                <td>".Html::img('@web/img/icons/facebook.png', ['width' => '20px'])." Facebook</td>
-                                                <td><i class='fa fa-arrow-up' style='color:#1ab394' aria-hidden='true'></i> {$value}</td>
-                                            </tr>";
-                                        }
-                                        if($key == 'ig' && $value > 0){
-                                            echo "<tr>
-                                                <td>{$counter}</td>
-                                                <td>".Html::img('@web/img/icons/instagram.png', ['width' => '20px'])." Instagram</td>
-                                                <td><i class='fa fa-arrow-up' style='color:#1ab394' aria-hidden='true'></i> {$value}</td>
-                                            </tr>";
-                                        }
-                                        if($key == 'tg' && $value > 0){
-                                            echo "<tr>
-                                                <td>{$counter}</td>
-                                                <td>".Html::img('@web/img/icons/telegram.png', ['width' => '20px'])." Telegram</td>
-                                                <td><i class='fa fa-arrow-up' style='color:#1ab394' aria-hidden='true'></i> {$value}</td>
-                                            </tr>";
-                                        }
+<div class="row">
 
-
-                                        $counter++;
-                                    }
-                                
-                                ?>
-                                
-
-                            </tbody>
-                        </table>
-                    </div>
+    <div class="col-lg-6">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5><strong>Топ источников</strong></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#" class="dropdown-item">Config option 1</a>
+                        </li>
+                        <li><a href="#" class="dropdown-item">Config option 2</a>
+                        </li>
+                    </ul>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
                 </div>
             </div>
-        </div>
+            <div class="ibox-content">
+                <div class="tabs-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Ресурс </th>
+                                <th>Публикации</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-        <div class="col-lg-6">
-            <div class="ibox ">
-                <div class="ibox-title">
-                    <h5><strong>Тональность по источникам</strong></h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#" class="dropdown-item">Config option 1</a>
-                            </li>
-                            <li><a href="#" class="dropdown-item">Config option 2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div id="container_sentiment"></div>
+                            <?php
+                            $counter = 1;
+                            foreach ($total_posts as $key => $value) {
+                                if ($key == 'web' && $value > 0) {
+                                    echo "<tr>
+                                                <td>{$counter}</td>
+                                                <td>" . Html::img('@web/img/icons/web.png', ['width' => '20px']) . " Web-sites</td>
+                                                <td>" . (end($date_posts)['web'] > prev($date_posts)['web'] ? "<i class='fa fa-arrow-up' style='color:#1ab394' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' style='color:crimson' aria-hidden='true'></i>") . " {$value}</td>
+                                            </tr>";
+                                }
+                                if ($key == 'fb' && $value > 0) {
+                                    echo "<tr>
+                                                <td>{$counter}</td>
+                                                <td>" . Html::img('@web/img/icons/facebook.png', ['width' => '20px']) . " Facebook</td>
+                                                <td>" . (end($date_posts)['fb'] > prev($date_posts)['fb'] ? "<i class='fa fa-arrow-up' style='color:#1ab394' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' style='color:crimson' aria-hidden='true'></i>") . " {$value}</td>
+                                            </tr>";
+                                }
+                                if ($key == 'ig' && $value > 0) {
+                                    echo "<tr>
+                                                <td>{$counter}</td>
+                                                <td>" . Html::img('@web/img/icons/instagram.png', ['width' => '20px']) . " Instagram</td>
+                                                <td>" . (end($date_posts)['ig'] > prev($date_posts)['ig'] ? "<i class='fa fa-arrow-up' style='color:#1ab394' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' style='color:crimson' aria-hidden='true'></i>") . " {$value}</td>
+                                            </tr>";
+                                }
+                                if ($key == 'tg' && $value > 0) {
+                                    echo "<tr>
+                                                <td>{$counter}</td>
+                                                <td>" . Html::img('@web/img/icons/telegram.png', ['width' => '20px']) . " Telegram</td>
+                                                <td>" . (end($date_posts)['tg'] > prev($date_posts)['tg'] ? "<i class='fa fa-arrow-up' style='color:#1ab394' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' style='color:crimson' aria-hidden='true'></i>") . " {$value}</td>
+                                            </tr>";
+                                }
+
+
+                                $counter++;
+                            }
+
+                            ?>
+
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="footer">
-    <div>
-        Смыслы и послания данного сайта созданы командой iMAS, не пытайтесь их повторить. "iMAS GROUP". 2014
-        - ∞
+    <div class="col-lg-6">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5><strong>Тональность по источникам</strong></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#" class="dropdown-item">Config option 1</a>
+                        </li>
+                        <li><a href="#" class="dropdown-item">Config option 2</a>
+                        </li>
+                    </ul>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div id="container_sentiment"></div>
+            </div>
+        </div>
     </div>
 </div>
-
 
 <script>
     function addState(sdate, edate) {
@@ -179,7 +135,7 @@ use yii\bootstrap5\Html as Html; ?>
             url: '/main/resources?start_date=' + sdate + '&end_date=' + edate,
             type: 'GET',
             success: function(data) {
-                $('#page-wrapper').html(data);
+                $('.wrapper-content').html(data);
             }
         });
 
@@ -188,14 +144,14 @@ use yii\bootstrap5\Html as Html; ?>
 
     }
 
-    function openurl(type, start_date, end_date){
+    function openurl(type, start_date, end_date) {
         $.ajax({
-            url: '/main/'+type+'?start_date='+start_date.split(".")[2]+"-"+start_date.split(".")[1]+"-"+start_date.split(".")[0]+'&end_date='+end_date.split(".")[2]+"-"+end_date.split(".")[1]+"-"+end_date.split(".")[0],
+            url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0],
             type: 'GET',
             success: function(data) {
                 // $('#page-wrapper').html("");
                 history.pushState("/main/index#" + type, "/main/index#" + type, "/main/index#" + type);
-                $('#page-wrapper').html(data);
+                $('.wrapper-content').html(data);
                 // console.log(data);
             }
         });
@@ -207,7 +163,7 @@ use yii\bootstrap5\Html as Html; ?>
         addState(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     }
 
-    
+
 
     function create_daterangepicker(start, end) {
         // v:004-92M
@@ -335,43 +291,43 @@ use yii\bootstrap5\Html as Html; ?>
             series: [{
                 name: 'Facebook',
                 data: [<?php
-                    foreach($dates as $d){
-                        foreach($date_posts as $date=>$value){
-                            if($d == $date) echo $value['fb'] . ", ";
+                        foreach ($dates as $d) {
+                            foreach ($date_posts as $date => $value) {
+                                if ($d == $date) echo $value['fb'] . ", ";
+                            }
                         }
-                    }
-                    
-                ?>]
+
+                        ?>]
             }, {
                 name: 'Instagram',
                 data: [<?php
-                    foreach($dates as $d){
-                        foreach($date_posts as $date=>$value){
-                            if($d == $date) echo $value['ig'] . ", ";
+                        foreach ($dates as $d) {
+                            foreach ($date_posts as $date => $value) {
+                                if ($d == $date) echo $value['ig'] . ", ";
+                            }
                         }
-                    }
-                    
-                ?>]
+
+                        ?>]
             }, {
                 name: 'Telegram',
                 data: [<?php
-                    foreach($dates as $d){
-                        foreach($date_posts as $date=>$value){
-                            if($d == $date) echo $value['tg'] . ", ";
+                        foreach ($dates as $d) {
+                            foreach ($date_posts as $date => $value) {
+                                if ($d == $date) echo $value['tg'] . ", ";
+                            }
                         }
-                    }
-                    
-                ?>]
+
+                        ?>]
             }, {
                 name: 'Web-sites',
                 data: [<?php
-                    foreach($dates as $d){
-                        foreach($date_posts as $date=>$value){
-                            if($d == $date) echo $value['web'] . ", ";
+                        foreach ($dates as $d) {
+                            foreach ($date_posts as $date => $value) {
+                                if ($d == $date) echo $value['web'] . ", ";
+                            }
                         }
-                    }
-                    
-                ?>]
+
+                        ?>]
             }],
 
             responsive: {
@@ -419,14 +375,14 @@ use yii\bootstrap5\Html as Html; ?>
         },
         series: [{
             name: 'Негатив',
-            data: [<?php echo $resources_sentiments['fb_negative'].", ".$resources_sentiments['ig_negative'].", ".$resources_sentiments['tg_negative'].", ".$resources_sentiments['web_negative'] ?>],
+            data: [<?php echo (isset($resources_sentiments['fb_negative']) ? $resources_sentiments['fb_negative'] : 0) . ", " . (isset($resources_sentiments['ig_negative']) ? $resources_sentiments['ig_negative'] : 0) . ", " . (isset($resources_sentiments['tg_negative']) ? $resources_sentiments['tg_negative'] : 0) . ", " . (isset($resources_sentiments['web_negative']) ? $resources_sentiments['web_negative'] : 0) ?>],
             color: 'crimson'
         }, {
             name: 'Нейтрал',
-            data: [<?php echo $resources_sentiments['fb_neutral'].", ".$resources_sentiments['ig_neutral'].", ".$resources_sentiments['tg_neutral'].", ".$resources_sentiments['web_neutral'] ?>],
+            data: [<?php echo (isset($resources_sentiments['fb_neutral']) ? $resources_sentiments['fb_neutral'] : 0) . ", " . (isset($resources_sentiments['ig_neutral']) ? $resources_sentiments['ig_neutral'] : 0) . ", " . (isset($resources_sentiments['tg_neutral']) ? $resources_sentiments['tg_neutral'] : 0) . ", " . (isset($resources_sentiments['web_neutral']) ? $resources_sentiments['web_neutral'] : 0) ?>],
         }, {
             name: 'Позитив',
-            data: [<?php echo $resources_sentiments['fb_positive'].", ".$resources_sentiments['ig_positive'].", ".$resources_sentiments['tg_positive'].", ".$resources_sentiments['web_positive'] ?>],
+            data: [<?php echo (isset($resources_sentiments['fb_positive']) ? $resources_sentiments['fb_positive'] : 0) . ", " . (isset($resources_sentiments['ig_positive']) ? $resources_sentiments['ig_positive'] : 0) . ", " . (isset($resources_sentiments['tg_positive']) ? $resources_sentiments['tg_positive'] : 0) . ", " . (isset($resources_sentiments['web_positive']) ? $resources_sentiments['web_positive'] : 0) ?>],
             color: '#1ab394'
         }]
     });
