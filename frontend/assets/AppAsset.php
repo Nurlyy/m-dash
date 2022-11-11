@@ -46,8 +46,13 @@ class AppAsset extends AssetBundle
         "js/plugins/chartJs/Chart.min.js",
         "https://code.highcharts.com/maps/highmaps.js",
         "https://code.highcharts.com/mapdata/countries/kz/kz-all.js",
+        "https://code.highcharts.com/highcharts.js",
+        "https://code.highcharts.com/highcharts-3d.js",
+        "https://code.highcharts.com/modules/exporting.js",
+        "https://code.highcharts.com/modules/export-data.js",
+        "https://code.highcharts.com/modules/accessibility.js",
     ];
-    
+
     public $depends = [
         'yii\web\YiiAsset',
         // 'yii\bootstrap5\BootstrapAsset',

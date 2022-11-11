@@ -9,33 +9,27 @@ use yii\helpers\Html;
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <!-- <img alt="img" src="@web/img/logo_imas.png" height="40px"> -->
-                    <?php echo HTML::img('@web/img/logo_imas.png', ['height' => '40px']); ?>
+                    <img alt="img" src="/img/logo_imas.png" height="40px">
                 </div>
             </li>
             <li>
-                <a href="#dashboard" onclick="openurl('dashboard', start_date, end_date)"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span> </a>
+                <a href="#dashboard" onclick='openurl("dashboard", start_date, end_date)'><i class="fa fa-th-large"></i> <span class="nav-label">Главная</span></a>
             </li>
             <li>
-                <a href="#facebook" onclick="openurl('facebook', start_date, end_date)"><i class="fa fa-facebook-square"></i> <span class="nav-label">Facebook</span> </a>
+                <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Кандидаты</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="#">Кандидат</a></li>
+                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
+                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
+                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
+                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
+                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
+                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
+                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
+                </ul>
             </li>
             <li>
-                <a href="#instagram" onclick="openurl('instagram', start_date, end_date)"><i class="fa fa-instagram"></i> <span class="nav-label">Instagram</span> </a>
-            </li>
-            <li>
-                <a href="#telegram" onclick="openurl('telegram', start_date, end_date)"><i class="fa fa-telegram"></i> <span class="nav-label">Telegram</span> </a>
-            </li>
-            <li>
-                <a href="#sites" onclick="openurl('sites', start_date, end_date)"><i class="fa fa-newspaper-o"></i> <span class="nav-label">WEB-sites</span> </a>
-            </li>
-            <li>
-                <a href="#resources" onclick="openurl('resources', start_date, end_date)"><i class="fa fa-compass"></i> <span class="nav-label">Источники</span> </a>
-            </li>
-            <li>
-                <a href="#regions" onclick="openurl('regions', start_date, end_date)"><i class="fa fa-globe"></i> <span class="nav-label">Ресурсы</span> </a>
-            </li>
-            <li>
-                <a href="<?= Url::to('/main/index') ?>"><i class="fa fa-sign-out"></i> <span class="nav-label">Logout</span> </a>
+                <a href="#" onclick='openurl("compare", start_date, end_date)'><i class="fa fa-clone"></i> <span class="nav-label">Сравнить</span></a>
             </li>
 
         </ul>
@@ -108,13 +102,37 @@ use yii\helpers\Html;
 
 <script>
     window.onload = function() {
-        $.ajax({
-            url: '/main/dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>',
-            type: 'GET',
-            success: function(data) {
-                history.pushState("/main/index#dashboard", "/main/index#dashboard", "/main/index#dashboard")
-                $('.wrapper-content').html(data);
+        let urlString = window.location.href.toString();
+        if (urlString.includes('#')) {
+            var words = urlString.split('#');
+            var action = words[1].split('?');
+            if (['dashboard', 'facebook', 'instagram', 'telegram', 'regions', 'resources', 'sites', 'candidate', 'compare'].includes(action[0])) {
+                if (action[1]) {
+                    var url = '/main/' + words[1];
+                } else {
+                    var url = '/main/' + action[0] + '?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>';
+                }
+                // console.log(action[1]);
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(data) {
+                        history.pushState("/main/index#" + words[1], "/main/index#" + words[1], "/main/index#" + words[1])
+                        $('.wrapper-content').html(data);
+                    }
+                });
             }
-        });
+
+        } else {
+            $.ajax({
+                url: '/main/dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>',
+                type: 'GET',
+                success: function(data) {
+                    history.pushState("/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>", "/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>", "/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>")
+                    $('.wrapper-content').html(data);
+                }
+            });
+        }
+
     }
 </script>

@@ -123,6 +123,18 @@ use yii\bootstrap5\Html as Html; ?>
             </div>
         </div>
     </div>
+
+    <div class="col-lg-6">
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+            <p class="highcharts-description">
+                This demo shows how plot bands can be used on an axis to
+                highlight regions of a chart. In this example, the plot
+                bands are used to separate the wind speeds on the Y-axis
+                into categories.
+            </p>
+        </figure>
+    </div>
 </div>
 
 <script>
@@ -385,5 +397,94 @@ use yii\bootstrap5\Html as Html; ?>
             data: [<?php echo (isset($resources_sentiments['fb_positive']) ? $resources_sentiments['fb_positive'] : 0) . ", " . (isset($resources_sentiments['ig_positive']) ? $resources_sentiments['ig_positive'] : 0) . ", " . (isset($resources_sentiments['tg_positive']) ? $resources_sentiments['tg_positive'] : 0) . ", " . (isset($resources_sentiments['web_positive']) ? $resources_sentiments['web_positive'] : 0) ?>],
             color: '#1ab394'
         }]
+    });
+
+    // Data retrieved from https://www.vikjavev.no/ver/#2022-06-13,2022-06-14
+
+    Highcharts.chart('container', {
+        chart: {
+            type: 'spline',
+            scrollablePlotArea: {
+                minWidth: 600,
+                scrollPositionX: 1
+            }
+        },
+        title: {
+            text: 'Публикации источников',
+            align: 'center'
+        },
+        xAxis: {
+            accessibility: {
+                rangeDescription: 'Показатель'
+            },
+            categories: ['<?= implode("', '", $dates) ?>']
+        },
+        yAxis: {
+            title: {
+                text: 'Кол-во публикации'
+            },
+            minorGridLineWidth: 0,
+            gridLineWidth: 0,
+            alternateGridColor: null,
+        },
+        plotOptions: {
+        spline: {
+            lineWidth: 4,
+            states: {
+                hover: {
+                    lineWidth: 5
+                }
+            },
+            marker: {
+                enabled: false
+            },
+        }
+    },
+        series: [{
+            name: 'Facebook',
+            data: [<?php
+                    foreach ($dates as $d) {
+                        foreach ($date_posts as $date => $value) {
+                            if ($d == $date) echo $value['fb'] . ", ";
+                        }
+                    }
+
+                    ?>]
+        }, {
+            name: 'Instagram',
+            data: [<?php
+                    foreach ($dates as $d) {
+                        foreach ($date_posts as $date => $value) {
+                            if ($d == $date) echo $value['ig'] . ", ";
+                        }
+                    }
+
+                    ?>]
+        }, {
+            name: 'Telegram',
+            data: [<?php
+                    foreach ($dates as $d) {
+                        foreach ($date_posts as $date => $value) {
+                            if ($d == $date) echo $value['tg'] . ", ";
+                        }
+                    }
+
+                    ?>]
+        }, {
+            name: 'Web-sites',
+            data: [<?php
+                    foreach ($dates as $d) {
+                        foreach ($date_posts as $date => $value) {
+                            if ($d == $date) echo $value['web'] . ", ";
+                        }
+                    }
+
+                    ?>]
+        }],
+        navigation: {
+            menuItemStyle: {
+                fontSize: '10px'
+            }
+        }
     });
 </script>

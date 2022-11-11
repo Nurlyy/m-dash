@@ -18,10 +18,10 @@ class MainController extends Controller {
     {
         $behaviors = parent::behaviors();
 
-        $behaviors['authenticator']['only'] = ['create','update','delete', 'read', 'search'];
-        $behaviors['authenticator']['authMethods'] = [
-            HttpBearerAuth::class
-        ];
+        // $behaviors['authenticator']['only'] = ['create','update','delete', 'read', 'search'];
+        // $behaviors['authenticator']['authMethods'] = [
+        //     HttpBearerAuth::class
+        // ];
 
         return $behaviors;
     }
@@ -32,15 +32,12 @@ class MainController extends Controller {
         $type = isset($_GET['type']) ? $_GET['type'] : null;
         $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
+        $compare_type = isset($_GET['compare_type'])?$_GET['compare_type']:null;
+        $candidate_id = isset($_GET['candidate_id'])?$_GET['candidate_id']:null;
         $result = [];
-        $all_data = $projectModel->get_all_data(Yii::$app->user->id, $start_date, $end_date, $type);
-        $organizations_data = [];
-        $organizations_ids = $projectModel->get_organizations_for_user(Yii::$app->user->id);
-        foreach($organizations_ids as $id){
-            // return $id['organization_id'];
-            array_push($organizations_data, $projectModel->get_organization_data($id['organization_id']));
-        }
-        $result = array_merge(['all_data' => $all_data], ['organizations_data' => $organizations_data]);
+        $all_data = $projectModel->get_all_data($candidate_id, $start_date, $end_date, $type, $compare_type);
+        $candidates_data = $projectModel->get_candidates_data();
+        $result = array_merge(['all_data' => $all_data], ['candidates_data' => $candidates_data]);
         return $result;
     }
 

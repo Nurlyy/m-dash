@@ -185,7 +185,7 @@
                     url: '/main/telegram?start_date=' + sdate + '&end_date=' + edate,
                     type: 'GET',
                     success: function(data) {
-                        $('#page-wrapper').html(data);
+                        $('.wrapper-content').html(data);
                     }
                 });
 
