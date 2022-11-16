@@ -15,6 +15,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'baseUrl' => '',
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -41,9 +42,16 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'scriptUrl'=>'/index.php',
+            'baseUrl' => '/',
+            //'suffix' => '.html',
             'rules' => [
+                '' => 'main/index',
+                
+                
+                '<action>'=>'main/<action>',
             ],
-        ],
+        ], 
         
     ],
     'params' => $params,

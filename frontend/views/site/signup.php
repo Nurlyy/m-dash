@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div>
 
             <h4 class="logo-name">iMAS</h4>
-
+            <p class='logo-subtitle'>Rating</p>
         </div>
         <?php $form = ActiveForm::begin(['id' => 'form-signup', 'options'=>['class' => 'm-t']]); ?>
         <div class="form-group">

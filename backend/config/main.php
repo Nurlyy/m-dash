@@ -15,6 +15,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'baseUrl' => '/backend',
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -41,6 +42,9 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => 'main/search',                                
+                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
+                'site/<action:\w+>/' => 'main/search'
             ],
         ],
         
