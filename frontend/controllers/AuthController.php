@@ -19,10 +19,10 @@ class AuthController extends Controller{
                     throw new Exception("Initialization Failed");
                 }
 
-                // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                //     'HTTP/1.1',
-                //     'Content-type: application/jsonx',
-                //     'Authorization: Bearer ' . Yii::$app->user->identity->access_token));
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'HTTP/1.1',
+                    'Content-type: application/jsonx',
+                    'Authorization: Bearer ' . Yii::$app->user->identity->access_token));
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
                 curl_setopt($ch, CURLOPT_USERAGENT, $uagent);

@@ -13,19 +13,22 @@ use yii\helpers\Html;
                 </div>
             </li>
             <li>
-                <a href="#dashboard" onclick='openurl("dashboard", start_date, end_date)'><i class="fa fa-th-large"></i> <span class="nav-label">Главная</span></a>
+                <a href="#dashboard" onclick='openurl("dashboard", start_date, end_date, null)'><i class="fa fa-th-large"></i> <span class="nav-label">Главная</span></a>
             </li>
             <li>
                 <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Кандидаты</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="#">Кандидат</a></li>
+                    <?php foreach($candidateInformation as $candidate){ ?>
+                        <li><a onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)' href='#candidate<?= $candidate['id'] ?>'><?= $candidate['name'] ?></a></li>
+                    <?php } ?>
+                    <!-- <li><a href="#">Кандидат</a></li> -->
+                    <!-- <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
                     <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
                     <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
                     <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
                     <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
                     <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
-                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
-                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
+                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li> -->
                 </ul>
             </li>
             <li>
@@ -62,7 +65,7 @@ use yii\helpers\Html;
                     </a>
                 </li>
                 <li>
-                    <a href="logout.html" data-toggle="modal" data-target="#myModal2">
+                    <a onclick="logout()" data-toggle="modal" data-target="#myModal2">
                         <i class="fa fa-sign-out"></i> Log out
                     </a>
                 </li>
@@ -80,7 +83,7 @@ use yii\helpers\Html;
                 <div class="modal-footer">
                     <!-- <button type="button" onclick="logout()" class="btn btn-white" data-dismiss="modal">Да</button> -->
                     <form action="/site/logout" method="POST"><input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->getCsrfToken() ?>" /><input type="submit" value="Да" class="btn btn-white" /></form>
-                    <button type="button" class="btn btn-primary">Нет</button>
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal">Нет</button>
                 </div>
             </div>
         </div>
@@ -106,7 +109,7 @@ use yii\helpers\Html;
         if (urlString.includes('#')) {
             var words = urlString.split('#');
             var action = words[1].split('?');
-            if (['dashboard', 'facebook', 'instagram', 'telegram', 'regions', 'resources', 'sites', 'candidate', 'compare'].includes(action[0])) {
+            if (['dashboard', 'candidate', 'compare', 'comparecontent'].includes(action[0])) {
                 if (action[1]) {
                     var url = '/main/' + words[1];
                 } else {
@@ -133,6 +136,15 @@ use yii\helpers\Html;
                 }
             });
         }
+    }
 
+    function logout(){
+        $.ajax({
+            url: "/site/logout",
+            type: "POST",
+            success: function(data) {
+                
+            }
+        });
     }
 </script>

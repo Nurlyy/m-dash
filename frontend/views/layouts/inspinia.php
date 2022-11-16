@@ -3,7 +3,7 @@
 /** @var \yii\web\View $this */
 /** @var string $content */
 
-use common\widgets\Alert;
+use yii\bootstrap5\Alert;
 use frontend\assets\AppAsset;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
@@ -30,6 +30,16 @@ AppAsset::register($this);
 </head>
 
 <body>
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            <?php if (Yii::$app->session->getFlash('success') != null) { ?>
+                <div class="alert alert-success alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <?php echo Yii::$app->session->getFlash('success') ?>
+                </div>
+            <?php } ?>
+        </div>
+    </main>
     <?php $this->beginBody() ?>
     <div id="wrapper">
 
