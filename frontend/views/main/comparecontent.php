@@ -393,7 +393,7 @@
             },
             plotOptions: {
                 pie: {
-                    innerSize: 50,
+                    innerSize: 30,
                     depth: 45
                 }
             },

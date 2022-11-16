@@ -3,15 +3,17 @@
     <div class="col-12 m-b-md ">
         <div class="panel panel-default widget-head-color-box navy-bg p-lg text-left">
             <div class="panel-body">
-                <div class="">
-                    <img src="<?= $candidateInformation['photo'] ?>" class="float-left rounded-circle circle-border" alt="profile">
-                    <div class="row">
+                <div class="row justify-content-center">
+                    <div class="row col-lg-2 col-sm-12 justify-content-center">
+                        <img style="width:10.5em; height:10.5em;" src="<?= $candidateInformation['photo'] ?>" class="float-left rounded-circle circle-border m-b-md" alt="profile">
+                    </div>
+                    <div class="row col-lg-10 col-sm-12">
                         <div class="col-12 m-b-md m-l-md">
                             <h2 class="font-bold no-margins">
                                 <?= $candidateInformation['name'] ?>
                             </h2>
                         </div>
-                        <div class="row m-l-sm col-10">
+                        <div class="row m-l-sm col-12">
                             <div class='col-lg-6 col-sm-12'>
                                 <p>Представляет: "<?= $candidateInformation['partia'] ?>"</p>
                                 <p>Дата рождения: <?= $candidateInformation['birthday'] ?></p>
@@ -691,7 +693,7 @@
             },
             plotOptions: {
                 pie: {
-                    innerSize: 50,
+                    innerSize: 30,
                     depth: 45
                 }
             },
