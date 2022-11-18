@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'>Рейтинг обсуждении</h2>
+                <h2 class='text-center'><strong>Рейтинг обсуждении</strong></h2>
             </div>
             <div class="panel-body">
                 <div class="col-lg-12">
@@ -16,12 +16,12 @@
                         foreach ($rating as $key => $value) { ?>
                             <div class="ibox-content">
                                 <div class="row">
-                                    <a href="#" class="float-left">
+                                    <a onclick='openurl("candidate", start_date, end_date, <?= $key ?>)' class="float-left">
                                         <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?= $candidateInformation[$key]['photo'] ?>">
                                     </a>
                                     <div class="media-body ">
                                         <h4 class="float-right text-navy"><?php echo round(($value / $total) * 100, 2) ?> %</h4>
-                                        <h4><strong><?= $candidateInformation[$key]['name'] ?></strong></h4>
+                                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $key ?>)'><strong><?= $candidateInformation[$key]['name'] ?></strong></a>
                                         <div class="progress progress-mini">
                                             <div style="width: <?php echo round(($value / $total) * 100, 2) ?>%;" class="progress-bar"></div>
                                         </div>
@@ -41,7 +41,7 @@
     <div class="col-lg-8 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'>Тональность постов про кандидатов</h2>
+                <h2 class='text-center'><strong>Тональность постов про кандидатов</strong></h2>
             </div>
             <div class="panel-body">
                 <?php
@@ -51,11 +51,11 @@
                 }
                 foreach ($candidateInformation as $candidate) { ?>
                     <div class="ibox-content" style='position:relative !important;'>
-                        <h4><strong><?= $candidate['name'] ?></strong></h4>
+                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)'><strong><?= $candidate['name'] ?></strong></a>
                         <div style='position:inherit; width:100%; margin-bottom:20px;'>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:-3px; width:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:-3px; margin-left:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:-3px; margin-left:<?= round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; width:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
                         </div>
                         <div class="progress" style='height:8px !important;'>
                             <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%;display:block;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
@@ -142,12 +142,14 @@
 
     function openurl(type, start_date, end_date, candidate_id = null) {
         $.ajax({
-            url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null)?"&candidate_id="+candidate_id:""),
+            url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""),
             type: 'GET',
             success: function(data) {
                 // $('#page-wrapper').html("");
-                history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null)?"&candidate_id="+candidate_id:""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null)?"&candidate_id="+candidate_id:""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null)?"&candidate_id="+candidate_id:""));
+                history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""));
                 $('.wrapper-content').html(data);
+                window.scrollTo(0,0);
+
                 // console.log(data);
             }
         });
@@ -247,7 +249,7 @@
         //             }));
 
         Highcharts.chart('total_chart', {
-            colors: ["#6794a7", "#014d64", "#76c0c1", "#01a2d9", "#7ad2f6", "#00887d", "#adadad", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
+            colors: ["#9c98ce", "#51223a", "#7c2a1b", "#8cdd75", "#87510e", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
             chart: {
                 type: 'spline',
                 scrollablePlotArea: {

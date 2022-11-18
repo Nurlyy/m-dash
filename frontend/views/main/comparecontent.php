@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'>Рейтинг обсуждении</h2>
+                <h2 class='text-center'><strong>Рейтинг обсуждении</strong></h2>
             </div>
             <div class="panel-body">
                 <div class="col-lg-12">
@@ -12,16 +12,15 @@
                         foreach ($rating as $i) {
                             $total += $i;
                         }
-
                         foreach ($rating as $key => $value) { ?>
                             <div class="ibox-content">
                                 <div class="row">
-                                    <a href="#" class="float-left">
+                                    <a onclick='openurl("candidate", start_date, end_date, <?= $key ?>)' class="float-left">
                                         <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?= $candidateInformation[$key]['photo'] ?>">
                                     </a>
                                     <div class="media-body ">
                                         <h4 class="float-right text-navy"><?php echo round(($value / $total) * 100, 2) ?> %</h4>
-                                        <h4><strong><?= $candidateInformation[$key]['name'] ?></strong></h4>
+                                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $key ?>)'><strong><?= $candidateInformation[$key]['name'] ?></strong></a>
                                         <div class="progress progress-mini">
                                             <div style="width: <?php echo round(($value / $total) * 100, 2) ?>%;" class="progress-bar"></div>
                                         </div>
@@ -43,7 +42,7 @@
     <div class="col-lg-6 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'>Тональность постов про кандидатов</h2>
+                <h2 class='text-center'><strong>Тональность постов про кандидатов</strong></h2>
             </div>
             <div class="panel-body">
                 <?php
@@ -53,11 +52,11 @@
                 }
                 foreach ($candidateInformation as $candidate) { ?>
                     <div class="ibox-content" style='position:relative !important;'>
-                        <h4><strong><?= $candidate['name'] ?></strong></h4>
+                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)'><strong><?= $candidate['name'] ?></strong></a>
                         <div style='position:inherit; width:100%; margin-bottom:20px;'>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:-3px; width:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:-3px; margin-left:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:-3px; margin-left:<?= round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; width:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
                         </div>
                         <div class="progress" style='height:8px !important;'>
                             <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%;display:block;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
@@ -250,30 +249,50 @@
 <script>
     function createChart(container, name, subtitle, data) {
         Highcharts.chart(container, {
+            colors: ["#9c98ce", "#51223a", "#7c2a1b", "#8cdd75", "#87510e", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
             chart: {
                 type: 'spline',
                 scrollablePlotArea: {
                     minWidth: 600,
                     scrollPositionX: 1
-                }
+                },
+                plotBackgroundColor: '#d5e4eb',
+                fontFamily: "Droid Sans",
             },
             title: {
                 text: name,
                 align: 'center'
             },
             xAxis: {
-                accessibility: {
-                    rangeDescription: 'Показатель'
+                labels: {
+                    overflow: 'justify'
                 },
-                categories: [<?= "'" . implode("', '", $dates) . "'" ?>]
+                categories: [
+                    <?= "'" . implode("', '", $dates) . "'" ?>
+                ],
             },
             yAxis: {
+                gridLineColor: "#FFFFFF",
+                lineColor: "#FFFFFF",
+                minorGridLineColor: "#FFFFFF",
+                tickColor: "#D7D7D8",
+                tickWidth: 1,
                 title: {
-                    text: subtitle
+                    text: subtitle,
+                    style: {
+                        color: "#A0A0A3"
+                    }
                 },
                 minorGridLineWidth: 0,
-                gridLineWidth: 0,
                 alternateGridColor: null,
+            },
+            tooltip: {
+                valueSuffix: ' постов',
+                backgroundColor: "#FFFFFF",
+                borderColor: "#76c0c1",
+                style: {
+                    color: "#000000"
+                }
             },
             plotOptions: {
                 spline: {
@@ -286,14 +305,48 @@
                     marker: {
                         enabled: false
                     },
+
                 }
             },
+
             series: data,
-            navigation: {
-                menuItemStyle: {
-                    fontSize: '10px'
+            "legend": {
+                "itemStyle": {
+                    "color": "#3C3C3C"
+                },
+                "itemHiddenStyle": {
+                    "color": "#606063"
                 }
-            }
+            },
+            credits: {
+                style: {
+                    color: "#666"
+                }
+            },
+            labels: {
+                style: {
+                    color: "#D7D7D8"
+                }
+            },
+            drilldown: {
+                activeAxisLabelStyle: {
+                    color: "#F0F0F3"
+                },
+                activeDataLabelStyle: {
+                    color: "#F0F0F3"
+                }
+            },
+            navigation: {
+                buttonOptions: {
+                    symbolStroke: "#505053",
+                }
+            },
+            legendBackgroundColor: "rgba(0, 0, 0, 0.5)",
+            background2: "#505053",
+            dataLabelsColor: "#B0B0B3",
+            textColor: "#C0C0C0",
+            contrastTextColor: "#F0F0F3",
+            maskColor: "rgba(255,255,255,0.3)"
         });
 
     }
@@ -439,9 +492,9 @@
                     }
                 }
                 foreach ($dates as $date) {
-                    if(isset($temp[$date])){
-                        echo $temp[$date]. ", ";
-                    }else{
+                    if (isset($temp[$date])) {
+                        echo $temp[$date] . ", ";
+                    } else {
                         echo "0, ";
                     }
                 }
@@ -472,7 +525,7 @@
     <?php } ?>
 
 
-    <?php if($subsChart == 'true'){ ?>
+    <?php if ($subsChart == 'true') { ?>
         createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
@@ -485,9 +538,9 @@
                     }
                 }
                 foreach ($dates as $date) {
-                    if(isset($temp[$date])){
-                        echo $temp[$date]. ", ";
-                    }else{
+                    if (isset($temp[$date])) {
+                        echo $temp[$date] . ", ";
+                    } else {
                         echo "0, ";
                     }
                 }
@@ -496,7 +549,7 @@
         ]);
     <?php } ?>
 
-    <?php if($likesChart == 'true'){ ?>
+    <?php if ($likesChart == 'true') { ?>
         createChart('likes_chart', 'График лайков', 'Кол-во лайков', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
@@ -509,9 +562,9 @@
                     }
                 }
                 foreach ($dates as $date) {
-                    if(isset($temp[$date])){
-                        echo $temp[$date]. ", ";
-                    }else{
+                    if (isset($temp[$date])) {
+                        echo $temp[$date] . ", ";
+                    } else {
                         echo "0, ";
                     }
                 }
@@ -520,7 +573,7 @@
         ]);
     <?php } ?>
 
-    <?php if($commentsChart == 'true'){ ?>
+    <?php if ($commentsChart == 'true') { ?>
         createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
@@ -533,9 +586,9 @@
                     }
                 }
                 foreach ($dates as $date) {
-                    if(isset($temp[$date])){
-                        echo $temp[$date]. ", ";
-                    }else{
+                    if (isset($temp[$date])) {
+                        echo $temp[$date] . ", ";
+                    } else {
                         echo "0, ";
                     }
                 }
@@ -544,7 +597,7 @@
         ]);
     <?php } ?>
 
-    <?php if($repostsChart == 'true'){ ?>
+    <?php if ($repostsChart == 'true') { ?>
         createChart('reposts_chart', 'График репостов', 'Кол-во репостов', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
@@ -557,9 +610,9 @@
                     }
                 }
                 foreach ($dates as $date) {
-                    if(isset($temp[$date])){
-                        echo $temp[$date]. ", ";
-                    }else{
+                    if (isset($temp[$date])) {
+                        echo $temp[$date] . ", ";
+                    } else {
                         echo "0, ";
                     }
                 }

@@ -19,6 +19,7 @@ class AppAsset extends AssetBundle
         "css/plugins/daterangepicker/daterangepicker-bs3.css",
         "css/animate.css",
         "css/style.css",
+        "css/plugins/ladda/ladda-themeless.min.css",
     ];
     public $js = [
         "js/jquery-3.1.1.min.js",
@@ -38,6 +39,9 @@ class AppAsset extends AssetBundle
         "js/plugins/daterangepicker/daterangepicker.js",
         "js/plugins/peity/jquery.peity.min.js",
         "js/demo/peity-demo.js",
+        "js/plugins/ladda/spin.min.js",
+        "js/plugins/ladda/ladda.min.js",
+        "js/plugins/ladda/ladda.jquery.min.js",
         "js/inspinia.js",
         "js/plugins/pace/pace.min.js",
         "js/plugins/jquery-ui/jquery-ui.min.js",
@@ -52,6 +56,9 @@ class AppAsset extends AssetBundle
         "https://code.highcharts.com/modules/export-data.js",
         "https://code.highcharts.com/modules/accessibility.js",
         "https://code.highcharts.com/highcharts-more.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.4/html2canvas.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js",
+
     ];
 
     public $depends = [

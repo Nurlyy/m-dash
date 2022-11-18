@@ -3,6 +3,8 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 
+$this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
+
 ?>
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
@@ -18,17 +20,9 @@ use yii\helpers\Html;
             <li>
                 <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Кандидаты</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <?php foreach($candidateInformation as $candidate){ ?>
+                    <?php foreach ($candidateInformation as $candidate) { ?>
                         <li><a onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)' href='#candidate<?= $candidate['id'] ?>'><?= $candidate['name'] ?></a></li>
                     <?php } ?>
-                    <!-- <li><a href="#">Кандидат</a></li> -->
-                    <!-- <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
-                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
-                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
-                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
-                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
-                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li>
-                    <li><a onclick='openurl("candidate", start_date, end_date)' href='#candidate'>Кандидат</a></li> -->
                 </ul>
             </li>
             <li>
@@ -40,9 +34,9 @@ use yii\helpers\Html;
     </div>
 </nav>
 
-<div id="page-wrapper" class="gray-bg">
-    <div class="row border-bottom">
-        <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+<div id="page-wrapper" style="background-color: #ededed">
+    <div class="row border-bottom" style="position:fixed; width:inherit; z-index:99; box-shadow: 0px 0.5px 10px #878787;">
+        <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: -1px">
             <div class="navbar-header">
                 <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                 <ul class="nav navbar-top-links navbar-left m-t-15">
@@ -58,17 +52,22 @@ use yii\helpers\Html;
                 </ul>
             </div>
 
+
             <ul class="nav navbar-top-links navbar-right">
                 <li>
+                    <button onclick="createPdf()" class="ladda-button btn btn-primary" data-style="zoom-in" style="margin-left: 20px; margin-right: 10px;"><i class="fa fa-paste"></i> Экспорт PDF</button>
+                </li>
+                <!-- <li>
                     <a href="info.html">
                         <i class="fa fa-info-circle" style="color: #1ab394;"></i>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a onclick="logout()" data-toggle="modal" data-target="#myModal2">
                         <i class="fa fa-sign-out"></i> Log out
                     </a>
                 </li>
+
             </ul>
         </nav>
     </div>
@@ -83,49 +82,77 @@ use yii\helpers\Html;
                 <div class="modal-footer">
                     <!-- <button type="button" onclick="logout()" class="btn btn-white" data-dismiss="modal">Да</button> -->
                     <form action="/site/logout" method="POST"><input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->getCsrfToken() ?>" /><input type="submit" value="Да" class="btn btn-white" /></form>
-                    <button type="button" class="btn btn-primary"  data-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="wrapper wrapper-content">
+    <div id="main_wrapper_container" class="wrapper wrapper-content">
 
     </div>
 
-    <div class="footer">
-        <div>
-            Смыслы и послания данного сайта созданы командой iMAS, не пытайтесь их повторить. "iMAS GROUP". 2014
+    <div class="footer"  style="background-color: #ededed">
+        <div class="text-center"><strong>
+            "iMAS GROUP" 2014
             - ∞
-        </div>
+                    </strong></div>
     </div>
 </div>
 
 
 
 <script>
+    function createPdf() {
+        var element = document.getElementById("main_wrapper_container");
+        var opt = {
+                jsPDF: {
+                    format: 'a3',
+                    orientation: 'landscape'
+                },
+                html2canvas: {
+                    scale: 3,
+                    letterRendering: true,
+                    useCORS: true,
+                    logging: true
+                },
+                image: {
+                    type: 'jpeg',
+                    quality: 0.95
+                },
+                filename: 'rating_iMAS.pdf'
+            };
+        html2pdf().set(opt).from(element).save();
+
+    }
+
     window.onload = function() {
         let urlString = window.location.href.toString();
-        if (urlString.includes('#')) {
+
+        if (urlString.includes('#') && urlString.split('#')[1]) {
             var words = urlString.split('#');
             var action = words[1].split('?');
             if (['dashboard', 'candidate', 'compare', 'comparecontent'].includes(action[0])) {
                 if (action[1]) {
-                    var url = '/main/' + words[1];
+                    if (action[1].includes("first=")) {
+                        var url = "/main/" + action[0] + "?" + action[1].split("&first=")[0];
+                    } else {
+                        var url = '/main/' + words[1];
+                    }
                 } else {
                     var url = '/main/' + action[0] + '?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>';
                 }
-                // console.log(action[1]);
                 $.ajax({
                     url: url,
                     type: 'GET',
                     success: function(data) {
                         history.pushState("/main/index#" + words[1], "/main/index#" + words[1], "/main/index#" + words[1])
                         $('.wrapper-content').html(data);
+                        startCompare();
                     }
                 });
-            }
 
+            }
         } else {
             $.ajax({
                 url: '/main/dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>',
@@ -138,12 +165,12 @@ use yii\helpers\Html;
         }
     }
 
-    function logout(){
+    function logout() {
         $.ajax({
             url: "/site/logout",
             type: "POST",
             success: function(data) {
-                
+
             }
         });
     }

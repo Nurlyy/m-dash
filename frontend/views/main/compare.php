@@ -8,7 +8,7 @@
                 <div class="col-lg-12 row no-margins" style='justify-content:center;'>
                     <div class="col-lg-4 col-md-12 col-sm-12" style='display:flex; flex-direction:column; gap: 10px; justify-content:center;'>
                         <div class="btn-group">
-                            <select class="btn btn-white inline-block" style='width:100%' id="firstSelect">
+                            <select class="btn inline-block" style='width:100%;background: #ededed' id="firstSelect">
                                 <option value="select">Выбрать кандидата</option>
                                 <?php foreach ($candidateInformation as $candidate) { ?>
                                     <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
@@ -16,7 +16,7 @@
                             </select>
                         </div>
                         <div class="btn-group">
-                            <select class="btn btn-white inline-block" style='width:100%' id="secondSelect">
+                            <select class="btn inline-block" style='width:100%;background: #ededed' id="secondSelect">
                                 <option value="select">Выбрать кандидата</option>
                                 <?php foreach ($candidateInformation as $candidate) { ?>
                                     <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
@@ -76,14 +76,14 @@
                     </div>
                 </div>
                 <div class="col-12 text-center m-t-md">
-                    <button class='btn btn-primary' onclick="compare(start_date, end_date)" style='width:200px;'>Сравнить</button>
+                    <button class='btn btn-primary' onclick="compare(start_date, end_date)" style='width:200px; border-radius: 15px;'>Сравнить</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="col-12">
-        <div class="row"  id="comparecontent">
+        <div class="row" id="comparecontent">
 
         </div>
     </div>
@@ -91,9 +91,36 @@
 </div>
 
 <script>
+    function startCompare() {
+        urlStringCompare = window.location.href.toString();
+        if (urlStringCompare.includes("&first=")) {
+            compareInformation = urlStringCompare.split("?");
+            compareInformation = compareInformation[1].split("&")
+            sdate = '';
+            edate = '';
+            for (var i = 0; i < compareInformation.length; i++) {
+                keyvalue = compareInformation[i].split("=");
+                (keyvalue[0] == "first") ? document.getElementById("firstSelect").value = keyvalue[1]: "";
+                (keyvalue[0] == "second") ? document.getElementById("secondSelect").value = keyvalue[1]: "";
+                (keyvalue[0] == "discussionChart") ? document.getElementById("discussionChart").checked = keyvalue[1] === "true": "";
+                (keyvalue[0] == "sentimentChart") ? document.getElementById("sentimentChart").checked = keyvalue[1] === "true": "";
+                (keyvalue[0] == "subsChart") ? document.getElementById("subsChart").checked = keyvalue[1] === "true": "";
+                (keyvalue[0] == "likesChart") ? document.getElementById("likesChart").checked = keyvalue[1] === "true": "";
+                (keyvalue[0] == "commentsChart") ? document.getElementById("commentsChart").checked = keyvalue[1] === "true": "";
+                (keyvalue[0] == "repostsChart") ? document.getElementById("repostsChart").checked = keyvalue[1] === "true": "";
+                (keyvalue[0] == "rating") ? document.getElementById("rating").checked = keyvalue[1] === "true": "";
+                (keyvalue[0] == "start_date") ? sdate = keyvalue[1]: "";
+                (keyvalue[0] == "end_date") ? edate = keyvalue[1]: "";
+            }
+            compare(sdate, edate);
+        }
+    }
+
+
+
     function compare(sdate, edate) {
-        sdate = sdate.split(".")[2] + "-" + sdate.split(".")[1] + "-" + sdate.split(".")[0];
-        edate = edate.split(".")[2] + "-" + edate.split(".")[1] + "-" + edate.split(".")[0];
+        sdate = (sdate.includes(".")) ? sdate.split(".")[2] + "-" + sdate.split(".")[1] + "-" + sdate.split(".")[0] : sdate;
+        edate = (edate.includes(".")) ? edate.split(".")[2] + "-" + edate.split(".")[1] + "-" + edate.split(".")[0] : edate;
         var f = document.getElementById('firstSelect').value;
         var s = document.getElementById('secondSelect').value;
         console.log(f);
@@ -111,15 +138,15 @@
                 $.ajax({
                     url: '/main/comparecontent?start_date=' + sdate + '&end_date=' + edate + '&first=' + f + '&second=' + s + "&discussionChart=" + discussionChart + "&sentimentChart=" + sentimentChart + "&subsChart=" + subsChart + "&likesChart=" + likesChart + "&commentsChart=" + commentsChart + "&repostsChart=" + repostsChart + "&rating=" + rating,
                     type: "GET",
-                    success: function(data){
+                    success: function(data) {
                         $("#comparecontent").html(data);
+                        history.pushState("", "", "/main/index#compare" + '?start_date=' + sdate + '&end_date=' + edate + '&first=' + f + '&second=' + s + "&discussionChart=" + discussionChart + "&sentimentChart=" + sentimentChart + "&subsChart=" + subsChart + "&likesChart=" + likesChart + "&commentsChart=" + commentsChart + "&repostsChart=" + repostsChart + "&rating=" + rating);
                     }
                 });
             }
+        } else {
+            alert("Выберите корректные данные");
         }
-
-
-
     }
 
     function getDatesBetween(startDate, endDate, separator = '.') {
@@ -133,16 +160,40 @@
     }
 
     function addState(sdate, edate) {
-
-        $.ajax({
-            url: '/main/compare?start_date=' + sdate + '&end_date=' + edate,
-            type: 'GET',
-            success: function(data) {
-                // console.log(sdate);
-                history.pushState("/main/index#compare" + '?start_date=' + sdate + '&end_date=' + edate, "/main/index#compare" + '?start_date=' + sdate + '&end_date=' + edate, "/main/index#compare" + '?start_date=' + sdate + '&end_date=' + edate);
-                $('.wrapper-content').html(data);
+        discussionChart = $("#discussionChart").is(":checked");
+        sentimentChart = $("#sentimentChart").is(":checked");
+        subsChart = $("#subsChart").is(":checked");
+        likesChart = $("#likesChart").is(":checked");
+        commentsChart = $("#commentsChart").is(":checked");
+        repostsChart = $("#repostsChart").is(":checked");
+        rating = $("#rating").is(":checked");
+        var f = document.getElementById('firstSelect').value;
+        var s = document.getElementById('secondSelect').value;
+        if (f != s && f != "select" && s != "select") {
+            if (discussionChart == true || sentimentChart == true || rating == true || subsChart == true || commentsChart == true || likesChart == true || repostsChart == true) {
+                $.ajax({
+                    url: '/main/compare?start_date=' + sdate + '&end_date=' + edate,
+                    type: 'GET',
+                    success: function(data) {
+                        // console.log(sdate);
+                        history.pushState("", "", "/main/index#compare" + '?start_date=' + sdate + '&end_date=' + edate + '&first=' + f + '&second=' + s + "&discussionChart=" + discussionChart + "&sentimentChart=" + sentimentChart + "&subsChart=" + subsChart + "&likesChart=" + likesChart + "&commentsChart=" + commentsChart + "&repostsChart=" + repostsChart + "&rating=" + rating);
+                        $('.wrapper-content').html(data);
+                        startCompare();
+                    }
+                });
             }
-        });
+        } else {
+            $.ajax({
+                url: '/main/compare?start_date=' + sdate + '&end_date=' + edate,
+                type: 'GET',
+                success: function(data) {
+                    // console.log(sdate);
+                    history.pushState("", "", "/main/index#compare" + '?start_date=' + sdate + '&end_date=' + edate);
+                    $('.wrapper-content').html(data);
+                }
+            });
+        }
+
 
     }
 
@@ -154,6 +205,7 @@
                 // $('#page-wrapper').html("");
                 history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""));
                 $('.wrapper-content').html(data);
+                window.scrollTo(0,0);
                 // console.log(data);
             }
         });

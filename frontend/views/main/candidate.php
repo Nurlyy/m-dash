@@ -265,7 +265,7 @@
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h2 class='text-center m-md'>Посты Кандидата</h2>
+                <h2 class='text-center m-md'><strong>Посты Кандидата</strong></h2>
                 <div class="row">
                     <div class='col-12' style=' display:flex; flex-wrap:nowrap; overflow-x:auto; gap:10px; '>
                         <div class="col-lg-4 col-sm-10 col-md-8 col-12 row">
@@ -301,29 +301,6 @@
                                             </div>
                                     <?php }
                                     } ?>
-                                    <!-- <div class="ibox">
-                                        <div class="ibox-content product-box">
-
-                                            <div class="product-imitation">
-                                                [PHOTO]
-                                            </div>
-                                            <div class="product-desc">
-                                                <small class="text-muted">1999.10.19</small>
-                                                <a href="#" class="product-name">Заголовок поста</a>
-
-
-
-                                                <div class="small m-t-xs">
-                                                    Описание поста
-                                                </div>
-                                                <div class="m-t text-righ">
-
-                                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Перейти
-                                                        <i class="fa fa-long-arrow-right"></i> </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -470,6 +447,8 @@
                 // $('#page-wrapper').html("");
                 history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""));
                 $('.wrapper-content').html(data);
+                window.scrollTo(0,0);
+
                 // console.log(data);
             }
         });
@@ -606,30 +585,50 @@
 
 
         Highcharts.chart(container, {
+            colors: ["#9c98ce", "#51223a", "#7c2a1b", "#8cdd75", "#87510e", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
             chart: {
                 type: 'spline',
                 scrollablePlotArea: {
                     minWidth: 600,
                     scrollPositionX: 1
-                }
+                },
+                plotBackgroundColor: '#d5e4eb',
+                fontFamily: "Droid Sans",
             },
             title: {
                 text: name,
                 align: 'center'
             },
             xAxis: {
-                accessibility: {
-                    rangeDescription: 'Показатель'
+                labels: {
+                    overflow: 'justify'
                 },
-                categories: [<?= "'" . implode("', '", $dates) . "'" ?>]
+                categories: [
+                    <?= "'" . implode("', '", $dates) . "'" ?>
+                ],
             },
             yAxis: {
+                gridLineColor: "#FFFFFF",
+                lineColor: "#FFFFFF",
+                minorGridLineColor: "#FFFFFF",
+                tickColor: "#D7D7D8",
+                tickWidth: 1,
                 title: {
-                    text: subtitle
+                    text: subtitle,
+                    style: {
+                        color: "#A0A0A3"
+                    }
                 },
                 minorGridLineWidth: 0,
-                gridLineWidth: 0,
                 alternateGridColor: null,
+            },
+            tooltip: {
+                valueSuffix: ' постов',
+                backgroundColor: "#FFFFFF",
+                borderColor: "#76c0c1",
+                style: {
+                    color: "#000000"
+                }
             },
             plotOptions: {
                 spline: {
@@ -644,12 +643,45 @@
                     },
                 }
             },
+
             series: datas,
-            navigation: {
-                menuItemStyle: {
-                    fontSize: '10px'
+            "legend": {
+                "itemStyle": {
+                    "color": "#3C3C3C"
+                },
+                "itemHiddenStyle": {
+                    "color": "#606063"
                 }
-            }
+            },
+            credits: {
+                style: {
+                    color: "#666"
+                }
+            },
+            labels: {
+                style: {
+                    color: "#D7D7D8"
+                }
+            },
+            drilldown: {
+                activeAxisLabelStyle: {
+                    color: "#F0F0F3"
+                },
+                activeDataLabelStyle: {
+                    color: "#F0F0F3"
+                }
+            },
+            navigation: {
+                buttonOptions: {
+                    symbolStroke: "#505053",
+                }
+            },
+            legendBackgroundColor: "rgba(0, 0, 0, 0.5)",
+            background2: "#505053",
+            dataLabelsColor: "#B0B0B3",
+            textColor: "#C0C0C0",
+            contrastTextColor: "#F0F0F3",
+            maskColor: "rgba(255,255,255,0.3)"
         });
 
     }
