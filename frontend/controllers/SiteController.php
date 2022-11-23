@@ -15,6 +15,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\User;
 
 /**
  * Site controller
@@ -85,11 +86,17 @@ class SiteController extends Controller
     {
         $this->layout = 'inspinia'; 
         if (!Yii::$app->user->isGuest) {
+            if(Yii::$app->user->getIsAdmin()){
+                return $this->redirect("/super/index");
+            }
             return $this->redirect("/main/index");
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            if(Yii::$app->user->getIsAdmin()){
+                return $this->redirect("/super/index");
+            }
             return $this->redirect("/main/index");
         }
 
@@ -130,6 +137,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
 
     /**
      * Requests password reset.

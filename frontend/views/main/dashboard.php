@@ -53,18 +53,18 @@
                     <div class="ibox-content" style='position:relative !important;'>
                         <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)'><strong><?= $candidate['name'] ?></strong></a>
                         <div style='position:inherit; width:100%; margin-bottom:20px;'>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; width:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2) ?>%;width:<?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%; height: fit-content;'><?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; width:<?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2):0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2):0 ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2):0 ?>%;width:<?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2):0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2):0 ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$candidate['id']])?round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2):0 ?>%;width:<?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2):0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2):0 ?>%</h5>
                         </div>
                         <div class="progress" style='height:8px !important;'>
-                            <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <?= round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) ?>%;display:block;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2):0 ?>%;display:block;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
-                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?= round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2):0 ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
-                            <div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?= round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) ?>%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2):0 ?>%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
                         </div>
@@ -373,7 +373,7 @@
             maskColor: "rgba(255,255,255,0.3)"
         });
 
-        // Data retrieved from https://olympics.com/en/olympic-games/beijing-2022/medals
+
         Highcharts.chart('total_donut', {
             chart: {
                 type: 'pie',
@@ -394,10 +394,10 @@
             series: [{
                 name: 'Постов',
                 data: [
-                    ['Facebook', <?= $totalResourcesDonut['fb'] ?>],
-                    ['Instagram', <?= $totalResourcesDonut['ig'] ?>],
-                    ['Telegram', <?= $totalResourcesDonut['tg'] ?>],
-                    ['Web-Site', <?= $totalResourcesDonut['web'] ?>],
+                    ['Facebook', <?= isset($totalResourcesDonut['fb'])?$totalResourcesDonut['fb']:0 ?>],
+                    ['Instagram',<?= isset($totalResourcesDonut['ig'])?$totalResourcesDonut['ig']:0 ?>],
+                    ['Telegram', <?= isset($totalResourcesDonut['tg'])?$totalResourcesDonut['tg']:0 ?>],
+                    ['Web-Site', <?= isset($totalResourcesDonut['web'])?$totalResourcesDonut['web']:0 ?>],
                 ]
             }]
         });

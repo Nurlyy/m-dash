@@ -15,19 +15,14 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                 </div>
             </li>
             <li>
-                <a href="#dashboard" onclick='openurl("dashboard", start_date, end_date, null)'><i class="fa fa-th-large"></i> <span class="nav-label">Главная</span></a>
+                <a href="#mainpage" onclick='openurl("mainpage", start_date, end_date, null)'><i class="fa fa-th-large"></i> <span class="nav-label">Проекты</span></a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Кандидаты</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <?php foreach ($candidateInformation as $candidate) { ?>
-                        <li><a onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)' href='#candidate<?= $candidate['id'] ?>'><?= $candidate['name'] ?></a></li>
-                    <?php } ?>
-                </ul>
+                <a href="#createproject" onclick='openurl("createproject", start_date, end_date, null)'><i class="fa fa-plus"></i> <span class="nav-label">Создать проект</span></a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="#" onclick='openurl("compare", start_date, end_date)'><i class="fa fa-clone"></i> <span class="nav-label">Сравнить</span></a>
-            </li>
+            </li> -->
 
         </ul>
 
@@ -39,23 +34,10 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
         <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: -1px">
             <div class="navbar-header">
                 <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                <ul class="nav navbar-top-links navbar-left" style="margin-top: 12px; padding-left:15px;">
-                    <li>
-                        <div class="filter_datetime p-t-0 f-l">
-                            <div id="reportrange" class="form-control b-none">
-                                <i class="fa fa-calendar p-r-5"></i>
-                                <span></span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
             </div>
 
 
             <ul class="nav navbar-top-links navbar-right">
-                <li>
-                    <button onclick="createPdf()" class="ladda-button btn btn-primary" data-style="zoom-in" style="margin-left: 20px; margin-right: 10px;"><i class="fa fa-paste"></i> Экспорт PDF</button>
-                </li>
                 <li>
                     <a onclick="logout()" data-toggle="modal" data-target="#myModal2">
                         <i class="fa fa-sign-out"></i> Выход
@@ -83,7 +65,6 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
     </div>
 
     <div id="main_wrapper_container" class="wrapper wrapper-content">
-
     </div>
 
     <div class="footer" style="background-color: #ededed">
@@ -97,83 +78,45 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
 
 
 <script>
-    function createPdf() {
-        var element = document.getElementById("main_wrapper_container");
-        if ($("#comparecontent")) {
-            var element = document.getElementById("comparecontent");
-        }
-        var opt = {
-            jsPDF: {
-                format: 'a3',
-                orientation: 'landscape'
-            },
-            html2canvas: {
-                scale: 3,
-                letterRendering: true,
-                useCORS: true,
-                logging: true
-            },
-            image: {
-                type: 'jpeg',
-                quality: 0.95
-            },
-            filename: 'rating_iMAS.pdf'
-        };
-        html2pdf().set(opt).from(element).save();
-
-    }
-
     window.onload = function() {
         let urlString = window.location.href.toString();
 
-        console.log(urlString)
-        // console.log("fjdos")
-
         if (urlString.includes('#') && urlString.split('#')[1]) {
-            var words = urlString.split('#');
-            var action = words[1].split('?');
-            if (['dashboard', 'candidate', 'compare', 'comparecontent'].includes(action[0])) {
-                // console.log("fjdos")
+            var controller = urlString.split('#');
+            var action = controller[1].split('?');
+            if (['mainpage', 'project', 'createproject'].includes(action[0])) {
                 if (action[1]) {
-                    // console.log("fjdos")
                     if (action[1].includes("first=")) {
-                        var url = "/main/" + action[0] + "?" + action[1].split("&first=")[0];
-                        // console.log("fjdos")
+                        var url = "/super/" + action[0];
                     } else {
-                        // console.log("fjdos")
-                        var url = '/main/' + words[1];
+                        var url = '/super/' + controller[1];
                     }
                 } else {
-                    var url = '/main/' + action[0] + '?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>';
+                    var url = '/super/' + action[0];
                 }
-                // console.log("fjdos")
                 $.ajax({
                     url: url,
                     type: 'GET',
                     success: function(data) {
-                        history.pushState("/main/index#" + words[1], "/main/index#" + words[1], "/main/index#" + words[1])
+                        history.pushState("", "", "/super/index#" + controller[1])
                         $('.wrapper-content').html(data);
-                        startCompare();
-                        console.log("fjdos")
+                        // startCompare();
                     }
                 });
 
             }
         } else {
-
-
             $.ajax({
-                url: '/main/dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>',
+                url: '/super/mainpage',
                 type: 'GET',
                 success: function(data) {
-                    history.pushState("/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>", "/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>", "/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>")
+                    history.pushState("", "", "/super/index#mainpage")
                     $('.wrapper-content').html(data);
-                    console.log("fjdos")
                 }
             });
-            
         }
     }
+
 
     function logout() {
         $.ajax({

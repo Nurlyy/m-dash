@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'>Сравнить кандидатов</h2>
+                <h2 class='text-center'><strong>Сравнить кандидатов</strong></h2>
             </div>
             <div class="panel-body">
                 <div class="col-lg-12 row no-margins" style='justify-content:center;'>

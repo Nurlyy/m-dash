@@ -8,6 +8,8 @@ use yii;
 use yii\filters\AccessControl;
 use DateInterval;
 use DatePeriod;
+use common\models\User;
+use common\components\AccessRule;
 
 class MainController extends AuthController
 {
@@ -65,6 +67,7 @@ class MainController extends AuthController
         $this->cleanVariables();
         if (isset($result['all_data'])) {
             foreach ($result['all_data'] as $value) {
+                // if(isset($value['id']))
                 $this::$rating[$value['id']] = (isset($this::$rating[$value['id']]) ? $this::$rating[$value['id']] : 0) + (isset($value['fb_posts']) ? $value['fb_posts'] : 0) + (isset($value['ig_posts']) ? $value['ig_posts'] : 0) + (isset($value['tg_posts']) ? $value['tg_posts'] : 0) + (isset($value['web_posts']) ? $value['web_posts'] : 0);
                 $this::$date_posts[$value['id']]['fb'][$value['date']] = (isset($this::$date_posts[$value['id']]['fb'][$value['date']]) ? $this::$date_posts[$value['id']]['fb'][$value['date']] : 0) + (isset($value['fb_posts']) ? $value['fb_posts'] : 0);
                 $this::$date_posts[$value['id']]['ig'][$value['date']] = (isset($this::$date_posts[$value['id']]['ig'][$value['date']]) ? $this::$date_posts[$value['id']]['ig'][$value['date']] : 0) + (isset($value['ig_posts']) ? $value['ig_posts'] : 0);
@@ -108,7 +111,6 @@ class MainController extends AuthController
         if (isset($result['candidate_posts'])) {
             $this::$candidate_posts = $result['candidate_posts'];
         }
-
     }
 
     private function getBetweenDates($startDate, $endDate)
@@ -132,14 +134,31 @@ class MainController extends AuthController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
+
         $behaviors['access'] = [
             'class' => AccessControl::class,
+            'ruleConfig' => [
+                'class' => AccessRule::class,
+            ],
             // 'only' => ['index', 'facebook', 'instagram', 'new', 'regions', 'telegram', 'sites', 'resources'],
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
+                    'roles' => ['@', User::STATUS_ACTIVE],
+
+                    'matchCallback' => function ($rule, $action) {
+                        return !Yii::$app->user->identity->isAdmin();
+                    },
+                    'denyCallback' => function ($rule, $action) {
+                        return $this->redirect(["/super/index"]);
+                    },
+
                 ],
+                // [
+                //     'allow' => true,
+                //     'roles' => [User::STATUS_ACTIVE],    
+
+                // ],
             ],
         ];
         return $behaviors;
@@ -185,13 +204,17 @@ class MainController extends AuthController
                 return ($a > $b) ? -1 : 1;
             });
             foreach (array_keys($this::$candidateInformation) as $id) {
-                foreach ($this::$date_posts[$id] as $key => $value) {
-                    foreach ($value as $k => $v) {
-                        $temp[$k] = (isset($temp[$k]) ? $temp[$k] : 0) + $v;
+                if (isset($this::$date_posts[$id])) {
+                    foreach ($this::$date_posts[$id] as $key => $value) {
+                        foreach ($value as $k => $v) {
+                            $temp[$k] = (isset($temp[$k]) ? $temp[$k] : 0) + $v;
+                        }
                     }
                 }
-                foreach ($this::$totalResourcesDonut[$id] as $key => $value) {
-                    $tempDonut[$key] = (isset($tempDonut[$key]) ? $tempDonut[$key] : 0) + $value;
+                if (isset($this::$totalResourcesDonut[$id])) {
+                    foreach ($this::$totalResourcesDonut[$id] as $key => $value) {
+                        $tempDonut[$key] = (isset($tempDonut[$key]) ? $tempDonut[$key] : 0) + $value;
+                    }
                 }
             }
             $this::$date_posts = $temp;
@@ -218,7 +241,8 @@ class MainController extends AuthController
         $candidate_id = isset($_GET['candidate_id']) ? $_GET['candidate_id'] : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11 && is_numeric($candidate_id)) {
             $result = json_decode(get_web_page("frontend.test.localhost/backend/main/search?type=2&candidate_id={$candidate_id}&start_date={$start_date}&end_date={$end_date}"), true);
-
+            // var_dump($result);
+            // exit;
             $this->splitData($result);
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];
@@ -269,7 +293,6 @@ class MainController extends AuthController
             ]);
         }
     }
-
 
     public function actionComparecontent()
     {

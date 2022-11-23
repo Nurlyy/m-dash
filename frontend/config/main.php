@@ -38,7 +38,6 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -47,11 +46,9 @@ return [
             //'suffix' => '.html',
             'rules' => [
                 '' => 'main/index',
-                
-                
-                '<action>'=>'main/<action>',
+                '<action>'=>'main/index',
             ],
-        ], 
+        ],
         
     ],
     'params' => $params,
