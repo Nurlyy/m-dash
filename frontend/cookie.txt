@@ -10,5 +10,5 @@
 #HttpOnly_backend.test.localhost	FALSE	/	FALSE	0	advanced-backend	fr370r7e85rrpq4udtmf43megd
 #HttpOnly_backend.localhost	FALSE	/	FALSE	0	advanced-backend	tn5ni7rp39kbj34pg8pj43ok64
 #HttpOnly_backend.localhost	FALSE	/	FALSE	0	_csrf-backend	eaca8bc6179e81393c92120ea6c8157cafb170796fabe66ceb38d8ec59377339a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22Omv93PXrq0QgHXJTrPussJEb8VD5CCE_%22%3B%7D
-#HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	advanced-backend	s0mpr4aoa7v749ctik71o07iqg
-#HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	_csrf-backend	1afade5da9e192d79d694e976155af5633d403f2218af80ecfbc6170f98f39b5a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22ICIPX7pQX-Sjhh1160eec-PiUbwq-Xhx%22%3B%7D
+#HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	advanced-backend	k42pe9pakop1fugbt9lnakepqa
+#HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	_csrf-backend	989de4cb66b5f524c1ea4aaa71bfade72e039e40a27cce308e2c838fbb64e52ea%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22EOcIzc227VRNLINxJdX7CnMMpwj7RM7x%22%3B%7D

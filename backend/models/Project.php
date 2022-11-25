@@ -13,6 +13,11 @@ class Project extends Model
      */
     private $helper = Helper::class;
 
+    public function temp(){
+        $query = "SELECT * FROM city";
+        return $this->helper::createCommand($query);
+    }
+
     public function getProjectCandidates($user_id)
     {
         $query = "select c.id from project p inner join candidate c on p.id=c.project_id where p.user_id = {$user_id};";
@@ -20,19 +25,21 @@ class Project extends Model
         return $this->helper::createCommand($query);
     }
 
-    public function getProjects(){
-        $query = "select p.id, p.name, p.created_date, p.is_active, p.user_id, u.username, u.email, count(c.id) as candidates from project p inner join user u on p.user_id = u.id inner join candidate c on c.project_id = p.id";
+    public function getProjects()
+    {
+        $query = "select p.id, p.name, p.created_date, p.is_active, p.user_id, u.username, u.email, count(c.id) as cities from project p inner join user u on p.user_id = u.id inner join city c on c.project_id = p.id";
         return $this->helper::createCommand($query);
     }
 
-    public function getProjectId($user_id){
+    public function getProjectId($user_id)
+    {
         $query = "select id from project where user_id = {$user_id};";
         return $this->helper::createCommand($query);
     }
 
-    public function get_candidates_data($project_id, $id = null)
+    public function get_cities_data($project_id, $id = null)
     {
-        $query = "SELECT * from candidate where ";
+        $query = "SELECT * from city where ";
         if (!empty($id[0])) {
             if (!empty($id[1])) {
                 $query .= " id in (" . implode(', ', $id) . ") and ";
@@ -40,14 +47,14 @@ class Project extends Model
                 $query .= " id = {$id[0]} and ";
             }
         }
-        if(!empty($project_id)){
-            $query .= " project_id = {$project_id}"; 
+        if (!empty($project_id)) {
+            $query .= " project_id = {$project_id}";
         }
         // return $query;
         return $this->helper::createCommand($query);
     }
 
-    public function get_candidate_posts($candidate_id, $start_date, $end_date)
+    public function get_city_posts($candidate_id, $start_date, $end_date)
     {
         if (isset($candidate_id)) {
             $query = "SELECT * from candidate_posts where candidate_id = {$candidate_id} and date between '{$start_date}' and '{$end_date}'";
@@ -199,31 +206,42 @@ class Project extends Model
     }
 
 
-    public function createProject($project_name, $user_id)
+    public function createProject($project_name, $user_id, $created_date)
     {
-        $query = "insert into project (project_name, user_id) values ({$project_name}, {$user_id})";
-        if($this->helper::createCommand($query)){
+        // return $project_name;
+        if (isset($project_name) && isset($user_id)) {
+            $query = "insert into project (name, user_id, created_date) values ('{$project_name}', {$user_id}, '{$created_date}')";
+            return $this->helper::createCommand($query);
+        }
+        else return false;
+    }
+
+
+    public function createCandidate($candidate_name, $partia, $fb_account, $ig_account, $web_site, $photo, $birthday, $experience, $project_id)
+    {
+        $query = "insert into candidate (candidate_name, partia, fb_account, ig_account, web_site, photo, birthday, experience, project_id) values ("
+            . "'{$candidate_name}', '{$partia}', '{$fb_account}', '{$ig_account}', '{$web_site}', '{$photo}', '{$birthday}', '{$experience}', '{$project_id}'";
+        if ($this->helper::createCommand($query)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
 
-    public function createCandidate($candidate_name,$partia,$fb_account,$ig_account,$web_site,$photo,$birthday,$experience,$project_id) {
-        $query = "insert into candidate (candidate_name, partia, fb_account, ig_account, web_site, photo, birthday, experience, project_id) values ("
-                    . "'{$candidate_name}', '{$partia}', '{$fb_account}', '{$ig_account}', '{$web_site}', '{$photo}', '{$birthday}', '{$experience}', '{$project_id}'";
-        return $this->helper::createCommand($query);
-    }
-
-
-    public function removeCandidate($candidate_id){
+    public function removeCandidate($candidate_id)
+    {
         $query = "update table candidate set isdeleted = 1 where candidate_id = '{$candidate_id}'";
         return $this->helper::createCommand($query);
     }
 
-    public function removeProject($project_id){
+    public function removeProject($project_id)
+    {
         $query = "update table project set isdeleted = 1 where project_id = {project_id}";
-        return $this->helper::createCommand($query);
+        if ($this->helper::createCommand($query)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

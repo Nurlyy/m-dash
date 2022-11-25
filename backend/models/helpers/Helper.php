@@ -19,7 +19,6 @@ class Helper{
         return Yii::$app->db->createCommand($query)->queryAll();
     }
 
-
     public static function add_type($type) {
         if(isset($type)){
             return " AND type = " . $type;

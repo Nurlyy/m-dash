@@ -15,18 +15,18 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                 </div>
             </li>
             <li>
-                <a href="#dashboard" onclick='openurl("dashboard", start_date, end_date, null)'><i class="fa fa-th-large"></i> <span class="nav-label">Главная</span></a>
+                <a href="#dashboard" onclick='openurl("main", "dashboard", start_date, end_date, null)'><i class="fa fa-th-large"></i> <span class="nav-label">Главная</span></a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Кандидаты</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-globe"></i> <span class="nav-label">Города</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <?php foreach ($candidateInformation as $candidate) { ?>
-                        <li><a onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)' href='#candidate<?= $candidate['id'] ?>'><?= $candidate['name'] ?></a></li>
+                        <li><a onclick='openurl("main", "candidate", start_date, end_date, <?= $candidate["id"] ?>)' href='#candidate<?= $candidate['id'] ?>'><?= $candidate['name'] ?></a></li>
                     <?php } ?>
                 </ul>
             </li>
             <li>
-                <a href="#" onclick='openurl("compare", start_date, end_date)'><i class="fa fa-clone"></i> <span class="nav-label">Сравнить</span></a>
+                <a href="#" onclick='openurl("main", "compare", start_date, end_date)'><i class="fa fa-clone"></i> <span class="nav-label">Сравнить</span></a>
             </li>
 
         </ul>
@@ -168,7 +168,7 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                 success: function(data) {
                     history.pushState("/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>", "/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>", "/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>")
                     $('.wrapper-content').html(data);
-                    console.log("fjdos")
+                    // console.log("fjdos")
                 }
             });
             

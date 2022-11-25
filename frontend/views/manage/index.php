@@ -5,6 +5,8 @@ use yii\helpers\Html;
 
 $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
 
+$this->registerJsFile("js/sripts.js");
+
 ?>
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
@@ -15,10 +17,10 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                 </div>
             </li>
             <li>
-                <a href="#mainpage" onclick='openurl("mainpage", start_date, end_date, null)'><i class="fa fa-th-large"></i> <span class="nav-label">Проекты</span></a>
+                <a href="#mainpage" onclick='openurl("manage","mainpage")'><i class="fa fa-th-large"></i> <span class="nav-label">Проекты</span></a>
             </li>
             <li>
-                <a href="#createproject" onclick='openurl("createproject", start_date, end_date, null)'><i class="fa fa-plus"></i> <span class="nav-label">Создать проект</span></a>
+                <a href="#createproject" onclick='openurl("manage","createproject")'><i class="fa fa-plus"></i> <span class="nav-label">Создать проект</span></a>
             </li>
             <!-- <li>
                 <a href="#" onclick='openurl("compare", start_date, end_date)'><i class="fa fa-clone"></i> <span class="nav-label">Сравнить</span></a>
@@ -76,7 +78,6 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
 </div>
 
 
-
 <script>
     window.onload = function() {
         let urlString = window.location.href.toString();
@@ -87,18 +88,18 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
             if (['mainpage', 'project', 'createproject'].includes(action[0])) {
                 if (action[1]) {
                     if (action[1].includes("first=")) {
-                        var url = "/super/" + action[0];
+                        var url = "/manage/" + action[0];
                     } else {
-                        var url = '/super/' + controller[1];
+                        var url = '/manage/' + controller[1];
                     }
                 } else {
-                    var url = '/super/' + action[0];
+                    var url = '/manage/' + action[0];
                 }
                 $.ajax({
                     url: url,
                     type: 'GET',
                     success: function(data) {
-                        history.pushState("", "", "/super/index#" + controller[1])
+                        history.pushState("", "", "/manage/index#" + controller[1])
                         $('.wrapper-content').html(data);
                         // startCompare();
                     }
@@ -107,10 +108,10 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
             }
         } else {
             $.ajax({
-                url: '/super/mainpage',
+                url: '/manage/mainpage',
                 type: 'GET',
                 success: function(data) {
-                    history.pushState("", "", "/super/index#mainpage")
+                    history.pushState("", "", "/manage/index#mainpage")
                     $('.wrapper-content').html(data);
                 }
             });

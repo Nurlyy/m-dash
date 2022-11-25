@@ -22,7 +22,7 @@ AppAsset::register($this);
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?= Html::csrfMetaTags() ?>
+    <?php $this->registerCsrfMetaTags() ?>
     <title>Dashboard</title>
     <?php $this->head() ?>
 

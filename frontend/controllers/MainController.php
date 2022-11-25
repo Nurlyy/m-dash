@@ -65,42 +65,17 @@ class MainController extends AuthController
     private function splitData($result)
     {
         $this->cleanVariables();
-        if (isset($result['all_data'])) {
-            foreach ($result['all_data'] as $value) {
+        if (isset($result['all_data']) && isset($result['candidate_data'])) {
+            foreach ($result['candidate_data'] as $c_data) {
                 // if(isset($value['id']))
-                $this::$rating[$value['id']] = (isset($this::$rating[$value['id']]) ? $this::$rating[$value['id']] : 0) + (isset($value['fb_posts']) ? $value['fb_posts'] : 0) + (isset($value['ig_posts']) ? $value['ig_posts'] : 0) + (isset($value['tg_posts']) ? $value['tg_posts'] : 0) + (isset($value['web_posts']) ? $value['web_posts'] : 0);
-                $this::$date_posts[$value['id']]['fb'][$value['date']] = (isset($this::$date_posts[$value['id']]['fb'][$value['date']]) ? $this::$date_posts[$value['id']]['fb'][$value['date']] : 0) + (isset($value['fb_posts']) ? $value['fb_posts'] : 0);
-                $this::$date_posts[$value['id']]['ig'][$value['date']] = (isset($this::$date_posts[$value['id']]['ig'][$value['date']]) ? $this::$date_posts[$value['id']]['ig'][$value['date']] : 0) + (isset($value['ig_posts']) ? $value['ig_posts'] : 0);
-                $this::$date_posts[$value['id']]['tg'][$value['date']] = (isset($this::$date_posts[$value['id']]['tg'][$value['date']]) ? $this::$date_posts[$value['id']]['tg'][$value['date']] : 0) + (isset($value['tg_posts']) ? $value['tg_posts'] : 0);
-                $this::$date_posts[$value['id']]['web'][$value['date']] = (isset($this::$date_posts[$value['id']]['web'][$value['date']]) ? $this::$date_posts[$value['id']]['web'][$value['date']] : 0) + (isset($value['web_posts']) ? $value['web_posts'] : 0);
-                $this::$postsSentimentLine[$value['id']]['positive'] = (isset($this::$postsSentimentLine[$value['id']]['positive']) ? $this::$postsSentimentLine[$value['id']]['positive'] : 0) + (isset($value['fb_positive']) ? $value['fb_positive'] : 0) + (isset($value['ig_positive']) ? $value['ig_positive'] : 0) + (isset($value['tg_positive']) ? $value['tg_positive'] : 0) + (isset($value['web_positive']) ? $value['web_positive'] : 0);
-                $this::$postsSentimentLine[$value['id']]['neutral'] = (isset($this::$postsSentimentLine[$value['id']]['neutral']) ? $this::$postsSentimentLine[$value['id']]['neutral'] : 0) + (isset($value['fb_neutral']) ? $value['fb_neutral'] : 0) + (isset($value['ig_neutral']) ? $value['ig_neutral'] : 0) + (isset($value['tg_neutral']) ? $value['tg_neutral'] : 0) + (isset($value['web_neutral']) ? $value['web_neutral'] : 0);
-                $this::$postsSentimentLine[$value['id']]['negative'] = (isset($this::$postsSentimentLine[$value['id']]['negative']) ? $this::$postsSentimentLine[$value['id']]['negative'] : 0) + (isset($value['fb_negative']) ? $value['fb_negative'] : 0) + (isset($value['ig_negative']) ? $value['ig_negative'] : 0) + (isset($value['tg_negative']) ? $value['tg_negative'] : 0) + (isset($value['web_negative']) ? $value['web_negative'] : 0);
-                $this::$totalResourcesDonut[$value['id']]['fb'] = (isset($this::$totalResourcesDonut[$value['id']]['fb']) ? $this::$totalResourcesDonut[$value['id']]['fb'] : 0) + (isset($value['fb_posts']) ? $value['fb_posts'] : 0);
-                $this::$totalResourcesDonut[$value['id']]['ig'] = (isset($this::$totalResourcesDonut[$value['id']]['ig']) ? $this::$totalResourcesDonut[$value['id']]['ig'] : 0) + (isset($value['ig_posts']) ? $value['ig_posts'] : 0);
-                $this::$totalResourcesDonut[$value['id']]['tg'] = (isset($this::$totalResourcesDonut[$value['id']]['tg']) ? $this::$totalResourcesDonut[$value['id']]['tg'] : 0) + (isset($value['tg_posts']) ? $value['tg_posts'] : 0);
-                $this::$totalResourcesDonut[$value['id']]['web'] = (isset($this::$totalResourcesDonut[$value['id']]['web']) ? $this::$totalResourcesDonut[$value['id']]['web'] : 0) + (isset($value['web_posts']) ? $value['web_posts'] : 0);
-                $this::$postsSentimentChart[$value['id']]['positive'][$value['date']] = (isset($this::$postsSentimentChart[$value['id']]['positive'][$value['date']]) ? $this::$postsSentimentChart[$value['id']]['positive'][$value['date']] : 0) + (isset($value['fb_positive']) ? $value['fb_positive'] : 0) + (isset($value['ig_positive']) ? $value['ig_positive'] : 0) + (isset($value['tg_positive']) ? $value['tg_positive'] : 0) + (isset($value['web_positive']) ? $value['web_positive'] : 0);
-                $this::$postsSentimentChart[$value['id']]['neutral'][$value['date']] = (isset($this::$postsSentimentChart[$value['id']]['neutral'][$value['date']]) ? $this::$postsSentimentChart[$value['id']]['neutral'][$value['date']] : 0) + (isset($value['fb_neutral']) ? $value['fb_neutral'] : 0) + (isset($value['ig_neutral']) ? $value['ig_neutral'] : 0) + (isset($value['tg_neutral']) ? $value['tg_neutral'] : 0) + (isset($value['web_neutral']) ? $value['web_neutral'] : 0);
-                $this::$postsSentimentChart[$value['id']]['negative'][$value['date']] = (isset($this::$postsSentimentChart[$value['id']]['negative'][$value['date']]) ? $this::$postsSentimentChart[$value['id']]['negative'][$value['date']] : 0) + (isset($value['fb_negative']) ? $value['fb_negative'] : 0) + (isset($value['ig_negative']) ? $value['ig_negative'] : 0) + (isset($value['tg_negative']) ? $value['tg_negative'] : 0) + (isset($value['web_negative']) ? $value['web_negative'] : 0);
-                $this::$totalSubsChart[$value['id']]['fb'][$value['date']] = (isset($this::$totalSubsChart[$value['id']]['fb'][$value['date']]) ? $this::$totalSubsChart[$value['id']]['fb'][$value['date']] : 0) + (isset($value['fb_sub']) ? $value['fb_sub'] : 0);
-                $this::$totalSubsChart[$value['id']]['ig'][$value['date']] = (isset($this::$totalSubsChart[$value['id']]['ig'][$value['date']]) ? $this::$totalSubsChart[$value['id']]['ig'][$value['date']] : 0) + (isset($value['ig_sub']) ? $value['ig_sub'] : 0);
-                $this::$totalSubsDonut[$value['id']]['fb'] = (isset($this::$totalSubsDonut[$value['id']]['fb']) ? $this::$totalSubsDonut[$value['id']]['fb'] : 0) + (isset($value['fb_sub']) ? $value['fb_sub'] : 0);
-                $this::$totalSubsDonut[$value['id']]['ig'] = (isset($this::$totalSubsDonut[$value['id']]['ig']) ? $this::$totalSubsDonut[$value['id']]['ig'] : 0) + (isset($value['ig_sub']) ? $value['ig_sub'] : 0);
-                $this::$totalLikesChart[$value['id']]['fb'][$value['date']] = (isset($this::$totalLikesChart[$value['id']]['fb'][$value['date']]) ? $this::$totalLikesChart[$value['id']]['fb'][$value['date']] : 0) + (isset($value['fb_likes']) ? $value['fb_likes'] : 0);
-                $this::$totalLikesChart[$value['id']]['ig'][$value['date']] = (isset($this::$totalLikesChart[$value['id']]['ig'][$value['date']]) ? $this::$totalLikesChart[$value['id']]['ig'][$value['date']] : 0) + (isset($value['ig_likes']) ? $value['ig_likes'] : 0);
-                $this::$totalLikesDonut[$value['id']]['fb'] = (isset($this::$totalLikesDonut[$value['id']]['fb']) ? $this::$totalLikesDonut[$value['id']]['fb'] : 0) + (isset($value['fb_likes']) ? $value['fb_likes'] : 0);
-                $this::$totalLikesDonut[$value['id']]['ig'] = (isset($this::$totalLikesDonut[$value['id']]['ig']) ? $this::$totalLikesDonut[$value['id']]['ig'] : 0) + (isset($value['ig_likes']) ? $value['ig_likes'] : 0);
-                $this::$totalCommentsChart[$value['id']]['fb'][$value['date']] = (isset($this::$totalCommentsChart[$value['id']]['fb'][$value['date']]) ? $this::$totalCommentsChart[$value['id']]['fb'][$value['date']] : 0) + (isset($value['fb_comments']) ? $value['fb_comments'] : 0);
-                $this::$totalCommentsChart[$value['id']]['ig'][$value['date']] = (isset($this::$totalCommentsChart[$value['id']]['ig'][$value['date']]) ? $this::$totalCommentsChart[$value['id']]['ig'][$value['date']] : 0) + (isset($value['ig_comments']) ? $value['ig_comments'] : 0);
-                $this::$totalCommentsDonut[$value['id']]['fb'] = (isset($this::$totalCommentsDonut[$value['id']]['fb']) ? $this::$totalCommentsDonut[$value['id']]['fb'] : 0) + (isset($value['fb_comments']) ? $value['fb_comments'] : 0);
-                $this::$totalCommentsDonut[$value['id']]['ig'] = (isset($this::$totalCommentsDonut[$value['id']]['ig']) ? $this::$totalCommentsDonut[$value['id']]['ig'] : 0) + (isset($value['ig_comments']) ? $value['ig_comments'] : 0);
-                $this::$totalRepostsChart[$value['id']]['fb'][$value['date']] = (isset($this::$totalRepostsChart[$value['id']]['fb'][$value['date']]) ? $this::$totalRepostsChart[$value['id']]['fb'][$value['date']] : 0) + (isset($value['fb_reposts']) ? $value['fb_reposts'] : 0);
-                $this::$totalRepostsChart[$value['id']]['ig'][$value['date']] = (isset($this::$totalRepostsChart[$value['id']]['ig'][$value['date']]) ? $this::$totalRepostsChart[$value['id']]['ig'][$value['date']] : 0) + (isset($value['ig_reposts']) ? $value['ig_reposts'] : 0);
-                $this::$totalRepostsChart[$value['id']]['tg'][$value['date']] = (isset($this::$totalRepostsChart[$value['id']]['tg'][$value['date']]) ? $this::$totalRepostsChart[$value['id']]['tg'][$value['date']] : 0) + (isset($value['tg_reposts']) ? $value['tg_reposts'] : 0);
-                $this::$totalRepostsDonut[$value['id']]['fb'] = (isset($this::$totalRepostsDonut[$value['id']]['fb']) ? $this::$totalRepostsDonut[$value['id']]['fb'] : 0) + (isset($value['fb_reposts']) ? $value['fb_reposts'] : 0);
-                $this::$totalRepostsDonut[$value['id']]['ig'] = (isset($this::$totalRepostsDonut[$value['id']]['ig']) ? $this::$totalRepostsDonut[$value['id']]['ig'] : 0) + (isset($value['ig_reposts']) ? $value['ig_reposts'] : 0);
-                $this::$totalRepostsDonut[$value['id']]['tg'] = (isset($this::$totalRepostsDonut[$value['id']]['tg']) ? $this::$totalRepostsDonut[$value['id']]['tg'] : 0) + (isset($value['tg_reposts']) ? $value['tg_reposts'] : 0);
+                if (isset($result['all_data'][$c_data['id']])) {
+                    foreach ($result['all_data'][$c_data['id']] as $value) {
+                        $this->set_data($c_data['id'], $value, $value['date']);
+                    }
+                }
+                else {
+                    $this->set_data($c_data['id'], null, 0);
+                }
             }
         }
         if (isset($result['candidate_data'])) {
@@ -111,6 +86,43 @@ class MainController extends AuthController
         if (isset($result['candidate_posts'])) {
             $this::$candidate_posts = $result['candidate_posts'];
         }
+    }
+
+    private function set_data($id, $value, $date)
+    {
+        $this::$rating[$id] = (isset($this::$rating[$id]) ? $this::$rating[$id] : 0) + (isset($value['fb_posts']) ? $value['fb_posts'] : 0) + (isset($value['ig_posts']) ? $value['ig_posts'] : 0) + (isset($value['tg_posts']) ? $value['tg_posts'] : 0) + (isset($value['web_posts']) ? $value['web_posts'] : 0);
+        $this::$date_posts[$id]['fb'][$date] = (isset($this::$date_posts[$id]['fb'][$date]) ? $this::$date_posts[$id]['fb'][$date] : 0) + (isset($value['fb_posts']) ? $value['fb_posts'] : 0);
+        $this::$date_posts[$id]['ig'][$date] = (isset($this::$date_posts[$id]['ig'][$date]) ? $this::$date_posts[$id]['ig'][$date] : 0) + (isset($value['ig_posts']) ? $value['ig_posts'] : 0);
+        $this::$date_posts[$id]['tg'][$date] = (isset($this::$date_posts[$id]['tg'][$date]) ? $this::$date_posts[$id]['tg'][$date] : 0) + (isset($value['tg_posts']) ? $value['tg_posts'] : 0);
+        $this::$date_posts[$id]['web'][$date] = (isset($this::$date_posts[$id]['web'][$date]) ? $this::$date_posts[$id]['web'][$date] : 0) + (isset($value['web_posts']) ? $value['web_posts'] : 0);
+        $this::$postsSentimentLine[$id]['positive'] = (isset($this::$postsSentimentLine[$id]['positive']) ? $this::$postsSentimentLine[$id]['positive'] : 0) + (isset($value['fb_positive']) ? $value['fb_positive'] : 0) + (isset($value['ig_positive']) ? $value['ig_positive'] : 0) + (isset($value['tg_positive']) ? $value['tg_positive'] : 0) + (isset($value['web_positive']) ? $value['web_positive'] : 0);
+        $this::$postsSentimentLine[$id]['neutral'] = (isset($this::$postsSentimentLine[$id]['neutral']) ? $this::$postsSentimentLine[$id]['neutral'] : 0) + (isset($value['fb_neutral']) ? $value['fb_neutral'] : 0) + (isset($value['ig_neutral']) ? $value['ig_neutral'] : 0) + (isset($value['tg_neutral']) ? $value['tg_neutral'] : 0) + (isset($value['web_neutral']) ? $value['web_neutral'] : 0);
+        $this::$postsSentimentLine[$id]['negative'] = (isset($this::$postsSentimentLine[$id]['negative']) ? $this::$postsSentimentLine[$id]['negative'] : 0) + (isset($value['fb_negative']) ? $value['fb_negative'] : 0) + (isset($value['ig_negative']) ? $value['ig_negative'] : 0) + (isset($value['tg_negative']) ? $value['tg_negative'] : 0) + (isset($value['web_negative']) ? $value['web_negative'] : 0);
+        $this::$totalResourcesDonut[$id]['fb'] = (isset($this::$totalResourcesDonut[$id]['fb']) ? $this::$totalResourcesDonut[$id]['fb'] : 0) + (isset($value['fb_posts']) ? $value['fb_posts'] : 0);
+        $this::$totalResourcesDonut[$id]['ig'] = (isset($this::$totalResourcesDonut[$id]['ig']) ? $this::$totalResourcesDonut[$id]['ig'] : 0) + (isset($value['ig_posts']) ? $value['ig_posts'] : 0);
+        $this::$totalResourcesDonut[$id]['tg'] = (isset($this::$totalResourcesDonut[$id]['tg']) ? $this::$totalResourcesDonut[$id]['tg'] : 0) + (isset($value['tg_posts']) ? $value['tg_posts'] : 0);
+        $this::$totalResourcesDonut[$id]['web'] = (isset($this::$totalResourcesDonut[$id]['web']) ? $this::$totalResourcesDonut[$id]['web'] : 0) + (isset($value['web_posts']) ? $value['web_posts'] : 0);
+        $this::$postsSentimentChart[$id]['positive'][$date] = (isset($this::$postsSentimentChart[$id]['positive'][$date]) ? $this::$postsSentimentChart[$id]['positive'][$date] : 0) + (isset($value['fb_positive']) ? $value['fb_positive'] : 0) + (isset($value['ig_positive']) ? $value['ig_positive'] : 0) + (isset($value['tg_positive']) ? $value['tg_positive'] : 0) + (isset($value['web_positive']) ? $value['web_positive'] : 0);
+        $this::$postsSentimentChart[$id]['neutral'][$date] = (isset($this::$postsSentimentChart[$id]['neutral'][$date]) ? $this::$postsSentimentChart[$id]['neutral'][$date] : 0) + (isset($value['fb_neutral']) ? $value['fb_neutral'] : 0) + (isset($value['ig_neutral']) ? $value['ig_neutral'] : 0) + (isset($value['tg_neutral']) ? $value['tg_neutral'] : 0) + (isset($value['web_neutral']) ? $value['web_neutral'] : 0);
+        $this::$postsSentimentChart[$id]['negative'][$date] = (isset($this::$postsSentimentChart[$id]['negative'][$date]) ? $this::$postsSentimentChart[$id]['negative'][$date] : 0) + (isset($value['fb_negative']) ? $value['fb_negative'] : 0) + (isset($value['ig_negative']) ? $value['ig_negative'] : 0) + (isset($value['tg_negative']) ? $value['tg_negative'] : 0) + (isset($value['web_negative']) ? $value['web_negative'] : 0);
+        $this::$totalSubsChart[$id]['fb'][$date] = (isset($this::$totalSubsChart[$id]['fb'][$date]) ? $this::$totalSubsChart[$id]['fb'][$date] : 0) + (isset($value['fb_sub']) ? $value['fb_sub'] : 0);
+        $this::$totalSubsChart[$id]['ig'][$date] = (isset($this::$totalSubsChart[$id]['ig'][$date]) ? $this::$totalSubsChart[$id]['ig'][$date] : 0) + (isset($value['ig_sub']) ? $value['ig_sub'] : 0);
+        $this::$totalSubsDonut[$id]['fb'] = (isset($this::$totalSubsDonut[$id]['fb']) ? $this::$totalSubsDonut[$id]['fb'] : 0) + (isset($value['fb_sub']) ? $value['fb_sub'] : 0);
+        $this::$totalSubsDonut[$id]['ig'] = (isset($this::$totalSubsDonut[$id]['ig']) ? $this::$totalSubsDonut[$id]['ig'] : 0) + (isset($value['ig_sub']) ? $value['ig_sub'] : 0);
+        $this::$totalLikesChart[$id]['fb'][$date] = (isset($this::$totalLikesChart[$id]['fb'][$date]) ? $this::$totalLikesChart[$id]['fb'][$date] : 0) + (isset($value['fb_likes']) ? $value['fb_likes'] : 0);
+        $this::$totalLikesChart[$id]['ig'][$date] = (isset($this::$totalLikesChart[$id]['ig'][$date]) ? $this::$totalLikesChart[$id]['ig'][$date] : 0) + (isset($value['ig_likes']) ? $value['ig_likes'] : 0);
+        $this::$totalLikesDonut[$id]['fb'] = (isset($this::$totalLikesDonut[$id]['fb']) ? $this::$totalLikesDonut[$id]['fb'] : 0) + (isset($value['fb_likes']) ? $value['fb_likes'] : 0);
+        $this::$totalLikesDonut[$id]['ig'] = (isset($this::$totalLikesDonut[$id]['ig']) ? $this::$totalLikesDonut[$id]['ig'] : 0) + (isset($value['ig_likes']) ? $value['ig_likes'] : 0);
+        $this::$totalCommentsChart[$id]['fb'][$date] = (isset($this::$totalCommentsChart[$id]['fb'][$date]) ? $this::$totalCommentsChart[$id]['fb'][$date] : 0) + (isset($value['fb_comments']) ? $value['fb_comments'] : 0);
+        $this::$totalCommentsChart[$id]['ig'][$date] = (isset($this::$totalCommentsChart[$id]['ig'][$date]) ? $this::$totalCommentsChart[$id]['ig'][$date] : 0) + (isset($value['ig_comments']) ? $value['ig_comments'] : 0);
+        $this::$totalCommentsDonut[$id]['fb'] = (isset($this::$totalCommentsDonut[$id]['fb']) ? $this::$totalCommentsDonut[$id]['fb'] : 0) + (isset($value['fb_comments']) ? $value['fb_comments'] : 0);
+        $this::$totalCommentsDonut[$id]['ig'] = (isset($this::$totalCommentsDonut[$id]['ig']) ? $this::$totalCommentsDonut[$id]['ig'] : 0) + (isset($value['ig_comments']) ? $value['ig_comments'] : 0);
+        $this::$totalRepostsChart[$id]['fb'][$date] = (isset($this::$totalRepostsChart[$id]['fb'][$date]) ? $this::$totalRepostsChart[$id]['fb'][$date] : 0) + (isset($value['fb_reposts']) ? $value['fb_reposts'] : 0);
+        $this::$totalRepostsChart[$id]['ig'][$date] = (isset($this::$totalRepostsChart[$id]['ig'][$date]) ? $this::$totalRepostsChart[$id]['ig'][$date] : 0) + (isset($value['ig_reposts']) ? $value['ig_reposts'] : 0);
+        $this::$totalRepostsChart[$id]['tg'][$date] = (isset($this::$totalRepostsChart[$id]['tg'][$date]) ? $this::$totalRepostsChart[$id]['tg'][$date] : 0) + (isset($value['tg_reposts']) ? $value['tg_reposts'] : 0);
+        $this::$totalRepostsDonut[$id]['fb'] = (isset($this::$totalRepostsDonut[$id]['fb']) ? $this::$totalRepostsDonut[$id]['fb'] : 0) + (isset($value['fb_reposts']) ? $value['fb_reposts'] : 0);
+        $this::$totalRepostsDonut[$id]['ig'] = (isset($this::$totalRepostsDonut[$id]['ig']) ? $this::$totalRepostsDonut[$id]['ig'] : 0) + (isset($value['ig_reposts']) ? $value['ig_reposts'] : 0);
+        $this::$totalRepostsDonut[$id]['tg'] = (isset($this::$totalRepostsDonut[$id]['tg']) ? $this::$totalRepostsDonut[$id]['tg'] : 0) + (isset($value['tg_reposts']) ? $value['tg_reposts'] : 0);
     }
 
     private function getBetweenDates($startDate, $endDate)
@@ -150,7 +162,7 @@ class MainController extends AuthController
                         return !Yii::$app->user->identity->isAdmin();
                     },
                     'denyCallback' => function ($rule, $action) {
-                        return $this->redirect(["/super/index"]);
+                        return $this->redirect(["/manage/index"]);
                     },
 
                 ],
@@ -194,6 +206,8 @@ class MainController extends AuthController
             $result = json_decode(get_web_page("frontend.test.localhost/backend/main/search?type=1&start_date={$start_date}&end_date={$end_date}"), true);
 
             $this->splitData($result);
+            // var_dump($this::$rating);
+            // exit;
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];
             $tempDonut = [];

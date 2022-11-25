@@ -87,7 +87,7 @@ class SiteController extends Controller
         $this->layout = 'inspinia'; 
         if (!Yii::$app->user->isGuest) {
             if(Yii::$app->user->getIsAdmin()){
-                return $this->redirect("/super/index");
+                return $this->redirect("/manage/index");
             }
             return $this->redirect("/main/index");
         }
@@ -95,7 +95,7 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             if(Yii::$app->user->getIsAdmin()){
-                return $this->redirect("/super/index");
+                return $this->redirect("/manage/index");
             }
             return $this->redirect("/main/index");
         }

@@ -9,27 +9,29 @@
                     <div class="ibox">
                         <?php
                         $total = 0;
+                        $ids = array_keys($candidateInformation);
                         foreach ($rating as $i) {
                             $total += $i;
                         }
-
-                        foreach ($rating as $key => $value) { ?>
-                            <div class="ibox-content">
-                                <div class="row">
-                                    <a onclick='openurl("candidate", start_date, end_date, <?= $key ?>)' class="float-left">
-                                        <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?= $candidateInformation[$key]['photo'] ?>">
-                                    </a>
-                                    <div class="media-body ">
-                                        <h4 class="float-right text-navy"><?php echo round(($value / $total) * 100, 2) ?> %</h4>
-                                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $key ?>)'><strong><?= $candidateInformation[$key]['name'] ?></strong></a>
-                                        <div class="progress progress-mini">
-                                            <div style="width: <?php echo round(($value / $total) * 100, 2) ?>%;" class="progress-bar"></div>
+                        foreach ($rating as $key=>$rate) {
+                            foreach ($ids as $id) { 
+                                if($key == $id){?>
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <a onclick='openurl("candidate", start_date, end_date, <?= $id ?>)' class="float-left">
+                                            <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?= $candidateInformation[$id]['photo'] ?>">
+                                        </a>
+                                        <div class="media-body ">
+                                            <h4 class="float-right text-navy"><?php echo (isset($rating[$id]) && $rating[$id]!=0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?> %</h4>
+                                            <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $id ?>)'><strong><?= $candidateInformation[$id]['name'] ?></strong></a>
+                                            <div class="progress progress-mini">
+                                                <div style="width: <?php echo (isset($rating[$id]) && $rating[$id]!=0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?>%;" class="progress-bar"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        <?php } ?>
-
+                        <?php }}
+                        } ?>
                     </div>
                 </div>
 
@@ -41,7 +43,7 @@
     <div class="col-lg-8 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'><strong>Тональность постов про кандидатов</strong></h2>
+                <h2 class='text-center'><strong>Тональность постов</strong></h2>
             </div>
             <div class="panel-body">
                 <?php
@@ -53,18 +55,18 @@
                     <div class="ibox-content" style='position:relative !important;'>
                         <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)'><strong><?= $candidate['name'] ?></strong></a>
                         <div style='position:inherit; width:100%; margin-bottom:20px;'>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; width:<?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2):0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2):0 ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2):0 ?>%;width:<?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2):0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2):0 ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$candidate['id']])?round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2):0 ?>%;width:<?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2):0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2):0 ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; width:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['positive']!=0 ? round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['positive']!=0 ? round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['neutral']!=0 ? round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%;width:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['neutral']!=0 ? round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['neutral']!=0 ? round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['negative']!=0 ? round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2) : 0 ?>%;width:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['negative']!=0 ? round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['negative']!=0 ? round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%</h5>
                         </div>
                         <div class="progress" style='height:8px !important;'>
-                            <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2):0 ?>%;display:block;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['positive']!=0 ? round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%;display:block;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
-                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2):0 ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['neutral']!=0 ? round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
-                            <div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']])?round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2):0 ?>%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['negative']!=0 ? round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
                         </div>
@@ -140,20 +142,20 @@
 
     }
 
-    function openurl(type, start_date, end_date, candidate_id = null) {
-        $.ajax({
-            url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""),
-            type: 'GET',
-            success: function(data) {
-                // $('#page-wrapper').html("");
-                history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""));
-                $('.wrapper-content').html(data);
-                window.scrollTo(0,0);
+    // function openurl(type, start_date, end_date, candidate_id = null) {
+    //     $.ajax({
+    //         url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""),
+    //         type: 'GET',
+    //         success: function(data) {
+    //             // $('#page-wrapper').html("");
+    //             history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""));
+    //             $('.wrapper-content').html(data);
+    //             window.scrollTo(0, 0);
 
-                // console.log(data);
-            }
-        });
-    }
+    //             // console.log(data);
+    //         }
+    //     });
+    // }
 
     function do_daterangepicker_stuff(start, end, label) {
 
@@ -260,7 +262,7 @@
                 fontFamily: "Droid Sans",
             },
             title: {
-                text: 'Обсуждение кандидатов в медиа',
+                text: 'Обсуждения в медиа',
                 align: 'center'
             },
             xAxis: {
@@ -383,7 +385,7 @@
                 }
             },
             title: {
-                text: 'Обсуждение кандидатов в ресурсах'
+                text: 'Обсуждения в ресурсах'
             },
             plotOptions: {
                 pie: {
@@ -394,10 +396,10 @@
             series: [{
                 name: 'Постов',
                 data: [
-                    ['Facebook', <?= isset($totalResourcesDonut['fb'])?$totalResourcesDonut['fb']:0 ?>],
-                    ['Instagram',<?= isset($totalResourcesDonut['ig'])?$totalResourcesDonut['ig']:0 ?>],
-                    ['Telegram', <?= isset($totalResourcesDonut['tg'])?$totalResourcesDonut['tg']:0 ?>],
-                    ['Web-Site', <?= isset($totalResourcesDonut['web'])?$totalResourcesDonut['web']:0 ?>],
+                    ['Facebook', <?= isset($totalResourcesDonut['fb']) ? $totalResourcesDonut['fb'] : 0 ?>],
+                    ['Instagram', <?= isset($totalResourcesDonut['ig']) ? $totalResourcesDonut['ig'] : 0 ?>],
+                    ['Telegram', <?= isset($totalResourcesDonut['tg']) ? $totalResourcesDonut['tg'] : 0 ?>],
+                    ['Web-Site', <?= isset($totalResourcesDonut['web']) ? $totalResourcesDonut['web'] : 0 ?>],
                 ]
             }]
         });

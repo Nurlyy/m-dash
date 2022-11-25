@@ -1,5 +1,5 @@
 <?php
-
+if(isset($result['projects']))
 foreach ($result['projects'] as $project) { ?>
     <div class="col-12">
         <div class="panel panel-default">
@@ -17,7 +17,7 @@ foreach ($result['projects'] as $project) { ?>
                         <h4 class="text-primary">Статус: <strong><?= ($project['is_active'] == 1) ? "Активно" : "Отключен" ?></strong></h4>
                     </div>
                     <div class="col-lg-4 col-sm-12 p-sm">
-                        <h4>Аккаунтов: <strong><?= $project['candidates'] ?></strong></h4>
+                        <h4>Аккаунтов: <strong><?= $project['cities'] ?></strong></h4>
                         </h4>
                     </div>
                 </div>
@@ -27,6 +27,10 @@ foreach ($result['projects'] as $project) { ?>
             </div>
         </div>
     </div>
+
+    <script>
+        
+    </script>
 <?php }
 
 ?>

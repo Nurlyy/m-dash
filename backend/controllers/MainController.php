@@ -38,7 +38,7 @@ class MainController extends Controller
                 [
                     'actions' => ['search'],
                     'allow' => true,
-                    'roles' => ['@', User::STATUS_ACTIVE, User::STATUS_SUPERUSER],
+                    'roles' => ['@', User::STATUS_ACTIVE],
 
                     // 'matchCallback' => function ($rule, $action) {
                     //     return !Yii::$app->user->identity->isAdmin();
@@ -49,15 +49,16 @@ class MainController extends Controller
 
                 ],
                 [
-                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects'],
+                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp'],
                     'allow' => true,
-                    'roles' => ['@', User::STATUS_SUPERUSER],
-                    'matchCallback' => function ($rule, $action) {
-                        return Yii::$app->user->identity->isAdmin();
-                    },
-                    'denyCallback' => function ($rule, $action) {
-                        return $this->redirect(["/main/search"]);
-                    },
+                    // 'roles' => ['@', User::STATUS_SUPERUSER],
+                    'roles' => ['@'],
+                    // 'matchCallback' => function ($rule, $action) {
+                    //     return Yii::$app->user->identity->isAdmin();
+                    // },
+                    // 'denyCallback' => function ($rule, $action) {
+                    //     return $this->redirect(["/main/search"]);
+                    // },
                 ],
             ],
         ];
@@ -87,26 +88,53 @@ class MainController extends Controller
         $commentsChart = isset($_GET['commentsChart']) ? $_GET['commentsChart'] : false;
         $repostsChart = isset($_GET['repostsChart']) ? $_GET['repostsChart'] : false;
         $result = [];
-
         switch ($type) {
             case 1:
                 $all_data = $projectModel->get_all_data($candidate_id, $start_date, $end_date, $type);
-                $candidates_data = $projectModel->get_candidates_data($project_id, [$candidate_id]);
+                $temp_all = [];
+                foreach($all_data as $data){
+                    $temp_all[$data['id']] = [];
+                    // array_push($temp[$data['id']], $data);
+                }
+                foreach($all_data as $data){
+                    array_push($temp_all[$data['id']], $data);
+                }
+                $all_data = $temp_all;
+                // return $temp_all;
+                $candidates_data = $projectModel->get_cities_data($project_id, [$candidate_id]);
                 $result = array_merge(['all_data' => $all_data], ['candidate_data' => $candidates_data]);
                 break;
             case 2:
                 $all_data = $projectModel->get_all_data($candidate_id, $start_date, $end_date, $type);
-                $candidates_data = $projectModel->get_candidates_data($project_id, [$candidate_id]);
-                $candidate_posts = $projectModel->get_candidate_posts($candidate_id, $start_date, $end_date);
+                $temp_all = [];
+                foreach($all_data as $data){
+                    $temp_all[$data['id']] = [];
+                    // array_push($temp[$data['id']], $data);
+                }
+                foreach($all_data as $data){
+                    array_push($temp_all[$data['id']], $data);
+                }
+                $all_data = $temp_all;
+                $candidates_data = $projectModel->get_cities_data($project_id, [$candidate_id]);
+                $candidate_posts = $projectModel->get_city_posts($candidate_id, $start_date, $end_date);
                 $result = array_merge(['all_data' => $all_data], ['candidate_data' => $candidates_data], ['candidate_posts' => $candidate_posts]);
                 break;
             case 3:
                 $all_data = $projectModel->get_all_data($candidate_id, $start_date, $end_date, $type, $first, $second, $discussionChart, $sentimentChart, $subsChart, $likesChart, $commentsChart, $repostsChart);
-                $candidates_data = $projectModel->get_candidates_data($project_id, [$first, $second]);
+                $temp_all = [];
+                foreach($all_data as $data){
+                    $temp_all[$data['id']] = [];
+                    // array_push($temp[$data['id']], $data);
+                }
+                foreach($all_data as $data){
+                    array_push($temp_all[$data['id']], $data);
+                }
+                $all_data = $temp_all;
+                $candidates_data = $projectModel->get_cities_data($project_id, [$first, $second]);
                 $result = array_merge(['all_data' => $all_data], ['candidate_data' => $candidates_data]);
                 break;
             case 'index':
-                $candidates_data = $projectModel->get_candidates_data($project_id);
+                $candidates_data = $projectModel->get_cities_data($project_id);
                 $result = ['candidate_data' => $candidates_data];
                 break;
         }
@@ -114,56 +142,54 @@ class MainController extends Controller
     }
 
 
-    // public function actionGetprojects(){
-    //     $result = [];
-    //     $projectModel = new Project();
-    //     $result['projects'] = $projectModel->getProjects();
-    //     return $result;
-    // }
+    public function actionGetprojects(){
+        $result = [];
+        $projectModel = new Project();
+        $result['projects'] = $projectModel->getProjects();
+        return $result;
+    }
 
 
-    // public function actionCreateproject()
-    // {
-    //     $projectModel = new Project();
-    //     $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : null;
-    //     $created_date = isset($_POST['created_date']) ? $_POST['created_date'] : null;
-    //     $owner = isset($_POST['owner']) ? $_POST['owner'] : null;
-    // }
+    public function actionCreateproject()
+    {
+        $projectModel = new Project();
+        // $post = json_decode($_POST);
+        $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : null;
+        $created_date = isset($_POST['created_date']) ? $_POST['created_date'] : null;
+        $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : null;
+        return $projectModel->createProject($project_name, $user_id, $created_date);
+        // return $_POST;
+    }
 
 
-    // public function actionAddcandidate()
-    // {
-    //     $projectModel = new Project();
-    //     $candidate_name = isset($_POST['candidate_name']) ? $_POST['candidate_name'] : null;
-    //     $partia = isset($_POST['partia']) ? $_POST['partia'] : null;
-    //     $fb_account = isset($_POST['fb_account']) ? $_POST['fb_account'] : null;
-    //     $ig_account = isset($_POST['ig_account']) ? $_POST['ig_account'] : null;
-    //     $web_site = isset($_POST['web_site']) ? $_POST['web_site'] : null;
-    //     $photo = isset($_POST['photo']) ? $_POST['photo'] : null;
-    //     $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : null;
-    //     $experience = isset($_POST['experience']) ? $_POST['experience'] : null;
-    //     $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
-    // }
+    public function actionAddcandidate()
+    {
+        $projectModel = new Project();
+        $candidate_name = isset($_POST['candidate_name']) ? $_POST['candidate_name'] : null;
+        $partia = isset($_POST['partia']) ? $_POST['partia'] : null;
+        $fb_account = isset($_POST['fb_account']) ? $_POST['fb_account'] : null;
+        $ig_account = isset($_POST['ig_account']) ? $_POST['ig_account'] : null;
+        $web_site = isset($_POST['web_site']) ? $_POST['web_site'] : null;
+        $photo = isset($_POST['photo']) ? $_POST['photo'] : null;
+        $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : null;
+        $experience = isset($_POST['experience']) ? $_POST['experience'] : null;
+        $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
+    }
 
-    // public function actionRemoveProject(){
-    //     $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
-    //     $projectModel = new Project();
-    //     $projectModel->removeProject($project_id);
-    // }
+    public function actionRemoveproject(){
+        $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
+        $projectModel = new Project();
+        $projectModel->removeProject($project_id);
+    }
 
 
-    // public function actionTemp()
-    // {
-    //     $projectModel = new Project();
+    public function actionTemp()
+    {
+        $projectModel = new Project();
 
-    //     $project_id = $projectModel->getUserProject(Yii::$app->user->id);
+        $temp = $projectModel->temp();
 
-    //     $temp = [];
-    //     foreach ($project_id as $i) {
-    //         array_push($temp, $i['id']);
-    //     }
-    //     $project_id = $temp;
-
-    //     return $project_id;
-    // }
+        return $temp;
+        exit;
+    }
 }

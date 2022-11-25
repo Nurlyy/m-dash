@@ -9,8 +9,9 @@ use DateInterval;
 use DatePeriod;
 use common\models\User;
 use common\components\AccessRule;
+use yii\filters\VerbFilter;
 
-class SuperController extends AuthController
+class ManageController extends AuthController
 {
     public $layout = 'inspinia';
 
@@ -26,16 +27,21 @@ class SuperController extends AuthController
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@', User::STATUS_ACTIVE],
-
+                    'roles' => ['@', User::STATUS_SUPERUSER],
                     'matchCallback' => function ($rule, $action) {
                         return Yii::$app->user->identity->isAdmin();
                     },
                     'denyCallback' => function ($rule, $action) {
-                        return $this->redirect(["/main/index"]);
+                        return $this->redirect(["/manage/index"]);
                     },
-
                 ],
+            ],
+
+        ];
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::class,
+            'actions' => [
+                'create' => ['POST'],
             ],
         ];
         return $behaviors;
@@ -52,6 +58,7 @@ class SuperController extends AuthController
     {
         $this->layout = 'empty';
         $result = json_decode(get_web_page("frontend.test.localhost/backend/main/getprojects"), true);
+        // return var_dump($result);
         return $this->render('mainpage', ['result' => $result]);
     }
 
@@ -65,9 +72,11 @@ class SuperController extends AuthController
             $temp = [];
             $temp['project_name'] = $project_name;
             $temp['created_date'] = $created_date;
-            $temp['owner'] = $owner;
-            send_post("frontend.test.localhost/backend/main/createproject", $temp);
-            return $this->redirect('super/mainpage');
+            $temp['user_id'] = $owner;
+            $result = send_post("frontend.test.localhost/backend/main/createproject", $temp);
+            // var_dump($result);
+            // exit; 
+            return $this->redirect('index');
         }
         return $this->render('createproject');
     }
