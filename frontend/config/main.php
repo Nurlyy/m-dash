@@ -47,6 +47,7 @@ return [
             'rules' => [
                 '' => 'main/index',
                 '<action>'=>'main/index',
+
             ],
         ],
         

@@ -152,7 +152,6 @@ class MainController extends AuthController
             'ruleConfig' => [
                 'class' => AccessRule::class,
             ],
-            // 'only' => ['index', 'facebook', 'instagram', 'new', 'regions', 'telegram', 'sites', 'resources'],
             'rules' => [
                 [
                     'allow' => true,
@@ -166,11 +165,6 @@ class MainController extends AuthController
                     },
 
                 ],
-                // [
-                //     'allow' => true,
-                //     'roles' => [User::STATUS_ACTIVE],    
-
-                // ],
             ],
         ];
         return $behaviors;
@@ -181,6 +175,8 @@ class MainController extends AuthController
 
     public function actionIndex()
     {
+        // var_dump("SESES");
+        // exit;
         // return $this->render('temp');
         $today = date('Y-m-d', strtotime('today'));
         $month_ago = date('Y-m-d', strtotime('-30 days'));
@@ -190,7 +186,6 @@ class MainController extends AuthController
         $result = json_decode(get_web_page("frontend.test.localhost/backend/main/search?type=index"), true);
         $this->splitData($result);
         return $this->render('index', [
-            // 'result' => $result,
             'start_date' => $start_date,
             'end_date' => $end_date,
             'candidateInformation' => $this::$candidateInformation,
@@ -204,10 +199,7 @@ class MainController extends AuthController
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11) {
             $result = json_decode(get_web_page("frontend.test.localhost/backend/main/search?type=1&start_date={$start_date}&end_date={$end_date}"), true);
-
             $this->splitData($result);
-            // var_dump($this::$rating);
-            // exit;
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];
             $tempDonut = [];

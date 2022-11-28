@@ -40,9 +40,9 @@ class MainController extends Controller
                     'allow' => true,
                     'roles' => ['@', User::STATUS_ACTIVE],
 
-                    // 'matchCallback' => function ($rule, $action) {
-                    //     return !Yii::$app->user->identity->isAdmin();
-                    // },
+                    'matchCallback' => function ($rule, $action) {
+                        return !Yii::$app->user->identity->isAdmin();
+                    },
                     'denyCallback' => function ($rule, $action) {
                         return $this->redirect(["/main/search"]);
                     },
@@ -51,14 +51,14 @@ class MainController extends Controller
                 [
                     'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp'],
                     'allow' => true,
-                    // 'roles' => ['@', User::STATUS_SUPERUSER],
-                    'roles' => ['@'],
-                    // 'matchCallback' => function ($rule, $action) {
-                    //     return Yii::$app->user->identity->isAdmin();
-                    // },
-                    // 'denyCallback' => function ($rule, $action) {
-                    //     return $this->redirect(["/main/search"]);
-                    // },
+                    'roles' => ['@', User::STATUS_SUPERUSER],
+                    // 'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+                        return Yii::$app->user->identity->isAdmin();
+                    },
+                    'denyCallback' => function ($rule, $action) {
+                        return $this->redirect(["/main/search"]);
+                    },
                 ],
             ],
         ];
@@ -116,7 +116,7 @@ class MainController extends Controller
                 }
                 $all_data = $temp_all;
                 $candidates_data = $projectModel->get_cities_data($project_id, [$candidate_id]);
-                $candidate_posts = $projectModel->get_city_posts($candidate_id, $start_date, $end_date);
+                $candidate_posts = $projectModel->get_res_posts($candidate_id, $start_date, $end_date);
                 $result = array_merge(['all_data' => $all_data], ['candidate_data' => $candidates_data], ['candidate_posts' => $candidate_posts]);
                 break;
             case 3:
@@ -190,6 +190,6 @@ class MainController extends Controller
         $temp = $projectModel->temp();
 
         return $temp;
-        exit;
+        // exit;
     }
 }

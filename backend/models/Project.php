@@ -54,40 +54,82 @@ class Project extends Model
         return $this->helper::createCommand($query);
     }
 
-    public function get_city_posts($candidate_id, $start_date, $end_date)
+    public function get_res_posts($res_id, $start_date, $end_date)
     {
-        if (isset($candidate_id)) {
-            $query = "SELECT * from candidate_posts where candidate_id = {$candidate_id} and date between '{$start_date}' and '{$end_date}'";
+        if (isset($res_id)) {
+            $query = "SELECT * from res_posts where res_id = {$res_id} and date between '{$start_date}' and '{$end_date}'";
             return $this->helper::createCommand($query);
             // return $query;
         }
     }
 
-    public function get_all_data($candidate_id, $start_date, $end_date, $type, $first = null, $second = null, $discussionChart = null, $sentimentChart = null, $subsChart = null, $likesChart = null, $commentsChart = null, $repostsChart = null)
+
+    public function get_resources($city_id){
+        $query = "SELECT id from resources where city_id = {$city_id}";
+        $this->helper::createCommand($query);
+    }
+
+    public function get_all_data($city_id, $res_id, $start_date, $end_date, $type, $first = null, $second = null, $discussionChart = null, $sentimentChart = null, $subsChart = null, $likesChart = null, $commentsChart = null, $repostsChart = null)
     {
         $query = "select u.id, p.date,";
 
         switch ($type) {
             case 1:
-                $query .= " count(case when p.type = 1 then 1 end) as fb_posts,"
-                    . " count(case when p.type=2 then 1 end) as ig_posts,"
-                    . " count(case when p.type=3 then 1 end) as tg_posts,"
-                    . " count(case when p.type=4 then 1 end) as web_posts,"
-                    . " count(case when p.sentiment=1 and p.type = 1 then 1 end) as fb_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 1 then 1 end) as fb_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 1 then 1 end) as fb_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 2 then 1 end) as ig_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 2 then 1 end) as ig_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 2 then 1 end) as ig_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 3 then 1 end) as tg_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 3 then 1 end) as tg_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 3 then 1 end) as tg_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 4 then 1 end) as web_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 4 then 1 end) as web_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 4 then 1 end) as web_negative ";
+                $query .= 
+                      " count(case when p.type=1 then 1 end) as vk_posts,"
+                    . " count(case when p.type=2 then 1 end) as fb_posts,"
+                    . " count(case when p.type=3 then 1 end) as tw_posts,"
+                    . " count(case when p.type=4 then 1 end) as ig_posts,"
+                    . " count(case when p.type=5 then 1 end) as gg_posts,"
+                    . " count(case when p.type=6 then 1 end) as yt_posts,"
+                    . " count(case when p.type=7 then 1 end) as ok_posts,"
+                    . " count(case when p.type=8 then 1 end) as mm_posts,"
+                    . " count(case when p.type=9 then 1 end) as tg_posts,"
+                    . " count(case when p.type=10 then 1 end) as tt_posts,"
+
+                    . " count(case when t.sentiment=1 and p.type = 1 then 1 end) as vk_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 1 then 1 end) as vk_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 1 then 1 end) as vk_negative,"
+
+                    . " count(case when t.sentiment=1 and p.type = 2 then 1 end) as fb_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 2 then 1 end) as fb_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 2 then 1 end) as fb_negative,"
+
+                    . " count(case when t.sentiment=1 and p.type = 3 then 1 end) as tw_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 3 then 1 end) as tw_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 3 then 1 end) as tw_negative,"
+                    
+                    . " count(case when t.sentiment=1 and p.type = 4 then 1 end) as ig_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 4 then 1 end) as ig_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 4 then 1 end) as ig_negative,"
+                    
+                    . " count(case when t.sentiment=1 and p.type = 5 then 1 end) as gg_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 5 then 1 end) as gg_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 5 then 1 end) as gg_negative,"
+                    
+                    . " count(case when t.sentiment=1 and p.type = 6 then 1 end) as yt_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 6 then 1 end) as yt_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 6 then 1 end) as yt_negative,"
+                    
+                    . " count(case when t.sentiment=1 and p.type = 7 then 1 end) as ok_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 7 then 1 end) as ok_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 7 then 1 end) as ok_negative,"
+                    
+                    . " count(case when t.sentiment=1 and p.type = 8 then 1 end) as mm_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 8 then 1 end) as mm_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 8 then 1 end) as mm_negative,"
+                    
+                    . " count(case when t.sentiment=1 and p.type = 9 then 1 end) as tg_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 9 then 1 end) as tg_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 9 then 1 end) as tg_negative,"
+                    
+                    . " count(case when t.sentiment=1 and p.type = 10 then 1 end) as tt_positive,"
+                    . " count(case when t.sentiment=2 and p.type = 10 then 1 end) as tt_neutral,"
+                    . " count(case when t.sentiment=3 and p.type = 10 then 1 end) as tt_negative,";
                 break;
             case 2:
-                $query .= " if(s.date=p.date and p.candidate_id=s.candidate_id, s.fb, 0) as fb_sub,"
+                $query .= 
+                      " if(s.date=p.date and p.candidate_id=s.candidate_id, s.fb, 0) as fb_sub,"
                     . " if(s.date=p.date and s.candidate_id=u.id, s.ig, 0) as ig_sub,"
                     . " count(case when p.type = 1 then 1 end) as fb_posts,"
                     . " count(case when p.type=2 then 1 end) as ig_posts,"
@@ -192,11 +234,14 @@ class Project extends Model
                     . " count(case when p.sentiment=3 and p.type = 4 then 1 end) as web_negative ";
                 break;
         }
-        $query .= " from candidate u "
-            . " inner join post p on p.candidate_id=u.id"
-            . " inner join subscriber s on p.date=s.date and u.id=s.candidate_id"
+        $query .= " from city u "
+            . " inner join resources r on r.city_id=u.id"
+            . " inner join posts_metrics p on r.id = p.res_id"
+            . " inner join res_posts t on r.id = t.res_id"
+            . " inner join sub_follow s on p.date=s.date and r.id=s.res_id"
             . " where"
-            . (isset($candidate_id) ? " u.id={$candidate_id} and" : "")
+            . (isset($city_id) ? " u.id={$city_id} and" : "")
+            . (isset($res_id) ? " r.id={$res_id} and" : "")
             . ((isset($first) && isset($second)) ? " u.id IN ({$first}, {$second}) and" : "")
             . " p.date between '{$start_date}' and '{$end_date}'"
             . " group by p.date, u.id";

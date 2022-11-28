@@ -57,9 +57,9 @@ class ManageController extends AuthController
     public function actionMainpage()
     {
         $this->layout = 'empty';
-        $result = json_decode(get_web_page("frontend.test.localhost/backend/main/getprojects"), true);
-        // return var_dump($result);
-        return $this->render('mainpage', ['result' => $result]);
+        $result = json_decode(get_web_page("rating.imas.kz/backend/main/getprojects"), true);
+        return var_dump($result);
+        // return $this->render('mainpage', ['result' => $result]);
     }
 
     public function actionCreateproject()
@@ -73,7 +73,7 @@ class ManageController extends AuthController
             $temp['project_name'] = $project_name;
             $temp['created_date'] = $created_date;
             $temp['user_id'] = $owner;
-            $result = send_post("frontend.test.localhost/backend/main/createproject", $temp);
+            $result = send_post("rating.imas.kz/backend/main/createproject", $temp);
             // var_dump($result);
             // exit; 
             return $this->redirect('index');
