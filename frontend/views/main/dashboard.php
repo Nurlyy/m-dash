@@ -9,7 +9,7 @@
                     <div class="ibox">
                         <?php
                         $total = 0;
-                        $ids = array_keys($candidateInformation);
+                        $ids = array_keys($cityInformation);
                         foreach ($rating as $i) {
                             $total += $i;
                         }
@@ -18,12 +18,12 @@
                                 if($key == $id){?>
                                 <div class="ibox-content">
                                     <div class="row">
-                                        <a onclick='openurl("candidate", start_date, end_date, <?= $id ?>)' class="float-left">
-                                            <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?= $candidateInformation[$id]['photo'] ?>">
-                                        </a>
+                                        <!-- <a onclick='openurl("candidate", start_date, end_date, <?php #echo $id ?>)' class="float-left">
+                                            <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?php #echo $cityInformation[$id]['photo'] ?>">
+                                        </a> -->
                                         <div class="media-body ">
                                             <h4 class="float-right text-navy"><?php echo (isset($rating[$id]) && $rating[$id]!=0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?> %</h4>
-                                            <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $id ?>)'><strong><?= $candidateInformation[$id]['name'] ?></strong></a>
+                                            <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $id ?>)'><strong><?= $cityInformation[$id]['name'] ?></strong></a>
                                             <div class="progress progress-mini">
                                                 <div style="width: <?php echo (isset($rating[$id]) && $rating[$id]!=0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?>%;" class="progress-bar"></div>
                                             </div>
@@ -51,7 +51,7 @@
                 foreach ($postsSentimentLine as $key => $sentiment) {
                     $total[$key] = (isset($total[$key]) ? $total[$key] : 0) + $sentiment['positive'] + $sentiment['neutral'] + $sentiment['negative'];
                 }
-                foreach ($candidateInformation as $candidate) { ?>
+                foreach ($cityInformation as $candidate) { ?>
                     <div class="ibox-content" style='position:relative !important;'>
                         <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)'><strong><?= $candidate['name'] ?></strong></a>
                         <div style='position:inherit; width:100%; margin-bottom:20px;'>
@@ -129,7 +129,6 @@
     }
 
     function addState(sdate, edate) {
-
         $.ajax({
             url: '/main/dashboard?start_date=' + sdate + '&end_date=' + edate,
             type: 'GET',
@@ -242,7 +241,7 @@
     $(document).ready(function() {
         create_daterangepicker('<?= $start_date ?>', '<?= $end_date ?>');
 
-        // console.log(candidateInformation);
+        // console.log(cityInformation);
 
 
         // console.log(getDatesBetween(new Date('<?= $start_date ?>'), new Date('<?= $end_date ?>')).map(item=>{

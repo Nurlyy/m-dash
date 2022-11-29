@@ -18,7 +18,7 @@ class MainController extends AuthController
     public static $postsSentimentLine = [];
     public static $totalResourcesDonut = [];
     public static $discussionSentimentChart = [];
-    public static $candidateInformation = [];
+    public static $cityInformation = [];
     public static $postsResourcesChart = [];
     public static $postsResourcesDonut = [];
     public static $postsSentimentChart = [];
@@ -34,7 +34,7 @@ class MainController extends AuthController
     public static $commentsSentimentChart = [];
     public static $commentsSentimentDonut = [];
     public static $candidates = [];
-    public static $candidate_posts = [];
+    public static $city_posts = [];
 
     private function cleanVariables()
     {
@@ -43,7 +43,7 @@ class MainController extends AuthController
         $this::$postsSentimentLine = [];
         $this::$totalResourcesDonut = [];
         $this::$discussionSentimentChart = [];
-        $this::$candidateInformation = [];
+        $this::$cityInformation = [];
         $this::$postsResourcesChart = [];
         $this::$postsResourcesDonut = [];
         $this::$postsSentimentChart = [];
@@ -59,14 +59,14 @@ class MainController extends AuthController
         $this::$commentsSentimentChart = [];
         $this::$commentsSentimentDonut = [];
         $this::$candidates = [];
-        $this::$candidate_posts = [];
+        $this::$city_posts = [];
     }
 
     private function splitData($result)
     {
         $this->cleanVariables();
-        if (isset($result['all_data']) && isset($result['candidate_data'])) {
-            foreach ($result['candidate_data'] as $c_data) {
+        if (isset($result['all_data']) && isset($result['city_data'])) {
+            foreach ($result['city_data'] as $c_data) {
                 // if(isset($value['id']))
                 if (isset($result['all_data'][$c_data['id']])) {
                     foreach ($result['all_data'][$c_data['id']] as $value) {
@@ -78,13 +78,13 @@ class MainController extends AuthController
                 }
             }
         }
-        if (isset($result['candidate_data'])) {
-            foreach ($result['candidate_data'] as $value) {
-                $this::$candidateInformation[$value['id']] = $value;
+        if (isset($result['city_data'])) {
+            foreach ($result['city_data'] as $value) {
+                $this::$cityInformation[$value['id']] = $value;
             }
         }
-        if (isset($result['candidate_posts'])) {
-            $this::$candidate_posts = $result['candidate_posts'];
+        if (isset($result['city_posts'])) {
+            $this::$city_posts = $result['city_posts'];
         }
     }
 
@@ -188,7 +188,7 @@ class MainController extends AuthController
         return $this->render('index', [
             'start_date' => $start_date,
             'end_date' => $end_date,
-            'candidateInformation' => $this::$candidateInformation,
+            'cityInformation' => $this::$cityInformation,
         ]);
     }
 
@@ -199,6 +199,8 @@ class MainController extends AuthController
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11) {
             $result = json_decode(get_web_page("frontend.test.localhost/backend/main/search?type=1&start_date={$start_date}&end_date={$end_date}"), true);
+            // var_dump("frontend.test.localhost/backend/main/search?type=1&start_date={$start_date}&end_date={$end_date}");
+            // exit;
             $this->splitData($result);
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];
@@ -209,7 +211,7 @@ class MainController extends AuthController
                 }
                 return ($a > $b) ? -1 : 1;
             });
-            foreach (array_keys($this::$candidateInformation) as $id) {
+            foreach (array_keys($this::$cityInformation) as $id) {
                 if (isset($this::$date_posts[$id])) {
                     foreach ($this::$date_posts[$id] as $key => $value) {
                         foreach ($value as $k => $v) {
@@ -233,7 +235,7 @@ class MainController extends AuthController
                 'date_posts' => $this::$date_posts,
                 'postsSentimentLine' => $this::$postsSentimentLine,
                 'totalResourcesDonut' => $this::$totalResourcesDonut,
-                'candidateInformation' => $this::$candidateInformation,
+                'cityInformation' => $this::$cityInformation,
                 'dates' => $dates,
             ]);
         }
@@ -252,18 +254,18 @@ class MainController extends AuthController
             $this->splitData($result);
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];
-            foreach ($this::$candidateInformation as $candidate) {
+            foreach ($this::$cityInformation as $candidate) {
                 $temp = $candidate;
             }
-            $this::$candidateInformation = $temp;
+            $this::$cityInformation = $temp;
 
-            // var_dump($this::$candidate_posts);
+            // var_dump($this::$city_posts);
             // exit;
 
             return $this->render('candidate', [
                 'start_date' => $start_date,
                 'end_date' => $end_date,
-                'candidateInformation' => $this::$candidateInformation,
+                'cityInformation' => $this::$cityInformation,
                 'dates' => $dates,
                 'date_posts' => $this::$date_posts,
                 'totalResourcesDonut' => $this::$totalResourcesDonut,
@@ -277,7 +279,7 @@ class MainController extends AuthController
                 'totalCommentsDonut' => $this::$totalCommentsDonut,
                 'totalRepostsChart' => $this::$totalRepostsChart,
                 'totalRepostsDonut' => $this::$totalRepostsDonut,
-                'candidate_posts' => $this::$candidate_posts,
+                'city_posts' => $this::$city_posts,
             ]);
         }
     }
@@ -295,7 +297,7 @@ class MainController extends AuthController
                 // 'result' => $result,
                 'start_date' => $start_date,
                 'end_date' => $end_date,
-                'candidateInformation' => $this::$candidateInformation,
+                'cityInformation' => $this::$cityInformation,
             ]);
         }
     }
@@ -326,17 +328,17 @@ class MainController extends AuthController
             $this->splitData($result);
 
             $temp = [];
-            foreach ($this::$candidateInformation as $candidate) {
+            foreach ($this::$cityInformation as $candidate) {
                 $temp[$candidate['id']] = $candidate;
             }
-            $this::$candidateInformation = $temp;
+            $this::$cityInformation = $temp;
 
             $dates = $this->getBetweenDates($start_date, $end_date);
 
             return $this->render('comparecontent', [
                 'start_date' => $start_date,
                 'end_date' => $end_date,
-                'candidateInformation' => $this::$candidateInformation,
+                'cityInformation' => $this::$cityInformation,
                 'dates' => $dates,
                 'date_posts' => $this::$date_posts,
                 'totalResourcesDonut' => $this::$totalResourcesDonut,

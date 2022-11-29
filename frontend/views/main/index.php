@@ -20,7 +20,7 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
             <li>
                 <a href="#"><i class="fa fa-globe"></i> <span class="nav-label">Города</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <?php foreach ($candidateInformation as $candidate) { ?>
+                    <?php foreach ($cityInformation as $candidate) { ?>
                         <li><a onclick='openurl("main", "candidate", start_date, end_date, <?= $candidate["id"] ?>)' href='#candidate<?= $candidate['id'] ?>'><?= $candidate['name'] ?></a></li>
                     <?php } ?>
                 </ul>

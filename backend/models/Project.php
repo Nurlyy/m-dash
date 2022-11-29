@@ -20,7 +20,7 @@ class Project extends Model
 
     public function getProjectCandidates($user_id)
     {
-        $query = "select c.id from projects p inner join candidate c on p.id=c.project_id where p.user_id = {$user_id};";
+        $query = "select c.id from projects p inner join city c on p.id=c.project_id where p.user_id = {$user_id};";
         // return $query;
         return $this->helper::createCommand($query);
     }
@@ -104,7 +104,7 @@ class Project extends Model
                     . " count(case when t.sentiment=2 and p.type = 1 then 1 end) as vk_neutral,"
                     . " count(case when t.sentiment=3 and p.type = 1 then 1 end) as vk_negative,"
 
-                    . " count(case when t.sentiment=1 and p.type = 2 then 1 end) as fb_positive,"
+                    . " count(case when t.sentiment=0 and p.type = 2 then 1 end) as fb_positive,"
                     . " count(case when t.sentiment=2 and p.type = 2 then 1 end) as fb_neutral,"
                     . " count(case when t.sentiment=3 and p.type = 2 then 1 end) as fb_negative,"
 
@@ -138,7 +138,7 @@ class Project extends Model
                     
                     . " count(case when t.sentiment=1 and p.type = 10 then 1 end) as tt_positive,"
                     . " count(case when t.sentiment=2 and p.type = 10 then 1 end) as tt_neutral,"
-                    . " count(case when t.sentiment=3 and p.type = 10 then 1 end) as tt_negative,";
+                    . " count(case when t.sentiment=3 and p.type = 10 then 1 end) as tt_negative";
                 break;
             case 2:
                 $query .= 
@@ -250,8 +250,7 @@ class Project extends Model
         $query .= " from city u "
             . " inner join resources r on r.city_id=u.id"
             . " inner join posts_metrics p on r.id = p.res_id"
-            . " inner join res_posts t on r.id = t.res_id"
-            . " inner join sub_follow s on p.date=s.date and r.id=s.res_id"
+            . " inner join res_posts t on r.id = t.res_id and p.item_id=t.item_id"
             . " where"
             . (isset($city_id) ? " u.id={$city_id} and" : "")
             . (isset($res_id) ? " r.id={$res_id} and" : "")

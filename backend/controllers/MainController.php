@@ -68,19 +68,20 @@ class MainController extends Controller
     public function actionSearch()
     {
         $projectModel = new Project();
-        $project_candidates = $projectModel->getProjectCandidates(Yii::$app->user->id);
+        $project_cities = $projectModel->getProjectCandidates(Yii::$app->user->id);
         $project_id = $projectModel->getProjectId(Yii::$app->user->id)[0]["id"];
         $temp = [];
-        foreach ($project_candidates as $i) {
+        foreach ($project_cities as $i) {
             array_push($temp, $i['id']);
         }
-        $project_candidates = $temp;
+        $project_cities = $temp;
         $type = isset($_GET['type']) ? $_GET['type'] : null;
         $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
-        $candidate_id = isset($_GET['candidate_id']) ? (in_array($_GET['candidate_id'], $project_candidates) ? $_GET['candidate_id'] : -1) : null;
-        $first = isset($_GET['first']) ? (in_array($_GET['first'], $project_candidates) ? $_GET['first'] : -1) : null;
-        $second = isset($_GET['second']) ? (in_array($_GET['second'], $project_candidates) ? $_GET['second'] : -1) : null;
+        $city_id = isset($_GET['city_id']) ? (in_array($_GET['city_id'], $project_cities) ? $_GET['city_id'] : -1) : null;
+        $res_id = isset($_GET['res_id']) ? (in_array($_GET['res_id'], $project_cities) ? $_GET['res_id'] : -1) : null;
+        $first = isset($_GET['first']) ? (in_array($_GET['first'], $project_cities) ? $_GET['first'] : -1) : null;
+        $second = isset($_GET['second']) ? (in_array($_GET['second'], $project_cities) ? $_GET['second'] : -1) : null;
         $discussionChart = isset($_GET['discussionChart']) ? $_GET['discussionChart'] : false;
         $sentimentChart = isset($_GET['sentimentChart']) ? $_GET['sentimentChart'] : false;
         $subsChart = isset($_GET['subsChart']) ? $_GET['subsChart'] : false;
@@ -90,7 +91,9 @@ class MainController extends Controller
         $result = [];
         switch ($type) {
             case 1:
-                $all_data = $projectModel->get_all_data($candidate_id, $start_date, $end_date, $type);
+                $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
+                // $result = $all_data;
+                // break;
                 $temp_all = [];
                 foreach($all_data as $data){
                     $temp_all[$data['id']] = [];
@@ -101,11 +104,11 @@ class MainController extends Controller
                 }
                 $all_data = $temp_all;
                 // return $temp_all;
-                $candidates_data = $projectModel->get_cities_data($project_id, [$candidate_id]);
-                $result = array_merge(['all_data' => $all_data], ['candidate_data' => $candidates_data]);
+                $candidates_data = $projectModel->get_cities_data($project_id, [$city_id]);
+                $result = array_merge(['all_data' => $all_data], ['city_data' => $candidates_data]);
                 break;
             case 2:
-                $all_data = $projectModel->get_all_data($candidate_id, $start_date, $end_date, $type);
+                $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
                 $temp_all = [];
                 foreach($all_data as $data){
                     $temp_all[$data['id']] = [];
@@ -115,12 +118,12 @@ class MainController extends Controller
                     array_push($temp_all[$data['id']], $data);
                 }
                 $all_data = $temp_all;
-                $candidates_data = $projectModel->get_cities_data($project_id, [$candidate_id]);
-                $candidate_posts = $projectModel->get_res_posts($candidate_id, $start_date, $end_date);
+                $candidates_data = $projectModel->get_cities_data($project_id, [$city_id]);
+                $candidate_posts = $projectModel->get_res_posts($city_id, $start_date, $end_date);
                 $result = array_merge(['all_data' => $all_data], ['candidate_data' => $candidates_data], ['candidate_posts' => $candidate_posts]);
                 break;
             case 3:
-                $all_data = $projectModel->get_all_data($candidate_id, $start_date, $end_date, $type, $first, $second, $discussionChart, $sentimentChart, $subsChart, $likesChart, $commentsChart, $repostsChart);
+                $all_data = $projectModel->get_all_data($city_id, $start_date, $end_date, $type, $first, $second, $discussionChart, $sentimentChart, $subsChart, $likesChart, $commentsChart, $repostsChart);
                 $temp_all = [];
                 foreach($all_data as $data){
                     $temp_all[$data['id']] = [];
