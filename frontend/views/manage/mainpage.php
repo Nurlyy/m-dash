@@ -26,7 +26,7 @@ if (isset($result['projects']))
                 <form action="turnstateproject" method="POST">
                     <input id="form-token" type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->csrfToken ?>" />
                     <input id="project_id" type="hidden" name="project_id" value = "<?= $project['id'] ?>" />
-                    <input id="state" type="hidden" name="state" value="<?= !$project['is_active'] ?>" />
+                    <input id="state" type="hidden" name="state" value="<?= ($project['is_active']>0)?$project['is_active']-1:$project['is_active']+1 ?>" />
                     <input type="submit" class="<?= ($project['is_active']) ? "btn btn-danger" : "btn btn-primary" ?>" style='font-size:medium; margin-top: 20px;' value="<?= ($project['is_active']) ? "Отключить" : "Включить" ?> проект">
                 </form>
             </div>
@@ -40,7 +40,6 @@ if (isset($result['projects']))
 
 <script>
     function turnStateProject(project_id, state) {
-        console.log(!state);
         $.ajax({
             method: "POST",
             url: "/manage/turnstateproject",

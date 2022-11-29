@@ -145,8 +145,8 @@ class MainController extends Controller
     public function actionTurnstateproject(){
         $projectModel = new Project();
         $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
-        $state = isset($_POST['state']) ? $_POST['state'] : 0;
-        // return $project_id;
+        $state = isset($_POST['state']) ? $_POST['state'] : "0";
+        // return $state;
         if(isset($project_id) && isset($state))
             return $projectModel->turnOffProject($project_id, $state);
         else return false;

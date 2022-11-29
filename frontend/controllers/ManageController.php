@@ -90,13 +90,13 @@ class ManageController extends AuthController
             // var_dump("FDJSK");
             // exit;
             $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
-            $state = isset($_POST['state']) ? $_POST['state'] : null;
+            $state = isset($_POST['state']) ? $_POST['state'] : "0";
             $temp = [];
             $temp['project_id'] = $project_id;
             $temp['state'] = $state;
             $result = send_post("frontend.test.localhost/backend/main/turnstateproject", $temp);
             return $this->redirect('index');
-            // var_dump("FDKFKDSL:");
+            // var_dump($result);
             // exit;
         }
     }
