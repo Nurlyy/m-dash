@@ -1,6 +1,6 @@
 <?php
-if(isset($result['projects']))
-foreach ($result['projects'] as $project) { ?>
+if (isset($result['projects']))
+    foreach ($result['projects'] as $project) { ?>
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
@@ -17,20 +17,53 @@ foreach ($result['projects'] as $project) { ?>
                         <h4 class="text-primary">Статус: <strong><?= ($project['is_active'] == 1) ? "Активно" : "Отключен" ?></strong></h4>
                     </div>
                     <div class="col-lg-4 col-sm-12 p-sm">
-                        <h4>Аккаунтов: <strong><?= $project['cities'] ?></strong></h4>
+                        <h4>Городов: <strong><?= $project['cities'] ?></strong></h4>
                         </h4>
                     </div>
                 </div>
             </div>
             <div class="col-12 p-sm">
-                <button class="btn btn-danger">Отключить проект</button>
+                <form action="turnstateproject" method="POST">
+                    <input id="form-token" type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->csrfToken ?>" />
+                    <input id="project_id" type="hidden" name="project_id" value = "<?= $project['id'] ?>" />
+                    <input id="state" type="hidden" name="state" value="<?= !$project['is_active'] ?>" />
+                    <input type="submit" class="<?= ($project['is_active']) ? "btn btn-danger" : "btn btn-primary" ?>" style='font-size:medium; margin-top: 20px;' value="<?= ($project['is_active']) ? "Отключить" : "Включить" ?> проект">
+                </form>
             </div>
         </div>
     </div>
 
-    <script>
-        
-    </script>
 <?php }
 
 ?>
+
+
+<script>
+    function turnStateProject(project_id, state) {
+        console.log(!state);
+        $.ajax({
+            method: "POST",
+            url: "/manage/turnstateproject",
+            data: {
+                project_id: project_id,
+                state: !state,
+            },
+            type: "POST",
+            dataType: 'json',
+            error: function(xhr, tStatus, e) {
+                if (!xhr) {
+                    alert(" We have an error ");
+                    alert(tStatus + "   " + e.message);
+                } else {
+                    alert("else: " + e.message); // the great unknown
+                }
+            },
+            success: function(resp) {
+                // nextThingToDo(resp); // deal with data returned
+                console.log(resp);
+            }
+
+        })
+        // console.log(!state);
+    }
+</script>

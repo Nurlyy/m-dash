@@ -139,7 +139,6 @@
                 $('.wrapper-content').html(data);
             }
         });
-
     }
 
     // function openurl(type, start_date, end_date, candidate_id = null) {

@@ -20,20 +20,33 @@ class Project extends Model
 
     public function getProjectCandidates($user_id)
     {
-        $query = "select c.id from project p inner join candidate c on p.id=c.project_id where p.user_id = {$user_id};";
+        $query = "select c.id from projects p inner join candidate c on p.id=c.project_id where p.user_id = {$user_id};";
         // return $query;
         return $this->helper::createCommand($query);
     }
 
+    public function turnOffProject($project_id, $state){
+        $query = "update projects set is_active = :is_active where id = :project_id";
+        if(Yii::$app->db->createCommand($query)->bindValues([':is_active' => $state, ":project_id" => $project_id])->queryAll()){
+            return true;
+        } return $state;
+    }
+
     public function getProjects()
     {
-        $query = "select p.id, p.name, p.created_date, p.is_active, p.user_id, u.username, u.email, count(c.id) as cities from project p inner join user u on p.user_id = u.id inner join city c on c.project_id = p.id";
+        $query = "select p.id, p.name, p.created_date, p.is_active, p.user_id, u.username, u.email from projects p inner join user u on p.user_id = u.id";
         return $this->helper::createCommand($query);
+        // return $query;
+    }
+
+    public function get_cities_count($project_id){
+        $query = Yii::$app->db->createCommand("select count(id) as ids from city where project_id = :project_id")->bindValues([':project_id' => $project_id])->queryAll();
+        return $query;
     }
 
     public function getProjectId($user_id)
     {
-        $query = "select id from project where user_id = {$user_id};";
+        $query = "select id from projects where user_id = {$user_id};";
         return $this->helper::createCommand($query);
     }
 
@@ -255,7 +268,7 @@ class Project extends Model
     {
         // return $project_name;
         if (isset($project_name) && isset($user_id)) {
-            $query = "insert into project (name, user_id, created_date) values ('{$project_name}', {$user_id}, '{$created_date}')";
+            $query = "insert into projects (name, user_id, created_date, is_active) values ('{$project_name}', {$user_id}, '{$created_date}', 0)";
             return $this->helper::createCommand($query);
         }
         else return false;
@@ -282,7 +295,7 @@ class Project extends Model
 
     public function removeProject($project_id)
     {
-        $query = "update table project set isdeleted = 1 where project_id = {project_id}";
+        $query = "update table projects set isdeleted = 1 where project_id = {project_id}";
         if ($this->helper::createCommand($query)) {
             return true;
         } else {

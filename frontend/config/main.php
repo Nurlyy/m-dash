@@ -47,7 +47,10 @@ return [
             'rules' => [
                 '' => 'main/index',
                 '<action>'=>'main/index',
-
+                'manage/<action>' => 'manage/<action>',
+                'main/<action>' => 'main/<action>',
+                'site/<action>' => 'site/<action>',
+                '<controller>/<action>' => 'site/error',
             ],
         ],
         

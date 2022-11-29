@@ -49,7 +49,7 @@ class MainController extends Controller
 
                 ],
                 [
-                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp'],
+                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp', 'turnstateproject'],
                     'allow' => true,
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     // 'roles' => ['@'],
@@ -142,10 +142,27 @@ class MainController extends Controller
     }
 
 
+    public function actionTurnstateproject(){
+        $projectModel = new Project();
+        $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
+        $state = isset($_POST['state']) ? $_POST['state'] : 0;
+        // return $project_id;
+        if(isset($project_id) && isset($state))
+            return $projectModel->turnOffProject($project_id, $state);
+        else return false;
+        
+    }
+
+
     public function actionGetprojects(){
         $result = [];
         $projectModel = new Project();
-        $result['projects'] = $projectModel->getProjects();
+        $projects = $projectModel->getProjects();
+        foreach($projects as $project){
+            $project['cities'] = $projectModel->get_cities_count($project['id'])[0]['ids'];
+            array_push($result, $project);
+        }
+        $result['projects'] = $result;
         return $result;
     }
 
