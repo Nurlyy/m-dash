@@ -1,37 +1,57 @@
+<?php
+
+$_monthsList = array(
+    "0" => "января", "02" => "февраля",
+    "03" => "марта", "04" => "апреля", "05" => "мая", "06" => "июня",
+    "07" => "июля", "08" => "августа", "09" => "сентября",
+    "10" => "октября", "11" => "ноября", "12" => "декабря"
+);
+
+?>
+
 <div class="row">
 
-    <div class="col-12 m-b-md ">
-        <div class="panel panel-default widget-head-color-box navy-bg p-lg text-left">
+    <div class="col-12 m-b-sm ">
+        <div class="panel panel-default widget-head-color-box navy-bg text-center">
             <div class="panel-body">
-                <div class="row justify-content-center">
-                    <div class="row col-lg-2 col-sm-12 justify-content-center">
-                        <img style="width:10.5em; height:10.5em;" src="<?= $candidateInformation['photo'] ?>" class="float-left rounded-circle circle-border m-b-md" alt="profile">
+                <div>
+                    <h1 style="margin-top:0px;padding-top:0px; margin-bottom:0px; padding-bottom:0px;"><strong><?php echo $cityInformation['name'] ?></strong></h1>
+                    <p style="margin-bottom:0px; margin-top:5px; padding-bottom:0px; padding-top:0px;">Ресурсов: <?= $r_count[$cityInformation['id']] ?></p>
+                    <!-- <div class="row col-lg-2 col-sm-12 justify-content-center">
+                        <img style="width:10.5em; height:10.5em;" src="<?php #echo $cityInformation['photo'] 
+                                                                        ?>" class="float-left rounded-circle circle-border m-b-md" alt="profile">
                     </div>
-                    <div class="row col-lg-10 col-sm-12">
-                        <div class="col-12 m-b-md m-l-md">
+                    <div class="row col-lg-10 col-sm-12"> -->
+                    <!-- <div class="col-12 m-b-md m-l-md">
                             <h2 class="font-bold no-margins">
-                                <?= $candidateInformation['name'] ?>
+                                <?php #echo $cityInformation['name'] 
+                                ?>
                             </h2>
                         </div>
                         <div class="row m-l-sm col-12">
                             <div class='col-lg-6 col-sm-12'>
-                                <p>Представляет: "<?= $candidateInformation['partia'] ?>"</p>
-                                <p>Дата рождения: <?= $candidateInformation['birthday'] ?></p>
-                                <p>Стаж в госслужбе: <?= $candidateInformation['experience'] ?> лет</p>
+                                <p>Ресурсов: "<php #echo=#$cityInformation['partia'] ?>"</p>
+                                <p>Дата рождения: <?php #echo $cityInformation['birthday'] 
+                                                    ?></p>
+                                <p>Стаж в госслужбе: <?php #echo $cityInformation['experience'] 
+                                                        ?> лет</p>
                             </div>
                             <div class='col-lg-6 col-sm-12'>
-                                <p>Facebook аккаунт: <?= $candidateInformation['fb_account'] ?></p>
-                                <p>Instagram аккаунт: <?= $candidateInformation['ig_account'] ?></p>
-                                <p>Web-Site: <?= $candidateInformation['web_site'] ?></p>
+                                <p>Facebook аккаунт: <?php #echo $cityInformation['fb_account'] 
+                                                        ?></p>
+                                <p>Instagram аккаунт: <?php #echo $cityInformation['ig_account'] 
+                                                        ?></p>
+                                <p>Web-Site: <?php #echo $cityInformation['web_site'] 
+                                                ?></p>
                             </div>
-                        </div>
-
-                    </div>
+                        </div> -->
 
                 </div>
+
             </div>
         </div>
     </div>
+
 
     <div class="col-12">
         <div class="panel panel-default">
@@ -184,7 +204,6 @@
                                 <div role="tabpanel" id="tab-comments" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="row">
-
                                             <div class="col-lg-8 col-md-12">
                                                 <div class="panel panel-default">
                                                     <div class="panel-body">
@@ -265,153 +284,168 @@
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h2 class='text-center m-md'><strong>Посты Кандидата</strong></h2>
+                <h2 class='text-center m-md'><strong>Лента постов</strong></h2>
                 <div class="row">
                     <div class='col-12' style=' display:flex; flex-wrap:nowrap; overflow-x:auto; gap:10px; '>
-                        <div class="col-lg-4 col-sm-10 col-md-8 col-12 row">
-                            <div class="panel panel-default col-12">
-                                <div class="panel-header">
-                                    <h4 class='text-center m-t-sm'><i class='fa fa-facebook'></i>
-                                        Facebook</h4>
+                        <?php
+                        $types = [];
+                        $posts = [];
+                        foreach ($city_posts[$cityInformation['id']] as $resources) {
+                            foreach ($resources as $post) {
+                                array_push($posts, $post);
+                                array_push($types, $post['type']);
+                            }
+                        }
+                        $types = array_unique($types);
+                        foreach ($types as $type) { ?>
+                            <div class="col-lg-4 col-sm-10 col-md-8 col-12 row">
+                                <div class="panel panel-default col-12">
+                                    <div class="panel-header">
+                                        <h4 class='text-center m-t-sm'><i class='fa fa-<?php switch ($type) {
+                                                                                            case 0:
+                                                                                                echo "globe'></i> СМИ";
+                                                                                                break;
+                                                                                            case 1:
+                                                                                                echo "vk'></i> Вконтакте";
+                                                                                                break;
+                                                                                            case 2:
+                                                                                                echo "facebook'></i> Facebook";
+                                                                                                break;
+                                                                                            case 3:
+                                                                                                echo "twitter'></i> Twitter";
+                                                                                                break;
+                                                                                            case 4:
+                                                                                                echo "instagram'></i> Instagram";
+                                                                                                break;
+                                                                                            case 5:
+                                                                                                echo "google-plus'></i> Google+";
+                                                                                                break;
+                                                                                            case 6:
+                                                                                                echo "youtube'></i> Youtube";
+                                                                                                break;
+                                                                                            case 7:
+                                                                                                echo "odnoklassniki'></i> Одноклассники";
+                                                                                                break;
+                                                                                            case 8:
+                                                                                                echo "envelope'></i> Мой Мир";
+                                                                                                break;
+                                                                                            case 9:
+                                                                                                echo "telegram'></i> Telegram";
+                                                                                                break;
+                                                                                            case 10:
+                                                                                                echo "tiktok'></i> TikTok";
+                                                                                                break;
+                                                                                        }
+                                                                                        ?></h4>
+                                    </div>
+                                    <div class="panel-body" style=' overflow-y: auto; overflow-x: hidden; height:600px; background-color: rgb(232, 232, 232);'>
+                                                <?php
 
-                                </div>
-                                <div class="panel-body" style='overflow-y: auto; height:600px;'>
-                                    <?php foreach ($candidate_posts as $post) {
-                                        if ($post['type'] == 1) { ?>
-                                            <div class="ibox">
-                                                <div class="ibox-content product-box">
+                                                usort($posts, function ($element1, $element2) {
+                                                    $datetime1 = strtotime($element1['date']);
+                                                    $datetime2 = strtotime($element2['date']);
+                                                    return $datetime1 - $datetime2;
+                                                });
+                                                foreach ($posts as $post) {
+                                                    if ($post['type'] == $type) { ?>
 
-                                                    <div class="product-imitation">
-                                                        <img src="<?= ltrim($post['photo_url'], "@web") ?>">
-                                                    </div>
-                                                    <div class="product-desc">
-                                                        <small class="text-muted"><?= $post['date'] ?></small>
-                                                        <a href="#" class="product-name"><?= str_split($post['text'], 15)[0] ?></a>
+                                                        <div class="post-container">
+                                                            <div class="post-header">
+                                                                <div style="display:flex; flex-direction:row;">
+                                                                    <div class="col-2 post-img-div">
+                                                                        <img class="post-img" src="<?= $post['photo'] ?>" width="40px" height="40px" />
+                                                                    </div>
+                                                                    <h4 class="col-10"><?php echo $post['name'] ?></h4>
+                                                                </div>
+                                                                <p style="color:grey;"><?= date("d", strtotime($post['date'])) . " " . $_monthsList[date("m", strtotime($post['date']))] . " " . date("Y", strtotime($post['date'])) ?> | <a href="<?= $post['url'] ?>">
+                                                                        <?php
+                                                                        switch ($post['type']) {
+                                                                            case 0:
+                                                                                echo "СМИ";
+                                                                                break;
+                                                                            case 1:
+                                                                                echo "Вконтакте";
+                                                                                break;
+                                                                            case 2:
+                                                                                echo "Facebook";
+                                                                                break;
+                                                                            case 3:
+                                                                                echo "Twitter";
+                                                                                break;
+                                                                            case 4:
+                                                                                echo "Instagram";
+                                                                                break;
+                                                                            case 5:
+                                                                                echo "Google+";
+                                                                                break;
+                                                                            case 6:
+                                                                                echo "Youtube";
+                                                                                break;
+                                                                            case 7:
+                                                                                echo "Одноклассники";
+                                                                                break;
+                                                                            case 8:
+                                                                                echo "Мой Мир";
+                                                                                break;
+                                                                            case 9:
+                                                                                echo "Telegram";
+                                                                                break;
+                                                                            case 10:
+                                                                                echo "TikTok";
+                                                                                break;
+                                                                        }
+                                                                        ?></a></p>
+                                                                <?php
 
-                                                        <div class="small m-t-xs">
-                                                            <?= str_split($post['text'], 80)[0] ?>
+                                                                ?>
+                                                            </div>
+                                                            <div class="post-body">
+                                                                <p><?= str_split($post['text'], 100)[0] ?>...</p>
+                                                                <div class="post-sentiment<?php echo $post['sentiment']
+                                                                                            ?>">
+                                                                    <?php echo (($post['sentiment'] == 1) ? 'Позитив' : (($post['sentiment'] == 0) ? 'Нейтрал' : (($post['sentiment'] == -1) ? 'Негатив' : null))) ?>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="m-t text-righ">
 
-                                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Перейти
-                                                                <i class="fa fa-long-arrow-right"></i> </a>
+                                                        <!-- <div class="ibox">
+                                                        <div class="ibox-content product-box">
+
+                                                            <div class="product-imitation">
+                                                                <img src="<?php #echo ltrim($post['photo_url'], "@web") 
+                                                                            ?>">
+                                                            </div>
+                                                            <div class="product-desc">
+                                                                <small class="text-muted"><?php #echo $post['date'] 
+                                                                                            ?></small>
+                                                                <a href="#" class="product-name"><?php #echo strtok($post['text'], " ") 
+                                                                                                    ?></a>
+
+                                                                <div class="small m-t-xs">
+                                                                    <?php #echo str_split($post['text'], 80)[0] 
+                                                                    ?>
+                                                                </div>
+                                                                <div class="m-t text-righ">
+
+                                                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Перейти
+                                                                        <i class="fa fa-long-arrow-right"></i> </a>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    <?php }
-                                    } ?>
+                                                    </div> -->
+                                            <?php }
+                                                }
+                                             ?>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-10 col-md-8 col-12 row">
-                            <div class="panel panel-default col-12">
-                                <div class="panel-header">
-                                    <h4 class='text-center m-t-sm'><i class='fa fa-instagram'></i>
-                                        Instagram</h4>
+                            <?php }
+                            ?>
 
-                                </div>
-                                <div class="panel-body" style='overflow-y: auto; height:600px;'>
-                                    <?php foreach ($candidate_posts as $post) {
-                                        if ($post['type'] == 2) { ?>
-                                            <div class="ibox">
-                                                <div class="ibox-content product-box">
 
-                                                    <div class="product-imitation">
-                                                        <img src="<?= ltrim($post['photo_url'], "@web") ?>">
-                                                    </div>
-                                                    <div class="product-desc">
-                                                        <small class="text-muted"><?= $post['date'] ?></small>
-                                                        <a href="#" class="product-name"><?= str_split($post['text'], 15)[0] ?></a>
 
-                                                        <div class="small m-t-xs">
-                                                            <?= str_split($post['text'], 80)[0] ?>
-                                                        </div>
-                                                        <div class="m-t text-righ">
 
-                                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Перейти
-                                                                <i class="fa fa-long-arrow-right"></i> </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    <?php }
-                                    } ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-10 col-md-8 col-12 row">
-                            <div class="panel panel-default col-12">
-                                <div class="panel-header">
-                                    <h4 class='text-center m-t-sm'><i class='fa fa-telegram'></i>
-                                        Telegram</h4>
-
-                                </div>
-                                <div class="panel-body" style='overflow-y: auto; height:600px;'>
-                                    <?php foreach ($candidate_posts as $post) {
-                                        if ($post['type'] == 3) { ?>
-                                            <div class="ibox">
-                                                <div class="ibox-content product-box">
-
-                                                    <div class="product-imitation">
-                                                        <img src="<?= ltrim($post['photo_url'], "@web") ?>">
-                                                    </div>
-                                                    <div class="product-desc">
-                                                        <small class="text-muted"><?= $post['date'] ?></small>
-                                                        <a href="#" class="product-name"><?= str_split($post['text'], 15)[0] ?></a>
-
-                                                        <div class="small m-t-xs">
-                                                            <?= str_split($post['text'], 80)[0] ?>
-                                                        </div>
-                                                        <div class="m-t text-righ">
-
-                                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Перейти
-                                                                <i class="fa fa-long-arrow-right"></i> </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    <?php }
-                                    } ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-10 col-md-8 col-12 row">
-                            <div class="panel panel-default col-12">
-                                <div class="panel-header">
-                                    <h4 class='text-center m-t-sm'><i class='fa fa-globe'></i>
-                                        Web-sites</h4>
-
-                                </div>
-                                <div class="panel-body" style='overflow-y: auto; height:600px;'>
-                                    <?php foreach ($candidate_posts as $post) {
-                                        if ($post['type'] == 4) { ?>
-                                            <div class="ibox">
-                                                <div class="ibox-content product-box">
-
-                                                    <div class="product-imitation">
-                                                        <img src="<?= ltrim($post['photo_url'], "@web") ?>">
-                                                    </div>
-                                                    <div class="product-desc">
-                                                        <small class="text-muted"><?= $post['date'] ?></small>
-                                                        <a href="#" class="product-name"><?= str_split($post['text'], 15)[0] ?></a>
-
-                                                        <div class="small m-t-xs">
-                                                            <?= str_split($post['text'], 80)[0] ?>
-                                                        </div>
-                                                        <div class="m-t text-righ">
-
-                                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Перейти
-                                                                <i class="fa fa-long-arrow-right"></i> </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    <?php }
-                                    } ?>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -427,7 +461,7 @@
         };
 
         $.ajax({
-            url: '/main/candidate?start_date=' + sdate + '&end_date=' + edate + '&candidate_id=<?= $candidateInformation['id'] ?>',
+            url: '/main/candidate?start_date=' + sdate + '&end_date=' + edate + '&city_id=<?= $cityInformation['id'] ?>',
             type: 'GET',
             success: function(data) {
                 $('.wrapper-content').html(data);
@@ -435,17 +469,17 @@
         });
 
         window.history.pushState(stateObj,
-            'Page 2', '/main/index#candidate?start_date=' + sdate + '&end_date=' + edate + '&candidate_id=<?= $candidateInformation['id'] ?>');
+            'Page 2', '/main/index#candidate?start_date=' + sdate + '&end_date=' + edate + '&city_id=<?= $cityInformation['id'] ?>');
 
     }
 
-    // function openurl(type, start_date, end_date, candidate_id = null) {
+    // function openurl(type, start_date, end_date, city_id = null) {
     //     $.ajax({
-    //         url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""),
+    //         url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""),
     //         type: 'GET',
     //         success: function(data) {
     //             // $('#page-wrapper').html("");
-    //             history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""));
+    //             history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""));
     //             $('.wrapper-content').html(data);
     //             window.scrollTo(0,0);
 
@@ -483,7 +517,7 @@
             startDate: start_date,
             endDate: end_date,
             minDate: '01.01.2022',
-            maxDate: '31.11.2022',
+            maxDate: '<?= date("d.m.Y", strtotime('today')) ?>',
             showDropdowns: true,
             // showWeekNumbers: true,
             timePicker: false,
@@ -541,7 +575,7 @@
         create_daterangepicker('<?= $start_date ?>', '<?= $end_date ?>');
     });
 
-    function createChart(container, name, subtitle, data) {
+    function createChart(container, name, subtitle, subsubtitle, data) {
         // console.log({'fb':{'fdsa':456, 'gfsdgf':987}});
         // console.log(data);
 
@@ -565,8 +599,20 @@
                 datas_name = 'Instagram'
             } else if (keys[i] == 'tg') {
                 datas_name = 'Telegram'
-            } else if (keys[i] == 'web') {
-                datas_name = 'Web-Sites'
+            } else if (keys[i] == 'tt') {
+                datas_name = 'TikTok'
+            } else if (keys[i] == 'vk') {
+                datas_name = 'Вконтакте'
+            } else if (keys[i] == 'ok') {
+                datas_name = 'Одноклассники'
+            } else if (keys[i] == 'yt') {
+                datas_name = 'YouTube'
+            } else if (keys[i] == 'mm') {
+                datas_name = 'Мой Мир'
+            } else if (keys[i] == 'tw') {
+                datas_name = 'Twitter'
+            } else if (keys[i] == 'gg') {
+                datas_name = 'Google+'
             } else if (keys[i] == 'positive') {
                 datas_name = 'Позитив'
             } else if (keys[i] == 'neutral') {
@@ -579,10 +625,7 @@
                 data: temp
             }
         }
-
-        // console.log(datas);
-
-
+        console.log(datas)
 
         Highcharts.chart(container, {
             colors: ["#9c98ce", "#51223a", "#7c2a1b", "#8cdd75", "#87510e", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
@@ -623,7 +666,7 @@
                 alternateGridColor: null,
             },
             tooltip: {
-                valueSuffix: ' постов',
+                valueSuffix: ' ' + subsubtitle,
                 backgroundColor: "#FFFFFF",
                 borderColor: "#76c0c1",
                 style: {
@@ -701,14 +744,26 @@
                 datas[i] = ["Instagram", data[keys[i]]];
             } else if (keys[i] == 'tg') {
                 datas[i] = ["Telegram", data[keys[i]]];
-            } else if (keys[i] == 'web') {
-                datas[i] = ["Web-Sites", data[keys[i]]];
             } else if (keys[i] == 'positive') {
                 datas[i] = ["Позитив", data[keys[i]]];
             } else if (keys[i] == 'neutral') {
                 datas[i] = ["Нейтрал", data[keys[i]]];
             } else if (keys[i] == 'negative') {
                 datas[i] = ["Негатив", data[keys[i]]];
+            } else if (keys[i] == 'tt') {
+                datas[i] = ['TikTok', data[keys[i]]];
+            } else if (keys[i] == 'vk') {
+                datas[i] = ['Вконтакте', data[keys[i]]];
+            } else if (keys[i] == 'ok') {
+                datas[i] = ['Одноклассники', data[keys[i]]];
+            } else if (keys[i] == 'yt') {
+                datas[i] = ['YouTube', data[keys[i]]];
+            } else if (keys[i] == 'mm') {
+                datas[i] = ['Мой Мир', data[keys[i]]];
+            } else if (keys[i] == 'tw') {
+                datas[i] = ['Twitter', data[keys[i]]];
+            } else if (keys[i] == 'gg') {
+                datas[i] = ['Google+', data[keys[i]]];
             }
         }
 
@@ -736,9 +791,23 @@
         });
     };
 
-    createChart('total_chart', 'Публикации источников', 'Кол-во постов', {
+    createChart('total_chart', 'Публикации источников', 'Кол-во постов', 'постов', {
         // Формирование объекта с ключ/значениями для js из массива php
-        <?php foreach ($date_posts[$candidateInformation['id']] as $key => $value) {
+        <?php if (isset($date_posts[$cityInformation['id']])) {
+            foreach ($date_posts[$cityInformation['id']] as $key => $value) {
+                echo $key . ":{";
+                foreach ($value as $k => $v) {
+                    echo "'" . $k . "':" . $v . ", ";
+                }
+                echo "}, ";
+            }
+        } else {
+            echo "";
+        } ?>
+    });
+
+    createChart('sentiment_chart', 'Тональность постов', 'Кол-во постов', 'постов', {
+        <?php foreach ($postsSentimentChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -747,8 +816,8 @@
         } ?>
     });
 
-    createChart('sentiment_chart', 'Тональность постов', 'Кол-во постов', {
-        <?php foreach ($postsSentimentChart[$candidateInformation['id']] as $key => $value) {
+    createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', 'подписчиков', {
+        <?php foreach ($totalSubsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -757,8 +826,9 @@
         } ?>
     });
 
-    createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', {
-        <?php foreach ($totalSubsChart[$candidateInformation['id']] as $key => $value) {
+    createChart('likes_chart', 'График лайков', 'Кол-во лайков', 'лайков', {
+        <?php
+        foreach ($totalLikesChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -767,8 +837,8 @@
         } ?>
     });
 
-    createChart('likes_chart', 'График лайков', 'Кол-во лайков', {
-        <?php foreach ($totalLikesChart[$candidateInformation['id']] as $key => $value) {
+    createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', 'комментариев', {
+        <?php foreach ($totalCommentsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -777,18 +847,8 @@
         } ?>
     });
 
-    createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', {
-        <?php foreach ($totalCommentsChart[$candidateInformation['id']] as $key => $value) {
-            echo $key . ":{";
-            foreach ($value as $k => $v) {
-                echo "'" . $k . "':" . $v . ", ";
-            }
-            echo "}, ";
-        } ?>
-    });
-
-    createChart('reposts_chart', 'График репостов', 'Кол-во репостов', {
-        <?php foreach ($totalRepostsChart[$candidateInformation['id']] as $key => $value) {
+    createChart('reposts_chart', 'График репостов', 'Кол-во репостов', 'репостов', {
+        <?php foreach ($totalRepostsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -798,41 +858,41 @@
     });
 
     createDonut('comments_donut', 'Всего комментариев', 'Комментариев', {
-        <?php foreach ($totalCommentsDonut[$candidateInformation['id']] as $key => $value) {
+        <?php foreach ($totalCommentsDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
     createDonut('likes_donut', 'Всего лайков', 'Лайков', {
-        <?php foreach ($totalLikesDonut[$candidateInformation['id']] as $key => $value) {
+        <?php foreach ($totalLikesDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('subs_donut', 'Всего подписчиков', 'Подписчиков', {
-        <?php foreach ($totalSubsDonut[$candidateInformation['id']] as $key => $value) {
+        <?php foreach ($totalSubsDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('sentiment_donut', 'Всего тональности', 'Постов', {
-        <?php foreach ($postsSentimentLine[$candidateInformation['id']] as $key => $value) {
+        <?php foreach ($postsSentimentLine[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('total_donut', 'Всего постов', 'Постов', {
-        <?php foreach ($totalResourcesDonut[$candidateInformation['id']] as $key => $value) {
+        <?php foreach ($totalResourcesDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('reposts_donut', 'Всего репостов', 'Репостов', {
-        <?php foreach ($totalRepostsDonut[$candidateInformation['id']] as $key => $value) {
+        <?php foreach ($totalRepostsDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });

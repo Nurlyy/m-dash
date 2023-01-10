@@ -65,20 +65,56 @@ class ManageController extends AuthController
     public function actionCreateproject()
     {
         $this->layout = 'empty';
+        $result = json_decode(get_web_page("frontend.test.localhost/backend/main/getfreeusers"), true);
         if (Yii::$app->request->post()) {
             $project_name = Yii::$app->request->post('project_name');
             $created_date = date('Y-m-d', strtotime('today'));
             $owner = Yii::$app->request->post('owner');
+            // var_dump($owner);
+            // exit; 
             $temp = [];
             $temp['project_name'] = $project_name;
             $temp['created_date'] = $created_date;
             $temp['user_id'] = $owner;
             $result = send_post("frontend.test.localhost/backend/main/createproject", $temp);
-            // var_dump($result);
-            // exit; 
+
             return $this->redirect('index');
         }
-        return $this->render('createproject');
+        return $this->render('createproject', ['result' => $result]);
+    }
+
+    public function actionDeleteres()
+    {
+        if (Yii::$app->request->post()) {
+            $resid = [];
+            $resid['resid'] = Yii::$app->request->post('resid');
+            return send_post("frontend.test.localhost/backend/main/deleteres", $resid);
+        }
+    }
+
+    public function actionEditpage()
+    {
+        $this->layout = 'empty';
+        if (Yii::$app->request->post()) {
+            $project_name = Yii::$app->request->post('project_name');
+            $created_date = date('Y-m-d', strtotime('today'));
+            $owner = Yii::$app->request->post('owner');
+            // var_dump($owner);
+            // exit; 
+            $temp = [];
+            $temp['project_name'] = $project_name;
+            $temp['created_date'] = $created_date;
+            $temp['user_id'] = $owner;
+            $result = send_post("frontend.test.localhost/backend/main/createproject", $temp);
+
+            return $this->redirect('index');
+        }
+
+        $project_id = Yii::$app->request->get('project_id');
+
+        $result = json_decode(get_web_page("frontend.test.localhost/backend/main/getproject?project_id={$project_id}"), true);
+        $users = json_decode(get_web_page("frontend.test.localhost/backend/main/getfreeusers"), true);
+        return $this->render('editpage', ['result' => $result, 'users' => $users, 'project_id' => $project_id]);
     }
 
     public function actionTurnstateproject()
@@ -87,8 +123,6 @@ class ManageController extends AuthController
         // var_dump(Yii::$app->request->post());
         // exit;
         if (Yii::$app->request->post()) {
-            // var_dump("FDJSK");
-            // exit;
             $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
             $state = isset($_POST['state']) ? $_POST['state'] : "0";
             $temp = [];
@@ -99,5 +133,43 @@ class ManageController extends AuthController
             // var_dump($result);
             // exit;
         }
+    }
+
+    public function actionApplychanges()
+    {
+        $this->layout = 'empty';
+        // var_dump($_POST);
+        // exit;
+        if (Yii::$app->request->post()) {
+            $sendData = [];
+            $cityChanges = isset($_POST['cityChanges']) ? $_POST['cityChanges'] : null;
+            $resourcesChanges = isset($_POST['resourcesChanges']) ? $_POST['resourcesChanges'] : null;
+            $createdResources = isset($_POST['createdResources']) ? $_POST['createdResources'] : null;
+            $createdCities = isset($_POST['createdCities']) ? $_POST['createdCities'] : null;
+            if ($cityChanges) {
+                $sendData['cityChanges'] = json_encode($cityChanges);
+            }
+            if ($resourcesChanges) {
+                $sendData['resourcesChanges'] = json_encode($resourcesChanges);
+            }
+            if ($createdCities) {
+                $sendData['createdCities'] = json_encode($createdCities);
+            }
+            if ($createdResources) {
+                $sendData['createdResources'] = json_encode($createdResources);
+            }
+            $result = send_post("frontend.test.localhost/backend/main/applychanges", $sendData);
+            var_dump($result);
+            exit;
+        }
+    }
+
+    public function actionShowmodal()
+    {
+        $this->layout = 'empty';
+        $city_id = isset($_GET['city_id']) ? $_GET['city_id'] : null;
+        $project_id = Yii::$app->request->get('project_id');
+        $result = json_decode(get_web_page("frontend.test.localhost/backend/main/getproject?project_id={$project_id}"), true);
+        return $this->render("cityedit_modal", ['city_id' => $city_id, 'result' => $result]);
     }
 }

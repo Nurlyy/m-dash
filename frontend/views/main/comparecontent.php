@@ -16,11 +16,11 @@
                             <div class="ibox-content">
                                 <div class="row">
                                     <a onclick='openurl("candidate", start_date, end_date, <?= $key ?>)' class="float-left">
-                                        <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?= $candidateInformation[$key]['photo'] ?>">
+                                        <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?= $cityInformation[$key]['photo'] ?>">
                                     </a>
                                     <div class="media-body ">
                                         <h4 class="float-right text-navy"><?php echo round(($value / $total) * 100, 2) ?> %</h4>
-                                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $key ?>)'><strong><?= $candidateInformation[$key]['name'] ?></strong></a>
+                                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $key ?>)'><strong><?= $cityInformation[$key]['name'] ?></strong></a>
                                         <div class="progress progress-mini">
                                             <div style="width: <?php echo round(($value / $total) * 100, 2) ?>%;" class="progress-bar"></div>
                                         </div>
@@ -50,7 +50,7 @@
                 foreach ($postsSentimentLine as $key => $sentiment) {
                     $total[$key] = (isset($total[$key]) ? $total[$key] : 0) + $sentiment['positive'] + $sentiment['neutral'] + $sentiment['negative'];
                 }
-                foreach ($candidateInformation as $candidate) { ?>
+                foreach ($cityInformation as $candidate) { ?>
                     <div class="ibox-content" style='position:relative !important;'>
                         <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)'><strong><?= $candidate['name'] ?></strong></a>
                         <div style='position:inherit; width:100%; margin-bottom:20px;'>
@@ -462,7 +462,7 @@
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
             $keys = [];
-            foreach ($candidateInformation as $candidate) {
+            foreach ($cityInformation as $candidate) {
                 echo "{type: 'area', name: '" . $candidate['name'] . "', data:[";
 
                 foreach ($date_posts[$candidate['id']] as $key => $value) {
@@ -483,7 +483,7 @@
         createChart('total_chart', 'График публикации', 'Кол-во постов', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
-            foreach ($candidateInformation as $candidate) {
+            foreach ($cityInformation as $candidate) {
                 $temp = [];
                 echo "{name: '" . $candidate['name'] . "', data:[";
                 foreach ($date_posts[$candidate['id']] as $key => $value) {
@@ -508,7 +508,7 @@
         createRadar('sentiment_donut', "Тональность публикации", "Кол-во постов", [
             <?php
             $keys = [];
-            foreach ($candidateInformation as $candidate) {
+            foreach ($cityInformation as $candidate) {
                 echo "{type: 'area', name: '" . $candidate['name'] . "', data:[";
 
                 foreach ($postsSentimentChart[$candidate['id']] as $key => $value) {
@@ -529,7 +529,7 @@
         createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
-            foreach ($candidateInformation as $candidate) {
+            foreach ($cityInformation as $candidate) {
                 $temp = [];
                 echo "{name: '" . $candidate['name'] . "', data:[";
                 foreach ($totalSubsChart[$candidate['id']] as $key => $value) {
@@ -553,7 +553,7 @@
         createChart('likes_chart', 'График лайков', 'Кол-во лайков', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
-            foreach ($candidateInformation as $candidate) {
+            foreach ($cityInformation as $candidate) {
                 $temp = [];
                 echo "{name: '" . $candidate['name'] . "', data:[";
                 foreach ($totalLikesChart[$candidate['id']] as $key => $value) {
@@ -577,7 +577,7 @@
         createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
-            foreach ($candidateInformation as $candidate) {
+            foreach ($cityInformation as $candidate) {
                 $temp = [];
                 echo "{name: '" . $candidate['name'] . "', data:[";
                 foreach ($totalCommentsChart[$candidate['id']] as $key => $value) {
@@ -601,7 +601,7 @@
         createChart('reposts_chart', 'График репостов', 'Кол-во репостов', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
-            foreach ($candidateInformation as $candidate) {
+            foreach ($cityInformation as $candidate) {
                 $temp = [];
                 echo "{name: '" . $candidate['name'] . "', data:[";
                 foreach ($totalRepostsChart[$candidate['id']] as $key => $value) {

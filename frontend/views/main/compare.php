@@ -10,7 +10,7 @@
                         <div class="btn-group">
                             <select class="btn inline-block" style='width:100%;background: #ededed' id="firstSelect">
                                 <option value="select">Выбрать кандидата</option>
-                                <?php foreach ($candidateInformation as $candidate) { ?>
+                                <?php foreach ($cityInformation as $candidate) { ?>
                                     <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
                                 <?php } ?>
                             </select>
@@ -18,7 +18,7 @@
                         <div class="btn-group">
                             <select class="btn inline-block" style='width:100%;background: #ededed' id="secondSelect">
                                 <option value="select">Выбрать кандидата</option>
-                                <?php foreach ($candidateInformation as $candidate) { ?>
+                                <?php foreach ($cityInformation as $candidate) { ?>
                                     <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
                                 <?php } ?>
                             </select>

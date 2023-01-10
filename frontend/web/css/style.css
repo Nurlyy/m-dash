@@ -5620,6 +5620,9 @@ a.close-canvas-menu:hover {
 body.fullscreen-ibox-mode {
   overflow-y: hidden;
 }
+body:not(.modal-open){
+    padding-right: 0px !important;
+  }
 .ibox.fullscreen {
   z-index: 2030;
   position: fixed;
@@ -9669,4 +9672,94 @@ body.md-skin {
 
 .m-t-15 {
     margin-top: 15px !important;
+}
+
+
+
+
+
+
+
+
+
+
+.post-img-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.post-img {
+    border-radius: 50%;
+}
+
+.post-header {
+    margin-left:10px;
+    margin-top:5px;
+}
+
+.post-body {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.post-container {
+    background-color: #ffffff;
+    padding: 5px;
+    margin:5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.post-container h4 {
+    z-index:2;
+}
+
+.post-sentiment1 {
+    width: 100px;
+    background-color: #3cb371;
+    text-align: center;
+    font-style: bold;
+    font-size: 13px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:white;
+    border-radius: 3px;
+}
+
+.post-sentiment0 {
+    width: 100px;
+    background-color: Orange;
+    text-align: center;
+    font-style: bold;
+    font-size: 13px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:white;
+    border-radius: 3px;
+}
+
+.post-sentiment-1 {
+    width: 100px;
+    background-color: Tomato;
+    text-align: center;
+    font-style: bold;
+    font-size: 13px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:white;
+    border-radius: 3px;
+}
+
+.city-container {
+    margin: 10px;
+    border-radius: 5px;
+    border:1px solid #bcbcbc;
+    /* background: #73AD21; */
+    padding: 20px;
+    text-align: left;
+}
+
+#collapsible-content {
+    display: none;
+    overflow: hidden;
 }

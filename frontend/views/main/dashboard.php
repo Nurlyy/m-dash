@@ -140,13 +140,13 @@
         });
     }
 
-    // function openurl(type, start_date, end_date, candidate_id = null) {
+    // function openurl(type, start_date, end_date, city_id = null) {
     //     $.ajax({
-    //         url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""),
+    //         url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""),
     //         type: 'GET',
     //         success: function(data) {
     //             // $('#page-wrapper').html("");
-    //             history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""));
+    //             history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""));
     //             $('.wrapper-content').html(data);
     //             window.scrollTo(0, 0);
 
@@ -159,6 +159,7 @@
 
         $('#reportrange span').html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
         addState(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+        
     }
 
 
@@ -184,7 +185,7 @@
             startDate: start_date,
             endDate: end_date,
             minDate: '01.01.2022',
-            maxDate: '31.11.2022',
+            maxDate: '<?= date("d.m.Y", strtotime('today')) ?>',
             showDropdowns: true,
             // showWeekNumbers: true,
             timePicker: false,
@@ -394,10 +395,13 @@
             series: [{
                 name: 'Постов',
                 data: [
-                    ['Facebook', <?= isset($totalResourcesDonut['fb']) ? $totalResourcesDonut['fb'] : 0 ?>],
-                    ['Instagram', <?= isset($totalResourcesDonut['ig']) ? $totalResourcesDonut['ig'] : 0 ?>],
-                    ['Telegram', <?= isset($totalResourcesDonut['tg']) ? $totalResourcesDonut['tg'] : 0 ?>],
-                    ['Web-Site', <?= isset($totalResourcesDonut['web']) ? $totalResourcesDonut['web'] : 0 ?>],
+                    <?php
+                    $socials = ['fb'=>'Facebook', 'ig'=>'Instagram', 'gg'=>'Google', 'tt'=>'TikTok','tw'=>'Twitter','mm'=>'Мой Мир', 'ok'=>'Одноклассники','vk'=>'Вконтакте','tg'=>'Telegram','yt'=>'YouTube'];
+                     foreach($totalResourcesDonut as $k=>$v){
+                        if($v>0){
+                            echo "['".$socials[$k]."', ".$v."],";
+                        }
+                    } ?>
                 ]
             }]
         });

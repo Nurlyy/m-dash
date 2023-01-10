@@ -29,7 +29,7 @@ AppAsset::register($this);
 
 </head>
 
-<body>
+<body style="padding-right:0px !important;">
     <main role="main" class="flex-shrink-0">
         <div class="container">
             <?php if (Yii::$app->session->getFlash('success') != null) { ?>

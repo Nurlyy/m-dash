@@ -7,6 +7,7 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
 
 $this->registerJsFile("js/sripts.js");
 
+
 ?>
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
@@ -85,7 +86,7 @@ $this->registerJsFile("js/sripts.js");
         if (urlString.includes('#') && urlString.split('#')[1]) {
             var controller = urlString.split('#');
             var action = controller[1].split('?');
-            if (['mainpage', 'project', 'createproject'].includes(action[0])) {
+            if (['mainpage', 'project', 'createproject', 'editpage'].includes(action[0])) {
                 if (action[1]) {
                     if (action[1].includes("first=")) {
                         var url = "/manage/" + action[0];
