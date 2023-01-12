@@ -78,39 +78,69 @@ class MainController extends AuthController
                     $this->set_data($c_data['id'], null, 0);
                 }
                 if (isset($result['all_data']['subs'])) {
+                    $fb_subs_prev = 0;  
+                    $ig_subs_prev = 0;  
+                    $tg_subs_prev = 0;  
+                    $tt_subs_prev = 0;  
+                    $mm_subs_prev = 0;  
+                    $yt_subs_prev = 0;  
+                    $ok_subs_prev = 0;  
+                    $tw_subs_prev = 0;  
+                    $gg_subs_prev = 0;  
+                    $vk_subs_prev = 0;  
                     foreach ($result['all_data']['subs'] as $subs) {
-                        $this::$totalSubsChart[$c_data['id']]['fb'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['fb'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['fb'][$subs['date']] : 0) + (isset($subs['fb_sub']) ? $subs['fb_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['ig'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['ig'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['ig'][$subs['date']] : 0) + (isset($subs['ig_sub']) ? $subs['ig_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['tg'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['tg'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['tg'][$subs['date']] : 0) + (isset($subs['tg_sub']) ? $subs['tg_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['tt'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['tt'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['tt'][$subs['date']] : 0) + (isset($subs['tt_sub']) ? $subs['tt_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['mm'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['mm'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['mm'][$subs['date']] : 0) + (isset($subs['mm_sub']) ? $subs['mm_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['yt'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['yt'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['yt'][$subs['date']] : 0) + (isset($subs['yt_sub']) ? $subs['yt_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['ok'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['ok'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['ok'][$subs['date']] : 0) + (isset($subs['ok_sub']) ? $subs['ok_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['tw'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['tw'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['tw'][$subs['date']] : 0) + (isset($subs['tw_sub']) ? $subs['tw_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['gg'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['gg'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['gg'][$subs['date']] : 0) + (isset($subs['gg_sub']) ? $subs['gg_sub'] : 0);
-                        $this::$totalSubsChart[$c_data['id']]['vk'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['vk'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['vk'][$subs['date']] : 0) + (isset($subs['vk_sub']) ? $subs['vk_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['fb'] = (isset($this::$totalSubsDonut[$c_data['id']]['fb']) ? $this::$totalSubsDonut[$c_data['id']]['fb'] : 0) + (isset($subs['fb_sub']) ? $subs['fb_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['ig'] = (isset($this::$totalSubsDonut[$c_data['id']]['ig']) ? $this::$totalSubsDonut[$c_data['id']]['ig'] : 0) + (isset($subs['ig_sub']) ? $subs['ig_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['tg'] = (isset($this::$totalSubsDonut[$c_data['id']]['tg']) ? $this::$totalSubsDonut[$c_data['id']]['tg'] : 0) + (isset($subs['tg_sub']) ? $subs['tg_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['mm'] = (isset($this::$totalSubsDonut[$c_data['id']]['mm']) ? $this::$totalSubsDonut[$c_data['id']]['mm'] : 0) + (isset($subs['mm_sub']) ? $subs['mm_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['yt'] = (isset($this::$totalSubsDonut[$c_data['id']]['yt']) ? $this::$totalSubsDonut[$c_data['id']]['yt'] : 0) + (isset($subs['yt_sub']) ? $subs['yt_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['ok'] = (isset($this::$totalSubsDonut[$c_data['id']]['ok']) ? $this::$totalSubsDonut[$c_data['id']]['ok'] : 0) + (isset($subs['ok_sub']) ? $subs['ok_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['tw'] = (isset($this::$totalSubsDonut[$c_data['id']]['tw']) ? $this::$totalSubsDonut[$c_data['id']]['tw'] : 0) + (isset($subs['tw_sub']) ? $subs['tw_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['gg'] = (isset($this::$totalSubsDonut[$c_data['id']]['gg']) ? $this::$totalSubsDonut[$c_data['id']]['gg'] : 0) + (isset($subs['gg_sub']) ? $subs['gg_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['vk'] = (isset($this::$totalSubsDonut[$c_data['id']]['vk']) ? $this::$totalSubsDonut[$c_data['id']]['vk'] : 0) + (isset($subs['vk_sub']) ? $subs['vk_sub'] : 0);
-                        $this::$totalSubsDonut[$c_data['id']]['tt'] = (isset($this::$totalSubsDonut[$c_data['id']]['tt']) ? $this::$totalSubsDonut[$c_data['id']]['tt'] : 0) + (isset($subs['tt_sub']) ? $subs['tt_sub'] : 0);
+                        
+                        $this::$totalSubsChart[$c_data['id']]['fb'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['fb'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['fb'][$subs['date']] : 0) + ((isset($subs['fb_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['fb_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['ig'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['ig'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['ig'][$subs['date']] : 0) + ((isset($subs['ig_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['ig_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['tg'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['tg'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['tg'][$subs['date']] : 0) + ((isset($subs['tg_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tg_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['tt'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['tt'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['tt'][$subs['date']] : 0) + ((isset($subs['tt_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tt_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['mm'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['mm'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['mm'][$subs['date']] : 0) + ((isset($subs['mm_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['mm_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['yt'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['yt'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['yt'][$subs['date']] : 0) + ((isset($subs['yt_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['yt_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['ok'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['ok'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['ok'][$subs['date']] : 0) + ((isset($subs['ok_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['ok_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['tw'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['tw'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['tw'][$subs['date']] : 0) + ((isset($subs['tw_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tw_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['gg'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['gg'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['gg'][$subs['date']] : 0) + ((isset($subs['gg_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['gg_sub'] : 0);
+                        $this::$totalSubsChart[$c_data['id']]['vk'][$subs['date']] = (isset($this::$totalSubsChart[$c_data['id']]['vk'][$subs['date']]) ? $this::$totalSubsChart[$c_data['id']]['vk'][$subs['date']] : 0) + ((isset($subs['vk_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['vk_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['fb'] = (isset($this::$totalSubsDonut[$c_data['id']]['fb']) ? $this::$totalSubsDonut[$c_data['id']]['fb'] : 0) + ((isset($subs['fb_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['fb_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['ig'] = (isset($this::$totalSubsDonut[$c_data['id']]['ig']) ? $this::$totalSubsDonut[$c_data['id']]['ig'] : 0) + ((isset($subs['ig_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['ig_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['tg'] = (isset($this::$totalSubsDonut[$c_data['id']]['tg']) ? $this::$totalSubsDonut[$c_data['id']]['tg'] : 0) + ((isset($subs['tg_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tg_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['mm'] = (isset($this::$totalSubsDonut[$c_data['id']]['mm']) ? $this::$totalSubsDonut[$c_data['id']]['mm'] : 0) + ((isset($subs['tt_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['mm_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['yt'] = (isset($this::$totalSubsDonut[$c_data['id']]['yt']) ? $this::$totalSubsDonut[$c_data['id']]['yt'] : 0) + ((isset($subs['mm_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['yt_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['ok'] = (isset($this::$totalSubsDonut[$c_data['id']]['ok']) ? $this::$totalSubsDonut[$c_data['id']]['ok'] : 0) + ((isset($subs['yt_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['ok_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['tw'] = (isset($this::$totalSubsDonut[$c_data['id']]['tw']) ? $this::$totalSubsDonut[$c_data['id']]['tw'] : 0) + ((isset($subs['ok_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tw_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['gg'] = (isset($this::$totalSubsDonut[$c_data['id']]['gg']) ? $this::$totalSubsDonut[$c_data['id']]['gg'] : 0) + ((isset($subs['tw_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['gg_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['vk'] = (isset($this::$totalSubsDonut[$c_data['id']]['vk']) ? $this::$totalSubsDonut[$c_data['id']]['vk'] : 0) + ((isset($subs['gg_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['vk_sub'] : 0);
+                        $this::$totalSubsDonut[$c_data['id']]['tt'] = (isset($this::$totalSubsDonut[$c_data['id']]['tt']) ? $this::$totalSubsDonut[$c_data['id']]['tt'] : 0) + ((isset($subs['vk_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tt_sub'] : 0);
+                        $fb_subs_prev = ((isset($subs['fb_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['fb_sub'] : 0);
+                        $ig_subs_prev = ((isset($subs['ig_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['ig_sub'] : 0);
+                        $tg_subs_prev = ((isset($subs['tg_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tg_sub'] : 0);
+                        $tt_subs_prev = ((isset($subs['tt_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tt_sub'] : 0);
+                        $mm_subs_prev = ((isset($subs['mm_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['mm_sub'] : 0);
+                        $yt_subs_prev = ((isset($subs['yt_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['yt_sub'] : 0);
+                        $ok_subs_prev = ((isset($subs['ok_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['ok_sub'] : 0);
+                        $tw_subs_prev = ((isset($subs['tw_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['tw_sub'] : 0);
+                        $gg_subs_prev = ((isset($subs['gg_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['gg_sub'] : 0);
+                        $vk_subs_prev = ((isset($subs['vk_sub'])&&($subs['city_id'] == $c_data['id'])) ? $subs['vk_sub'] : 0);
                     }
                 }
-                if (isset($result['r_count'])) {
-                    foreach ($result['r_count'] as $r) {
-                        // var_dump($r['city_id']);
-                        // exit;
-                        $this::$r_count[$r['city_id']]+=count($r['r_count']);
-                    }
-                    // var_dump($this::$r_count);
-                    // exit;
+                
+            }
+            
+        }
+        if (isset($result['r_count'])) {
+            // var_dump($result['r_count']);
+            // exit;
+            foreach ($result['r_count'] as $r) {
+                // var_dump($r['r_count']);
+                // exit;
+                if (isset($this::$r_count[$r['city_id']])) {
+                    $this::$r_count[$r['city_id']] += isset($r['r_count']) ? 1 : 0;
+                } else {
+                    $this::$r_count[$r['city_id']] = 0;
+                    $this::$r_count[$r['city_id']] += isset($r['r_count']) ? 1 : 0;
                 }
             }
+            // var_dump($this::$r_count);
+            // exit;
         }
         if (isset($result['city_data'])) {
             foreach ($result['city_data'] as $value) {
@@ -365,11 +395,13 @@ class MainController extends AuthController
             $this->splitData($result);
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];
-            foreach ($this::$cityInformation as $candidate) {
-                $temp = $candidate;
+            foreach ($this::$cityInformation as $city) {
+                if ($city['id'] == $city_id) {
+                    $temp = $city;
+                }
             }
             $this::$cityInformation = $temp;
-            // var_dump($this::$totalCommentsDonut[$this::$cityInformation['id']]);
+            // var_dump($this::$date_posts);
             // exit;
             return $this->render('candidate', [
                 'start_date' => $start_date,
@@ -437,13 +469,15 @@ class MainController extends AuthController
             $result = json_decode(get_web_page("frontend.test.localhost/backend/main/search?type=3&start_date={$start_date}&end_date={$end_date}&first={$first}&second={$second}&discussionChart={$discussionChart}&sentimentChart={$sentimentChart}&subsChart={$subsChart}&likesChart={$likesChart}&commentsChart={$commentsChart}&repostsChart={$repostsChart}"), true);
             $this->splitData($result);
 
-            $temp = [];
-            foreach ($this::$cityInformation as $candidate) {
-                $temp[$candidate['id']] = $candidate;
-            }
-            $this::$cityInformation = $temp;
+            // var_dump("frontend.test.localhost/backend/main/search?type=3&start_date={$start_date}&end_date={$end_date}&first={$first}&second={$second}&discussionChart={$discussionChart}&sentimentChart={$sentimentChart}&subsChart={$subsChart}&likesChart={$likesChart}&commentsChart={$commentsChart}&repostsChart={$repostsChart}");
+            // exit;
+
 
             $dates = $this->getBetweenDates($start_date, $end_date);
+            // echo "<pre>";
+            // var_dump($result['all_data']['subs']);
+            // echo "</pre>";
+            // exit;
 
             return $this->render('comparecontent', [
                 'start_date' => $start_date,

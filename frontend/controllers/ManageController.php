@@ -114,7 +114,19 @@ class ManageController extends AuthController
 
         $result = json_decode(get_web_page("frontend.test.localhost/backend/main/getproject?project_id={$project_id}"), true);
         $users = json_decode(get_web_page("frontend.test.localhost/backend/main/getfreeusers"), true);
+        // echo "<pre>";
+        // var_dump($result['project']['cities']);
+        // echo "</pre>";
+        // exit;
         return $this->render('editpage', ['result' => $result, 'users' => $users, 'project_id' => $project_id]);
+    }
+
+    public function actionMoveresource(){
+        if(Yii::$app->request->post()){
+            $res_id = isset($_POST['res_id']) ? $_POST['res_id'] : null;
+            $newregion = isset($_POST['newregion'])? $_POST['newregion'] : null;
+            return send_post("frontend.test.localhost/backend/main/moveresource", ['res_id'=>$res_id, 'newregion'=>$newregion]);
+        }
     }
 
     public function actionTurnstateproject()
@@ -171,5 +183,23 @@ class ManageController extends AuthController
         $project_id = Yii::$app->request->get('project_id');
         $result = json_decode(get_web_page("frontend.test.localhost/backend/main/getproject?project_id={$project_id}"), true);
         return $this->render("cityedit_modal", ['city_id' => $city_id, 'result' => $result]);
+    }
+
+    public function actionSaveprojectchanges(){
+        if(Yii::$app->request->post()){
+            $projectname = isset($_POST['projectname']) ? $_POST['projectname'] : null;
+            $owner = isset($_POST['owner']) ? $_POST['owner'] : null;
+            $projectid = isset($_POST['projectid']) ? $_POST['projectid']:null;
+            $result = send_post("frontend.test.localhost/backend/main/saveprojectchanges", ['projectname'=>$projectname, 'owner' => $owner, 'projectid' => $projectid]);
+            return $result;
+        }
+    }
+
+    public function actionDeletecity(){
+        if(Yii::$app->request->post()){
+            $city_id = isset($_POST['city_id']) ? $_POST['city_id'] : null;
+            $result = send_post("frontend.test.localhost/backend/main/deletecity", ['city_id'=>$city_id]);
+            return $result;
+        }
     }
 }

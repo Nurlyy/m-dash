@@ -71,17 +71,17 @@ class Project extends Model
         return $this->helper::createCommand($query);
     }
 
-    public function get_cities_data($project_id, $id = null)
+    public function get_cities_data($project_id, $id = [])
     {
         $query = "SELECT * from city where ";
-        if (!empty($id[0])) {
-            if (!empty($id[1])) {
+        if (isset($id[0])) {
+            if (isset($id[1])) {
                 $query .= " id in (" . implode(', ', $id) . ") and ";
             } else {
                 $query .= " id = {$id[0]} and ";
             }
         }
-        if (!empty($project_id)) {
+        if (isset($project_id)) {
             $query .= " project_id = {$project_id}";
         }
         // return $query;
@@ -278,82 +278,114 @@ class Project extends Model
                 $return['subs'] = $this->helper::createCommand($q);
                 break;
             case 3:
-                $query .= ($subsChart == true ? " if(s.date=p.date and p.candidate_id=s.candidate_id, s.fb, 0) as fb_sub, if(s.date=p.date and s.candidate_id=u.id, s.ig, 0) as ig_sub," : 0)
-                    . ($discussionChart == true ? " count(case when p.type = 1 then 1 end) as fb_posts, count(case when p.type=2 then 1 end) as ig_posts, count(case when p.type=3 then 1 end) as tg_posts, count(case when p.type=4 then 1 end) as web_posts," : "")
-                    . ($commentsChart == true ? " sum(case when p.type=1 then p.comments end) as fb_comments, sum(case when p.type=2 then p.comments end) as ig_comments, " : "")
-                    . ($repostsChart == true ? " sum(case when p.type=1 then p.reposts end) as fb_reposts, sum(case when p.type=2 then p.reposts end) as ig_reposts, sum(case when p.type=3 then p.reposts end) as tg_reposts, " : "")
-                    . ($likesChart == true ? " sum(case when p.type=1 then p.likes end) as fb_likes, sum(case when p.type=2 then p.likes end) as ig_likes, " : "")
-                    . ($sentimentChart == true ? " count(case when p.sentiment=1 and p.type = 1 then 1 end) as fb_positive, count(case when p.sentiment=2 and p.type = 1 then 1 end) as fb_neutral, count(case when p.sentiment=3 and p.type = 1 then 1 end) as fb_negative, count(case when p.sentiment=1 and p.type = 2 then 1 end) as ig_positive, count(case when p.sentiment=2 and p.type = 2 then 1 end) as ig_neutral, count(case when p.sentiment=3 and p.type = 2 then 1 end) as ig_negative, count(case when p.sentiment=1 and p.type = 3 then 1 end) as tg_positive, count(case when p.sentiment=2 and p.type = 3 then 1 end) as tg_neutral, count(case when p.sentiment=3 and p.type = 3 then 1 end) as tg_negative, count(case when p.sentiment=1 and p.type = 4 then 1 end) as web_positive, count(case when p.sentiment=2 and p.type = 4 then 1 end) as web_neutral, count(case when p.sentiment=3 and p.type = 4 then 1 end) as web_negative " : "");
-                break;
-            case 4:
-                $query .= " count(case when p.type=4 then 1 end) as web_posts,"
-                    . " sum(case when p.type=4 then p.views end) as web_views ";
-                break;
+                if ($subsChart == true) {
+                    $q = "select r.city_id, s.date, "
+                        . "if(s.type=1, s.count, 0) as vk_sub, "
+                        . "if(s.type=2, s.count, 0) as fb_sub, "
+                        . "if(s.type=3, s.count, 0) as tw_sub, "
+                        . "if(s.type=4, s.count, 0) as ig_sub, "
+                        . "if(s.type=5, s.count, 0) as gg_sub, "
+                        . "if(s.type=6, s.count, 0) as yt_sub, "
+                        . "if(s.type=7, s.count, 0) as ok_sub, "
+                        . "if(s.type=8, s.count, 0) as mm_sub, "
+                        . "if(s.type=9, s.count, 0) as tg_sub, "
+                        . "if(s.type=10, s.count, 0) as tt_sub "
+                        . "from "
+                        . "sub_follow s "
+                        . "inner join resources r on r.city_id IN ({$first}, {$second}) "
+                        . "where "
+                        . "s.res_id = r.id "
+                        . "and s.date between '{$start_date}' "
+                        . "and '{$end_date}' "
+                        . "group by s.date, s.type, s.count, r.city_id";
+                    // return $this->helper::createCommand($q);
+                    // return $q;
+                    $return['subs'] = $this->helper::createCommand($q);
+                }
+                $query .= ($discussionChart == true ? " count(case when p.type=1 then 1 end) as vk,"
+                    . " count(case when p.type=2 then 1 end) as fb,"
+                    . " count(case when p.type=3 then 1 end) as tw,"
+                    . " count(case when p.type=4 then 1 end) as ig,"
+                    . " count(case when p.type=5 then 1 end) as gg,"
+                    . " count(case when p.type=6 then 1 end) as yt,"
+                    . " count(case when p.type=7 then 1 end) as ok,"
+                    . " count(case when p.type=8 then 1 end) as mm,"
+                    . " count(case when p.type=9 then 1 end) as tg,"
+                    . " count(case when p.type=10 then 1 end) as tt,"
+                    : "")
+                    . ($commentsChart == true ? " sum(case when p.type=1 then p.comments end) as vk_comments,"
+                        . " sum(case when p.type=2 then p.comments end) as fb_comments,"
+                        . " sum(case when p.type=3 then p.comments end) as tw_comments,"
+                        . " sum(case when p.type=4 then p.comments end) as ig_comments,"
+                        . " sum(case when p.type=5 then p.comments end) as gg_comments,"
+                        . " sum(case when p.type=6 then p.comments end) as yt_comments,"
+                        . " sum(case when p.type=7 then p.comments end) as ok_comments,"
+                        . " sum(case when p.type=8 then p.comments end) as mm_comments,"
+                        . " sum(case when p.type=9 then p.comments end) as tg_comments,"
+                        . " sum(case when p.type=10 then p.comments end) as tt_comments,"
+                        : "")
+                    . ($repostsChart == true ? " sum(case when p.type=1 then p.reposts end) as vk_reposts,"
+                        . " sum(case when p.type=2 then p.reposts end) as fb_reposts,"
+                        . " sum(case when p.type=3 then p.reposts end) as tw_reposts,"
+                        . " sum(case when p.type=4 then p.reposts end) as ig_reposts,"
+                        . " sum(case when p.type=5 then p.reposts end) as gg_reposts,"
+                        . " sum(case when p.type=6 then p.reposts end) as yt_reposts,"
+                        . " sum(case when p.type=7 then p.reposts end) as ok_reposts,"
+                        . " sum(case when p.type=8 then p.reposts end) as mm_reposts,"
+                        . " sum(case when p.type=9 then p.reposts end) as tg_reposts,"
+                        . " sum(case when p.type=10 then p.reposts end) as tt_reposts,"
+                        : "")
+                    . ($likesChart == true ? " sum(case when p.type=1 then p.likes end) as vk_likes,"
+                        . " sum(case when p.type=2 then p.likes end) as fb_likes,"
+                        . " sum(case when p.type=3 then p.likes end) as tw_likes,"
+                        . " sum(case when p.type=4 then p.likes end) as ig_likes,"
+                        . " sum(case when p.type=5 then p.likes end) as gg_likes,"
+                        . " sum(case when p.type=6 then p.likes end) as yt_likes,"
+                        . " sum(case when p.type=7 then p.likes end) as ok_likes,"
+                        . " sum(case when p.type=8 then p.likes end) as mm_likes,"
+                        . " sum(case when p.type=9 then p.likes end) as tg_likes,"
+                        . " sum(case when p.type=10 then p.likes end) as tt_likes,"
+                        : "")
+                    . ($sentimentChart == true ? " count(case when t.sentiment=1  and p.type = 1 then 1 end) as vk_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 1 then 1 end) as vk_neutral,"
+                        . " count(case when t.sentiment=-1  and p.type = 1 then 1 end) as vk_negative,"
 
-            case 0:
-                $query .= " if(s.date=p.date and p.candidate_id=s.candidate_id, s.fb, 0) as fb_sub,"
-                    . " if(s.date=p.date and s.candidate_id=u.id, s.ig, 0) as ig_sub,"
-                    . " if(s.date=p.date and s.candidate_id=u.id, s.tg, 0) as tg_sub,"
-                    . " count(case when p.type = 1 then 1 end) as fb_posts,"
-                    . " count(case when p.type=2 then 1 end) as ig_posts,"
-                    . " count(case when p.type=3 then 1 end) as tg_posts,"
-                    . " count(case when p.type=4 then 1 end) as web_posts,"
-                    // . " sum(case when p.type=1 then p.views end) as fb_views,"
-                    // . " sum(case when p.type=2 then p.views end) as ig_views,"
-                    . " sum(case when p.type=4 then p.views end) as web_views,"
-                    . " sum(case when p.type=1 then p.comments end) as fb_comments,"
-                    . " sum(case when p.type=2 then p.comments end) as ig_comments, "
-                    . " sum(case when p.type=1 then p.reposts end) as fb_reposts,"
-                    . " sum(case when p.type=2 then p.reposts end) as ig_reposts,"
-                    . " sum(case when p.type=3 then p.reposts end) as tg_reposts, "
-                    . " sum(case when p.type=1 then p.likes end) as fb_likes,"
-                    . " sum(case when p.type=2 then p.likes end) as ig_likes ";
-                break;
-            case 5:
-                $query .= " count(case when p.type = 1 then 1 end) as fb_posts,"
-                    . " count(case when p.type=2 then 1 end) as ig_posts,"
-                    . " count(case when p.type=3 then 1 end) as tg_posts,"
-                    . " count(case when p.type=4 then 1 end) as web_posts,"
-                    . " count(case when p.sentiment=1 and p.type = 1 then 1 end) as fb_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 1 then 1 end) as fb_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 1 then 1 end) as fb_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 2 then 1 end) as ig_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 2 then 1 end) as ig_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 2 then 1 end) as ig_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 3 then 1 end) as tg_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 3 then 1 end) as tg_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 3 then 1 end) as tg_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 4 then 1 end) as web_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 4 then 1 end) as web_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 4 then 1 end) as web_negative ";
-                break;
-            case 6:
-                $query .= " if(s.date=p.date and p.candidate_id=s.candidate_id, s.fb, 0) as fb_sub,"
-                    . " if(s.date=p.date and s.candidate_id=u.id, s.ig, 0) as ig_sub,"
-                    . " if(s.date=p.date and s.candidate_id=u.id, s.tg, 0) as tg_sub,"
-                    . " count(case when p.type = 1 then 1 end) as fb_posts,"
-                    . " count(case when p.type=2 then 1 end) as ig_posts,"
-                    . " count(case when p.type=3 then 1 end) as tg_posts,"
-                    . " count(case when p.type=4 then 1 end) as web_posts,"
-                    . " sum(case when p.type=1 then p.comments end) as fb_comments,"
-                    . " sum(case when p.type=2 then p.comments end) as ig_comments, "
-                    . " sum(case when p.type=1 then p.reposts end) as fb_reposts,"
-                    . " sum(case when p.type=2 then p.reposts end) as ig_reposts,"
-                    . " sum(case when p.type=3 then p.reposts end) as tg_reposts, "
-                    . " sum(case when p.type=1 then p.likes end) as fb_likes,"
-                    . " sum(case when p.type=2 then p.likes end) as ig_likes, "
-                    . " count(case when p.sentiment=1 and p.type = 1 then 1 end) as fb_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 1 then 1 end) as fb_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 1 then 1 end) as fb_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 2 then 1 end) as ig_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 2 then 1 end) as ig_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 2 then 1 end) as ig_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 3 then 1 end) as tg_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 3 then 1 end) as tg_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 3 then 1 end) as tg_negative,"
-                    . " count(case when p.sentiment=1 and p.type = 4 then 1 end) as web_positive,"
-                    . " count(case when p.sentiment=2 and p.type = 4 then 1 end) as web_neutral,"
-                    . " count(case when p.sentiment=3 and p.type = 4 then 1 end) as web_negative ";
+                        . " count(case when t.sentiment=1  and p.type = 2 then 1 end) as fb_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 2 then 1 end) as fb_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 2 then 1 end) as fb_negative,"
+
+                        . " count(case when t.sentiment=1  and p.type = 3 then 1 end) as tw_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 3 then 1 end) as tw_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 3 then 1 end) as tw_negative,"
+
+                        . " count(case when t.sentiment=1  and p.type = 4 then 1 end) as ig_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 4 then 1 end) as ig_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 4 then 1 end) as ig_negative,"
+
+                        . " count(case when t.sentiment=1  and p.type = 5 then 1 end) as gg_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 5 then 1 end) as gg_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 5 then 1 end) as gg_negative,"
+
+                        . " count(case when t.sentiment=1  and p.type = 6 then 1 end) as yt_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 6 then 1 end) as yt_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 6 then 1 end) as yt_negative,"
+
+                        . " count(case when t.sentiment=1  and p.type = 7 then 1 end) as ok_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 7 then 1 end) as ok_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 7 then 1 end) as ok_negative,"
+
+                        . " count(case when t.sentiment=1  and p.type = 8 then 1 end) as mm_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 8 then 1 end) as mm_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 8 then 1 end) as mm_negative,"
+
+                        . " count(case when t.sentiment=1  and p.type = 9 then 1 end) as tg_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 9 then 1 end) as tg_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 9 then 1 end) as tg_negative,"
+
+                        . " count(case when t.sentiment=1  and p.type = 10 then 1 end) as tt_positive,"
+                        . " count(case when t.sentiment=0  and p.type = 10 then 1 end) as tt_neutral,"
+                        . " count(case when t.sentiment=-1 and p.type = 10 then 1 end) as tt_negative "
+                        : "");
                 break;
         }
         $query .= " from city u "
@@ -413,46 +445,65 @@ class Project extends Model
 
     public function updateOrCreateResources($data)
     {
+        // return $data;
         $query = "";
         if (isset($data)) {
             $f = [];
-            // return $data;
             foreach ($data as $d) {
+                // return $d;
+                // return "FDKKPJFIOPDSFDSP";
+                $type = "0";
+                if (isset($d['url'])) {
+                    // return "FDKKPJFIOPDSFDSP";
+                    if (strpos($d['url'], 'vk')!==false || strpos($d['url'], 'vkontakte')!==false) {$type == "1";}
+                    else if (strpos($d['url'], 'facebook')!==false) {$type == "2";}
+                    else if (strpos($d['url'], 'twitter')!==false) {$type == "3";}
+                    else if (strpos($d['url'], 'instagram')!==false) {$type == "4";}
+                    else if (strpos($d['url'], 'google')!==false) {$type == "5";}
+                    else if (strpos($d['url'], 'youtube')!==false) {$type == "6";}
+                    else if (strpos($d['url'], 'ok.ru')!==false) {$type == "7";}
+                    else if (strpos($d['url'], 'mail.ru')!==false) {$type == "8";}
+                    else if (strpos($d['url'], 'telegram')!==false) {$type == "9";}
+                    else if (strpos($d['url'], 'tiktok')!==false) {$type == "10";}
+                    else $type = 0;
+                }
+                // return "FDKKPJFIOPDSFDSP";
                 if (isset($d['id'])) {
                     $query .= "update resources set "
                         . (isset($d['name']) ? "name = '{$d['name']}' " : "")
-                        . (isset($d['name'])&&((isset($d['photo']) || isset($d['url']) || isset($d['description']))) ? "," : "")
+                        . (isset($d['name']) && ((isset($d['photo']) || isset($d['url']) || isset($d['description']))) ? "," : "")
                         . (isset($d['url']) ? "url = '{$d['url']}' " : "")
-                        . (isset($d['url'])&&((isset($d['photo']) || isset($d['description']))) ? "," : "")
+                        . (isset($d['url']) && ((isset($d['photo']) || isset($d['description']))) ? "," : "")
                         . (isset($d['photo']) ? "photo = '{$d['photo']}' " : "")
-                        . (isset($d['photo'])&&(isset($d['description'])) ? "," : "")
+                        . (isset($d['photo']) && (isset($d['description'])) ? "," : "")
                         . (isset($d['description']) ? "description='{$d['description']}' " : "")
                         . "where id = {$d['id']}";
                 } else {
-                    $query .= "insert into resources ("
+                    $query .= "insert into resources (type, "
                         . (isset($d['name']) ? " name " : "")
-                        . (isset($d['name'])&&((isset($d['url']) || isset($d['photo']) || isset($d['description']) || isset($d['city_id']))) ? "," : "")
+                        . (isset($d['name']) && ((isset($d['url']) || isset($d['photo']) || isset($d['description']) || isset($d['city_id']))) ? "," : "")
                         . (isset($d['url']) ? " url " : "")
-                        . (isset($d['url'])&&((isset($d['photo']) || isset($d['description']) || isset($d['city_id']))) ? "," : "")
+                        . (isset($d['url']) && ((isset($d['photo']) || isset($d['description']) || isset($d['city_id']))) ? "," : "")
                         . (isset($d['photo']) ? " photo " : "")
-                        . (isset($d['photo'])&&((isset($d['description']) || isset($d['city_id']))) ? "," : "")
+                        . (isset($d['photo']) && ((isset($d['description']) || isset($d['city_id']))) ? "," : "")
                         . (isset($d['description']) ? " description " : "")
-                        . (isset($d['description'])&&(isset($d['city_id'])) ? "," : "")
+                        . (isset($d['description']) && (isset($d['city_id'])) ? "," : "")
                         . (isset($d['city_id']) ? " city_id " : "")
-                        . ") values ("
+                        . ") values ({$type}, "
                         . (isset($d['name']) ? " '{$d['name']}' " : "")
-                        . (isset($d['name'])&&((isset($d['url']) || isset($d['photo']) || isset($d['description']) || isset($d['city_id']))) ? "," : "")
+                        . (isset($d['name']) && ((isset($d['url']) || isset($d['photo']) || isset($d['description']) || isset($d['city_id']))) ? "," : "")
                         . (isset($d['url']) ? "  '{$d['url']}'  " : "")
-                        . (isset($d['url'])&&((isset($d['photo']) || isset($d['description']) || isset($d['city_id']))) ? "," : "")
+                        . (isset($d['url']) && ((isset($d['photo']) || isset($d['description']) || isset($d['city_id']))) ? "," : "")
                         . (isset($d['photo']) ? "  '{$d['photo']}'  " : "")
-                        . (isset($d['photo'])&&((isset($d['description']) || isset($d['city_id']))) ? "," : "")
+                        . (isset($d['photo']) && ((isset($d['description']) || isset($d['city_id']))) ? "," : "")
                         . (isset($d['description']) ? "  '{$d['description']}'  " : "")
-                        . (isset($d['description'])&&(isset($d['city_id'])) ? "," : "")
+                        . (isset($d['description']) && (isset($d['city_id'])) ? "," : "")
                         . (isset($d['city_id']) ? " {$d['city_id']} " : "")
                         . ")";
                 }
+                // return $query;
                 // array_push($f, $query);
-                array_push($f, ($this->helper::createCommand($query)?true:false));
+                array_push($f, ($this->helper::createCommand($query) ? true : false));
                 $query = "";
                 // if ($this->helper::createCommand($query)) {
                 //     return true;
@@ -464,7 +515,8 @@ class Project extends Model
         }
     }
 
-    public function deleteres($id){
+    public function deleteres($id)
+    {
         $query = "delete from resources where id={$id}";
         return $this->helper::createCommand($query);
     }
@@ -473,23 +525,47 @@ class Project extends Model
     {
         $query = "";
         if (isset($data)) {
+            $f = [];
             foreach ($data as $d) {
                 if (isset($d['id'])) {
                     $query .= "update city set "
-                        . (isset($d['name']) ? " '{$d['name']}'" : "")
+                        . (isset($d['name']) ? "name='{$d['name']}' " : "")
                         . "where id = {$d['id']}";
                 } else {
-                    $query .= "insert into city ("
+                    $query .= "insert into city (res_count, "
                         . (isset($d['name']) ? " name " : "")
                         . (isset($d['project_id']) ? "," : "")
                         . (isset($d['project_id']) ? " project_id " : "")
-                        . ") values ("
+                        . ") values (0, "
                         . (isset($d['name']) ? " '{$d['name']}' " : "")
                         . (isset($d['project_id']) ? "," : "")
                         . (isset($d['project_id']) ? " {$d['project_id']} " : "")
                         . ")";
                 }
+                // return $query;
+                array_push($f, ($this->helper::createCommand($query) ? true : false));
+                // array_push($f, $query);
+                $query = "";
             }
+            return $f;
         }
+    }
+
+    public function saveprojectchanges($projectname, $owner, $projectid)
+    {
+        $query = "update projects set " . (isset($projectname) ? "name = '{$projectname}' " : "") . (isset($projectname) && isset($owner) ? ", " : "") . (isset($owner) ? "user_id = {$owner} " : "") . "where id={$projectid}";
+        return $this->helper::createCommand($query) ? true : false;
+    }
+
+    public function deletecity($city_id)
+    {
+        $query = "delete from city where id={$city_id}";
+        return $this->helper::createCommand($query) ? true : false;
+    }
+
+    public function moveresource($res_id, $newregion){
+        $query = "update resources set city_id={$newregion} where id={$res_id}";
+        // return $query;
+        return $this->helper::createCommand($query);
     }
 }

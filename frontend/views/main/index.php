@@ -98,8 +98,9 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
 
 <script>
     function createPdf() {
-        var element = document.getElementById("main_wrapper_container");
         if ($("#comparecontent")) {
+            var element = document.getElementById("main_wrapper_container");
+        } else {
             var element = document.getElementById("comparecontent");
         }
         var opt = {
@@ -171,7 +172,7 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                     // console.log("fjdos")
                 }
             });
-            
+
         }
     }
 

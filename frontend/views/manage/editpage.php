@@ -10,38 +10,107 @@ $res_id = null;
         </div>
         <div class="panel-body">
 
+            <div class="modal inmodal delresmodal" id="deleteCityModal" style="z-index: 2060 !important;" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content animated flipInY">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Вы уверены?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="deleteCityModalParagraph"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" onclick="deletecity(city_id)" class="btn btn-white" data-dismiss="modal">Да</button>
+                            <!-- <form action="/manage/deleteresource" method="POST"><input type="hidden" name="res_id" value="<?= $res_id ?>"><input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->getCsrfToken() ?>" /><input type="submit" value="Да" class="btn btn-white" /></form> -->
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-12 justify-content-center">
                     <div class="panel panel-default">
                         <div class="panel-body" style="text-align: center;">
                             <h3>Название:</h3>
-                            <input type="text" class="form-control" style="width: 300px; margin-left: auto; margin-right: auto;" value="<?= $result['project']['name'] ?>" /><br>
+                            <input id="projectname" type="text" class="form-control" style="width: 300px; margin-left: auto; margin-right: auto;" value="<?= $result['project']['name'] ?>" /><br>
                             <h3>Владелец:</h3>
                             <select name="owner" id="owner">
                                 <option value="<?= $result['project']['user_id'] ?>"><?= $result['project']['username'] ?></option>
                                 <?php foreach ($users as $user) { ?>
                                     <option value="<?= $user['id'] ?>"><?= $user['username'] ?></option>
                                 <?php } ?>
-                            </select><br><br>
+                            </select><br><br><br>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveProjectChanges()">Сохранить</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-12">
 
+                    <div id="cityModal">
+                        <div class="modal inmodal fade" id="createCityModal" style="overflow-y:auto !important; overflow-x: hidden;" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" style="overflow-y:auto !important; overflow-x: hidden;">
+                                <div class="modal-content" style="overflow-y:auto !important; overflow-x: hidden;">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title text-center">Добавление города</h4><br>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveChanges()">Сохранить</button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <div class="row">
+                                            <div class="col-12 justify-content-center">
+                                                <div class="panel panel-default" style="background-color:azure; ">
+                                                    <div class="panel-body" style="text-align: center;">
+                                                        <h3>Название:</h3>
+                                                        <input id="create_cityname" type="text" class="form-control" style="width: 300px; margin-left: auto; margin-right: auto;" /><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-12">
+                                                <div class="panel panel-primary" style="background-color:azure; ">
+                                                    <div class="panel-header">
+                                                        <h2 class='text-center'><strong>Добавление ресурсов</strong></h2>
+                                                    </div>
+                                                    <div style="padding: 15px;">
+                                                        <div id="res-container"></div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="createCityName(); saveChanges()">Сохранить</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="panel panel-default">
                         <div class="panel-header">
-                            <h2 class='text-center'><strong>Список городов проекта</strong></h2>
+                            <h2 class='text-center'><strong>Список добавленных регионов проекта</strong></h2>
+                        </div>
+                        <div class="panel-body" style="cursor:pointer;" data-toggle="modal" data-target="#createCityModal">
+                            <div class="city-container row text-center bg-primary " style="margin:0px;">
+
+                                <h4 class="col-12" style="text-align:center;"><i style="margin-right:15px;" class="fa fa-plus" aria-hidden="true"></i>Добавить</h4>
+                            </div>
                         </div>
                         <?php
                         if (!empty($result['project']['cities'])) {
                             foreach ($result['project']['cities'] as $city) { ?>
-                                <div class="panel-body">
-                                    <div class="city-container row text-center ">
+                                <div class="panel-body" id="project-<?= $city['id'] ?>">
+                                    <div class="city-container row text-center " style="margin:0px;">
                                         <h4 style="padding:0px; margin: 0px;" class="col-4"><?= $city['name'] ?></h4>
                                         <p style="padding: 0px; margin: 0px;" class="col-4"><?= count($city['resources']) ?> ресурсов</p>
                                         <div class="col-4 text-right">
-                                            <a href="" onclick="showModal(<?= $project_id ?>, <?= $city['id'] ?>)<?php $city_id = $city['id'] ?>" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil" style="margin-right:10px; font-size:medium;" aria-hidden="true"></i></a>
-                                            <a href="#"><i class="fa fa-trash" style="font-size:medium;" aria-hidden="true"></i></a>
+                                            <a href="" onclick="showModal(<?= $project_id ?>, <?= $city['id'] ?>); city_id=<?= $city['id'] ?>" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil" style="margin-right:10px; font-size:medium;" aria-hidden="true"></i></a>
+                                            <a href="" onclick="showDeleteCityModal(<?= $city['id'] ?>)" data-toggle="modal" data-target="#deleteCityModal"><i class="fa fa-trash" style="font-size:medium;" aria-hidden="true"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -66,13 +135,13 @@ $res_id = null;
                                     </div>
                                 </div>
 
-                                <div class="modal inmodal fade" id="editModal" style="overflow:auto !important;" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" style="overflow:auto !important;">
-                                        <div class="modal-content" style="overflow:auto !important;">
+                                <div class="modal inmodal fade" id="editModal" style="overflow-y:auto !important; overflow-x: hidden;" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" style="overflow-y:auto !important; overflow-x: hidden;">
+                                        <div class="modal-content" style="overflow-y:auto !important; overflow-x: hidden;">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                                 <h4 class="modal-title text-center">Редактирование города</h4><br>
-                                                <button type="button" class="btn btn-primary">Сохранить</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveChanges()">Сохранить</button>
                                             </div>
 
                                             <div class="modal-body">
@@ -82,7 +151,7 @@ $res_id = null;
                                                         <div class="panel panel-default" style="background-color:azure; ">
                                                             <div class="panel-body" style="text-align: center;">
                                                                 <h3>Название:</h3>
-                                                                <input type="text" class="form-control" style="width: 300px; margin-left: auto; margin-right: auto;" value="<?= $result['project']['cities'][$city_id]['name'] ?>" /><br>
+                                                                <input id="cityname" onchange="cityNameChange()" type="text" class="form-control" style="width: 300px; margin-left: auto; margin-right: auto;" /><br>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -106,11 +175,40 @@ $res_id = null;
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="modal inmodal" id="moveResModal" style="overflow-y:auto !important; overflow-x: hidden; z-index:2500 !important; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content animated flipInY">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                <h4 id="moveResModalTitle" class="modal-title text-center"></h4><br>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12 justify-content-center">
+                                                        <div class="panel panel-default" style="background-color:azure; ">
+                                                            <div class="panel-body" style="text-align: center;">
+                                                                <h3>Выберите регион:</h3>
+                                                                <select onchange="regionchange()" name="newregion" id="newregion">
+                                                                    
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveMove()">Сохранить</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         <?php } else { ?>
                             <h3 style="padding:20px; font-style:normal;">Список пуст</h3>
                         <?php } ?>
-
                     </div>
                 </div>
             </div>
@@ -122,15 +220,116 @@ $res_id = null;
     let createdResCounter = 0;
     let restype = null;
     let resid = null;
+    let changedName = null;
+    let createdCityCounter = 0;
+    let result = <?= json_encode($result) ?>;
+    let city_id = null;
+    let newregion = null;
+    // console.log(result['project']['cities'][2])
+
+    function regionchange(){
+        newregion = $("#newregion").val();
+    }
+
+    function showMoveResModal(type, res_id) {
+        if (type == "id") {
+            $("#newregion").html(`<option value="${city_id}" selected>${result['project']['cities'][city_id]['name']}</option>`);
+            $("#moveResModalTitle").text(`Перенос ресурса "${result['project']['cities'][city_id]['resources'][res_id]['name']}" в другой регион проекта`);
+            resid = res_id;
+            r = result['project']['cities']
+            // console.log(r);
+            Object.entries(r).forEach(([key, value]) => {
+                if (Number(value['id']) != city_id) {
+                    $("#newregion").append(`<option value="${value['id']}">${value['name']}</option>`)
+                }
+            })
+
+        }
+    }
+
+    function saveMove() {
+        $.ajax({
+            url: "/manage/moveresource",
+            data: {
+                res_id: resid,
+                newregion: newregion,
+                '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
+            },
+            type: "POST",
+            error: function(xhr, tStatus, e) {
+                if (!xhr) {
+                    alert(" We have an error ");
+                    alert(tStatus + "   " + e.message);
+                } else {
+                    console.log("else: " + e.message); // the great unknown
+                }
+            },
+            success: function(resp) {
+                console.log(resp);
+                $("#col-id-" + resid).remove();
+                $(".colcontent-id-" + resid).remove();
+            }
+        })
+    }
+
+
+    function showDeleteCityModal(cityid) {
+        $("#deleteCityModalParagraph").text(`Вы точно хотите удалить город ${result['project']['cities'][cityid]['name']}? Ваше действие нельзя будет отменить`);
+        city_id = cityid
+    }
+
+    function deletecity(city_id) {
+        $.ajax({
+            url: "/manage/deletecity",
+            data: {
+                city_id: city_id,
+                '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
+            },
+            type: "POST",
+            error: function(xhr, tStatus, e) {
+                if (!xhr) {
+                    alert(" We have an error ");
+                    alert(tStatus + "   " + e.message);
+                } else {
+                    console.log("else: " + e.message); // the great unknown
+                }
+            },
+            success: function(resp) {
+                console.log(resp);
+                $("#project-" + city_id).remove();
+            }
+        });
+    }
+
+
+
+    function createCityName() {
+        pid = <?= $project_id ?>;
+        cname = $("#create_cityname").val();
+        createdCities[createdCityCounter] = {};
+        createdCities[createdCityCounter]['name'] = cname;
+        createdCities[createdCityCounter]['project_id'] = pid;
+        createdCityCounter += 1;
+    }
+
+
+    function cityNameChange() {
+        changedName = $("#cityname").val();
+        c = city_id;
+        cityChanges[c] = {};
+        cityChanges[c]['id'] = city_id;
+        cityChanges[c]['name'] = changedName;
+    }
 
 
     function showModal(project_id, city_id) {
+        $("#cityname").val(result['project']['cities'][city_id]['name']);
         $.ajax({
             url: "/manage/showmodal?project_id=" + project_id + "&city_id=" + city_id,
             method: "GET",
 
         }).done(function success(data) {
-            data = `<div class="btn btn-primary collapsible col-12" style="margin-bottom:15px;">Добавить новый ресурс</div>
+            data = `<div class="btn btn-primary collapsible col-12" style="margin-bottom:15px;"><i style="margin-right:15px;" class="fa fa-plus" aria-hidden="true"></i>Добавить новый ресурс</div>
                     <div id="collapsible-content" class="panel-body" style="display:none !important; margin-top:-30px;">
                         <div class="panel panel-primary">
                             <div class="panel-body">
@@ -185,7 +384,7 @@ $res_id = null;
             }
         }
         console.log(resname);
-        $("#deleteResModalParagraph").text("Вы точно хотите удалить ресурс \"" + resname + "\"");
+        $("#deleteResModalParagraph").text("Вы точно хотите удалить ресурс \"" + resname + "\"? \n Ваше действие будет невозможно отменить.");
 
     }
 
@@ -238,7 +437,7 @@ $res_id = null;
         createdResources[createdResCounter]['url'] = url;
         createdResources[createdResCounter]['photo'] = img;
         createdResources[createdResCounter]['description'] = desc;
-        createdResources[createdResCounter]['city_id'] = <?= $city_id ?>;
+        createdResources[createdResCounter]['city_id'] = city_id;
 
         $("#cities_container").append(
             `<div class="btn btn-primary collapsible col-12" id="col-count-${createdResCounter}" style="margin-bottom:15px;">${name}</div>
@@ -300,7 +499,7 @@ $res_id = null;
     }
 
     function saveChanges() {
-        // console.log(resourcesChanges);
+        // console.log(createdCities);
         postdata = {
             cityChanges: cityChanges,
             resourcesChanges: resourcesChanges,
@@ -308,13 +507,12 @@ $res_id = null;
             createdCities: createdCities,
             '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
         };
-        console.log(postdata);
+        // console.log(postdata);
 
         $.ajax({
             url: "/manage/applychanges",
             data: postdata,
             type: "POST",
-            // dataType: 'json',
             error: function(xhr, tStatus, e) {
                 if (!xhr) {
                     alert(" We have an error ");
@@ -324,14 +522,46 @@ $res_id = null;
                 }
             },
             success: function(resp) {
-                // nextThingToDo(resp); // deal with data returned
                 console.log(resp);
+                cityChanges = {};
+                resourcesChanges = {};
+                createdResources = {};
+                createdCities = {};
+                // window.location.reload();
             }
         });
 
-        cityChanges = {};
-        resourcesChanges = {};
-        createdResources = [];
-        createdCities = {};
+
+
+    }
+
+    function saveProjectChanges() {
+        projectname = $("#projectname").val();
+        owner = $("#owner").val();
+        projectid = <?= $project_id ?>;
+        $.ajax({
+            url: "/manage/saveprojectchanges",
+            data: {
+                projectname: projectname,
+                owner: owner,
+                projectid: projectid,
+                '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
+            },
+            type: "POST",
+            error: function(xhr, tStatus, e) {
+                if (!xhr) {
+                    alert(" We have an error ");
+                    alert(tStatus + "   " + e.message);
+                } else {
+                    console.log("else: " + e.message); // the great unknown
+                }
+            },
+            success: function(resp) {
+                console.log(resp);
+                projectname = null;
+                owner = null;
+                projectid = null;
+            }
+        });
     }
 </script>

@@ -2,14 +2,14 @@
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'><strong>Сравнить кандидатов</strong></h2>
+                <h2 class='text-center'><strong>Сравнение активности в регионах</strong></h2>
             </div>
             <div class="panel-body">
                 <div class="col-lg-12 row no-margins" style='justify-content:center;'>
                     <div class="col-lg-4 col-md-12 col-sm-12" style='display:flex; flex-direction:column; gap: 10px; justify-content:center;'>
                         <div class="btn-group">
                             <select class="btn inline-block" style='width:100%;background: #ededed' id="firstSelect">
-                                <option value="select">Выбрать кандидата</option>
+                                <option value="select">Выбрать регион</option>
                                 <?php foreach ($cityInformation as $candidate) { ?>
                                     <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
                                 <?php } ?>
@@ -17,7 +17,7 @@
                         </div>
                         <div class="btn-group">
                             <select class="btn inline-block" style='width:100%;background: #ededed' id="secondSelect">
-                                <option value="select">Выбрать кандидата</option>
+                                <option value="select">Выбрать регион</option>
                                 <?php foreach ($cityInformation as $candidate) { ?>
                                     <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
                                 <?php } ?>

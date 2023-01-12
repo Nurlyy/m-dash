@@ -16,7 +16,7 @@ $_monthsList = array(
             <div class="panel-body">
                 <div>
                     <h1 style="margin-top:0px;padding-top:0px; margin-bottom:0px; padding-bottom:0px;"><strong><?php echo $cityInformation['name'] ?></strong></h1>
-                    <p style="margin-bottom:0px; margin-top:5px; padding-bottom:0px; padding-top:0px;">Ресурсов: <?= $r_count[$cityInformation['id']] ?></p>
+                    <p style="margin-bottom:0px; margin-top:5px; padding-bottom:0px; padding-top:0px;">Ресурсов: <?= isset($r_count[$cityInformation['id']]) ? $r_count[$cityInformation['id']] : 0 ?></p>
                     <!-- <div class="row col-lg-2 col-sm-12 justify-content-center">
                         <img style="width:10.5em; height:10.5em;" src="<?php #echo $cityInformation['photo'] 
                                                                         ?>" class="float-left rounded-circle circle-border m-b-md" alt="profile">
@@ -290,12 +290,13 @@ $_monthsList = array(
                         <?php
                         $types = [];
                         $posts = [];
-                        foreach ($city_posts[$cityInformation['id']] as $resources) {
-                            foreach ($resources as $post) {
-                                array_push($posts, $post);
-                                array_push($types, $post['type']);
+                        if (isset($city_posts[$cityInformation['id']]))
+                            foreach ($city_posts[$cityInformation['id']] as $resources) {
+                                foreach ($resources as $post) {
+                                    array_push($posts, $post);
+                                    array_push($types, $post['type']);
+                                }
                             }
-                        }
                         $types = array_unique($types);
                         foreach ($types as $type) { ?>
                             <div class="col-lg-4 col-sm-10 col-md-8 col-12 row">
@@ -433,15 +434,15 @@ $_monthsList = array(
                                                             </div>
                                                         </div>
                                                     </div> -->
-                                            <?php }
+                                                <?php }
                                                 }
-                                             ?>
+                                                ?>
 
                                     </div>
                                 </div>
                             </div>
-                            <?php }
-                            ?>
+                        <?php }
+                        ?>
 
 
 
@@ -576,8 +577,6 @@ $_monthsList = array(
     });
 
     function createChart(container, name, subtitle, subsubtitle, data) {
-        // console.log({'fb':{'fdsa':456, 'gfsdgf':987}});
-        // console.log(data);
 
         dates = [<?= "'" . implode("', '", $dates) . "'" ?>];
         datas = [];
@@ -807,7 +806,7 @@ $_monthsList = array(
     });
 
     createChart('sentiment_chart', 'Тональность постов', 'Кол-во постов', 'постов', {
-        <?php foreach ($postsSentimentChart[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($postsSentimentChart[$cityInformation['id']])) foreach ($postsSentimentChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -817,7 +816,7 @@ $_monthsList = array(
     });
 
     createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', 'подписчиков', {
-        <?php foreach ($totalSubsChart[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalSubsChart[$cityInformation['id']])) foreach ($totalSubsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -827,8 +826,7 @@ $_monthsList = array(
     });
 
     createChart('likes_chart', 'График лайков', 'Кол-во лайков', 'лайков', {
-        <?php
-        foreach ($totalLikesChart[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalLikesChart[$cityInformation['id']])) foreach ($totalLikesChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -838,7 +836,7 @@ $_monthsList = array(
     });
 
     createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', 'комментариев', {
-        <?php foreach ($totalCommentsChart[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalCommentsChart[$cityInformation['id']])) foreach ($totalCommentsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -848,7 +846,7 @@ $_monthsList = array(
     });
 
     createChart('reposts_chart', 'График репостов', 'Кол-во репостов', 'репостов', {
-        <?php foreach ($totalRepostsChart[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalRepostsChart[$cityInformation['id']])) foreach ($totalRepostsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
                 echo "'" . $k . "':" . $v . ", ";
@@ -858,41 +856,41 @@ $_monthsList = array(
     });
 
     createDonut('comments_donut', 'Всего комментариев', 'Комментариев', {
-        <?php foreach ($totalCommentsDonut[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalCommentsDonut[$cityInformation['id']])) foreach ($totalCommentsDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
     createDonut('likes_donut', 'Всего лайков', 'Лайков', {
-        <?php foreach ($totalLikesDonut[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalLikesDonut[$cityInformation['id']])) foreach ($totalLikesDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('subs_donut', 'Всего подписчиков', 'Подписчиков', {
-        <?php foreach ($totalSubsDonut[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalSubsDonut[$cityInformation['id']])) foreach ($totalSubsDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('sentiment_donut', 'Всего тональности', 'Постов', {
-        <?php foreach ($postsSentimentLine[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($postsSentimentLine[$cityInformation['id']])) foreach ($postsSentimentLine[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('total_donut', 'Всего постов', 'Постов', {
-        <?php foreach ($totalResourcesDonut[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalResourcesDonut[$cityInformation['id']])) foreach ($totalResourcesDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('reposts_donut', 'Всего репостов', 'Репостов', {
-        <?php foreach ($totalRepostsDonut[$cityInformation['id']] as $key => $value) {
+        <?php if (isset($totalRepostsDonut[$cityInformation['id']])) foreach ($totalRepostsDonut[$cityInformation['id']] as $key => $value) {
             echo $key . ':' . $value . ', ';
         } ?>
     });

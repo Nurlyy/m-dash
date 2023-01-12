@@ -9,26 +9,32 @@
                     <div class="ibox">
                         <?php
                         $total = 0;
+                        $ids = array_keys($cityInformation);
                         foreach ($rating as $i) {
                             $total += $i;
                         }
-                        foreach ($rating as $key => $value) { ?>
-                            <div class="ibox-content">
-                                <div class="row">
-                                    <a onclick='openurl("candidate", start_date, end_date, <?= $key ?>)' class="float-left">
-                                        <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?= $cityInformation[$key]['photo'] ?>">
-                                    </a>
-                                    <div class="media-body ">
-                                        <h4 class="float-right text-navy"><?php echo round(($value / $total) * 100, 2) ?> %</h4>
-                                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $key ?>)'><strong><?= $cityInformation[$key]['name'] ?></strong></a>
-                                        <div class="progress progress-mini">
-                                            <div style="width: <?php echo round(($value / $total) * 100, 2) ?>%;" class="progress-bar"></div>
+                        foreach ($rating as $key => $rate) {
+                            foreach ($ids as $id) {
+                                if ($key == $id) { ?>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <!-- <a onclick='openurl("candidate", start_date, end_date, <?php #echo $id 
+                                                                                                        ?>)' class="float-left">
+                                            <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?php #echo $cityInformation[$id]['photo'] 
+                                                                                                                                ?>">
+                                        </a> -->
+                                            <div class="media-body ">
+                                                <h4 class="float-right text-navy"><?php echo (isset($rating[$id]) && $rating[$id] != 0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?> %</h4>
+                                                <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $id ?>)'><strong><?= $cityInformation[$id]['name'] ?></strong></a>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: <?php echo (isset($rating[$id]) && $rating[$id] != 0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?>%;" class="progress-bar"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        <?php } ?>
-
+                        <?php }
+                            }
+                        } ?>
                     </div>
                 </div>
 
@@ -39,10 +45,10 @@
 
 
 <?php if ($sentimentChart == 'true') { ?>
-    <div class="col-lg-6 col-sm-12">
+    <div class="col-lg-8 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'><strong>Тональность постов про кандидатов</strong></h2>
+                <h2 class='text-center'><strong>Тональность постов</strong></h2>
             </div>
             <div class="panel-body">
                 <?php
@@ -77,14 +83,14 @@
         </div>
     </div>
 
-    <div class="col-lg-6 col-sm-12">
+    <div class="col-lg-4 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
 
-                    <div class="col-12">
+                    <div class="col-lg-12 col-md-12">
                         <figure class="highcharts-figure">
-                            <div id="sentiment_donut"></div>
+                            <div id="total_donut"></div>
                         </figure>
                     </div>
 
@@ -247,7 +253,29 @@
 
 
 <script>
-    function createChart(container, name, subtitle, data) {
+    function createChart(container, name, subtitle, subsubtitle, data) {
+        dates = [<?= "'" . implode("', '", $dates) . "'" ?>];
+        names = [];
+        datas = [];
+        keys = [];
+        temp = [];
+        datas_name = '';
+        for (let value of Object.keys(data)) {
+            names.push(value);
+        };
+
+        for (let i = 0; i < names.length; i++) {
+            temp = [];
+            for (let j = 0; j < dates.length; j++) {
+                temp.push((data[names[i]][dates[j]]) ? data[names[i]][dates[j]] : 0);
+            }
+            datas[i] = {
+                name: names[i],
+                data: temp
+            }
+        }
+        console.log(datas)
+
         Highcharts.chart(container, {
             colors: ["#9c98ce", "#51223a", "#7c2a1b", "#8cdd75", "#87510e", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
             chart: {
@@ -287,7 +315,7 @@
                 alternateGridColor: null,
             },
             tooltip: {
-                valueSuffix: ' постов',
+                valueSuffix: ' ' + subsubtitle,
                 backgroundColor: "#FFFFFF",
                 borderColor: "#76c0c1",
                 style: {
@@ -305,11 +333,10 @@
                     marker: {
                         enabled: false
                     },
-
                 }
             },
 
-            series: data,
+            series: datas,
             "legend": {
                 "itemStyle": {
                     "color": "#3C3C3C"
@@ -350,6 +377,27 @@
         });
 
     }
+    posts = {};
+
+    function createobj(name, key, value) {
+        // posts= {};
+        if (posts[name]) {
+            if (posts[name][key]) {
+                posts[name][key] = posts[name][key] + value;
+            } else {
+                posts[name][key] = value;
+            }
+        } else {
+            posts[name] = {};
+
+            if (posts[name][key]) {
+                posts[name][key] = posts[name][key] + value;
+            } else {
+                posts[name][key] = value;
+            }
+        }
+
+    }
 
 
     function createRadar(container, name, subtitle, data, keys) {
@@ -360,8 +408,20 @@
                 keys[i] = 'Instagram'
             } else if (keys[i] == 'tg') {
                 keys[i] = 'Telegram'
-            } else if (keys[i] == 'web') {
-                keys[i] = 'Web-Sites'
+            } else if (keys[i] == 'tt') {
+                keys[i] = 'TikTok'
+            } else if (keys[i] == 'mm') {
+                keys[i] = 'Мой Мир'
+            } else if (keys[i] == 'yt') {
+                keys[i] = 'YouTube'
+            } else if (keys[i] == 'ok') {
+                keys[i] = 'Одноклассники'
+            } else if (keys[i] == 'tw') {
+                keys[i] = 'Twitter'
+            } else if (keys[i] == 'gg') {
+                keys[i] = 'Google+'
+            } else if (keys[i] == 'vk') {
+                keys[i] = 'Вконтакте'
             } else if (keys[i] == 'positive') {
                 keys[i] = 'Позитив'
             } else if (keys[i] == 'neutral') {
@@ -408,55 +468,6 @@
     }
 
 
-    function createDonut(container, name, subtitle, data) {
-        keys = [];
-        for (let value of Object.keys(data)) {
-            keys.push(value);
-        };
-
-        datas = [];
-        for (let i = 0; i < keys.length; i++) {
-            if (keys[i] == 'fb') {
-                datas[i] = ["Facebook", data[keys[i]]];
-            } else if (keys[i] == 'ig') {
-                datas[i] = ["Instagram", data[keys[i]]];
-            } else if (keys[i] == 'tg') {
-                datas[i] = ["Telegram", data[keys[i]]];
-            } else if (keys[i] == 'web') {
-                datas[i] = ["Web-Sites", data[keys[i]]];
-            } else if (keys[i] == 'positive') {
-                datas[i] = ["Позитив", data[keys[i]]];
-            } else if (keys[i] == 'neutral') {
-                datas[i] = ["Нейтрал", data[keys[i]]];
-            } else if (keys[i] == 'negative') {
-                datas[i] = ["Негатив", data[keys[i]]];
-            }
-        }
-
-        Highcharts.chart(container, {
-            chart: {
-                type: 'pie',
-                options3d: {
-                    enabled: true,
-                    alpha: 25
-                }
-            },
-            title: {
-                text: name
-            },
-            plotOptions: {
-                pie: {
-                    innerSize: 30,
-                    depth: 45
-                }
-            },
-            series: [{
-                name: subtitle,
-                data: datas,
-            }]
-        });
-    };
-
     <?php if ($discussionChart == 'true') { ?>
         createRadar('total_radar', 'Публикации', 'Кол-во постов', [
             // Формирование объекта с ключ/значениями для js из массива php
@@ -478,34 +489,9 @@
         ], ['<?= implode("', '", array_unique($keys)) ?>']);
     <?php } ?>
 
-
-    <?php if ($discussionChart == 'true') { ?>
-        createChart('total_chart', 'График публикации', 'Кол-во постов', [
-            // Формирование объекта с ключ/значениями для js из массива php
-            <?php
-            foreach ($cityInformation as $candidate) {
-                $temp = [];
-                echo "{name: '" . $candidate['name'] . "', data:[";
-                foreach ($date_posts[$candidate['id']] as $key => $value) {
-                    foreach ($value as $k => $v) {
-                        $temp[$k] = (isset($temp[$k]) ? $temp[$k] : 0) + $v;
-                    }
-                }
-                foreach ($dates as $date) {
-                    if (isset($temp[$date])) {
-                        echo $temp[$date] . ", ";
-                    } else {
-                        echo "0, ";
-                    }
-                }
-                echo "]}, ";
-            } ?>
-        ]);
-    <?php } ?>
-
-
     <?php if ($sentimentChart == 'true') { ?>
-        createRadar('sentiment_donut', "Тональность публикации", "Кол-во постов", [
+        createRadar('total_donut', 'Публикации', 'Кол-во постов', [
+            // Формирование объекта с ключ/значениями для js из массива php
             <?php
             $keys = [];
             foreach ($cityInformation as $candidate) {
@@ -524,100 +510,97 @@
         ], ['<?= implode("', '", array_unique($keys)) ?>']);
     <?php } ?>
 
-
-    <?php if ($subsChart == 'true') { ?>
-        createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', [
-            // Формирование объекта с ключ/значениями для js из массива php
-            <?php
-            foreach ($cityInformation as $candidate) {
-                $temp = [];
-                echo "{name: '" . $candidate['name'] . "', data:[";
-                foreach ($totalSubsChart[$candidate['id']] as $key => $value) {
+    <?php
+    function call_createobj($city_inf, $array)
+    {
+        foreach ($city_inf as $city) {
+            if (isset($array[$city['id']])) {
+                foreach ($array[$city['id']] as $value) {
                     foreach ($value as $k => $v) {
-                        $temp[$k] = (isset($temp[$k]) ? $temp[$k] : 0) + $v;
+    ?>
+                        createobj('<?= $city['name'] ?>', '<?= $k ?>', <?= $v ?>);
+    <?php
                     }
                 }
-                foreach ($dates as $date) {
-                    if (isset($temp[$date])) {
-                        echo $temp[$date] . ", ";
-                    } else {
-                        echo "0, ";
-                    }
-                }
-                echo "]}, ";
-            } ?>
-        ]);
-    <?php } ?>
+            }
+        }
+    } ?>
 
-    <?php if ($likesChart == 'true') { ?>
-        createChart('likes_chart', 'График лайков', 'Кол-во лайков', [
-            // Формирование объекта с ключ/значениями для js из массива php
-            <?php
-            foreach ($cityInformation as $candidate) {
-                $temp = [];
-                echo "{name: '" . $candidate['name'] . "', data:[";
-                foreach ($totalLikesChart[$candidate['id']] as $key => $value) {
-                    foreach ($value as $k => $v) {
-                        $temp[$k] = (isset($temp[$k]) ? $temp[$k] : 0) + $v;
-                    }
-                }
-                foreach ($dates as $date) {
-                    if (isset($temp[$date])) {
-                        echo $temp[$date] . ", ";
-                    } else {
-                        echo "0, ";
-                    }
-                }
-                echo "]}, ";
-            } ?>
-        ]);
-    <?php } ?>
+    <?php
+    if ($discussionChart == 'true') {
+        call_createobj($cityInformation, $date_posts);
+    ?>
+        createChart('total_chart', 'Публикации источников', 'Кол-во постов', 'постов', posts);
+        posts = {};
+    <?php
+    }
+    ?>
 
-    <?php if ($commentsChart == 'true') { ?>
-        createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', [
-            // Формирование объекта с ключ/значениями для js из массива php
-            <?php
-            foreach ($cityInformation as $candidate) {
-                $temp = [];
-                echo "{name: '" . $candidate['name'] . "', data:[";
-                foreach ($totalCommentsChart[$candidate['id']] as $key => $value) {
-                    foreach ($value as $k => $v) {
-                        $temp[$k] = (isset($temp[$k]) ? $temp[$k] : 0) + $v;
-                    }
-                }
-                foreach ($dates as $date) {
-                    if (isset($temp[$date])) {
-                        echo $temp[$date] . ", ";
-                    } else {
-                        echo "0, ";
-                    }
-                }
-                echo "]}, ";
-            } ?>
-        ]);
-    <?php } ?>
+    <?php
+    if ($subsChart == 'true') {
+        call_createobj($cityInformation, $totalSubsChart);
+    ?>
+        createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', 'подписчиков', posts);
+        posts = {};
+    <?php
+    }
+    ?>
 
-    <?php if ($repostsChart == 'true') { ?>
-        createChart('reposts_chart', 'График репостов', 'Кол-во репостов', [
-            // Формирование объекта с ключ/значениями для js из массива php
-            <?php
-            foreach ($cityInformation as $candidate) {
-                $temp = [];
-                echo "{name: '" . $candidate['name'] . "', data:[";
-                foreach ($totalRepostsChart[$candidate['id']] as $key => $value) {
-                    foreach ($value as $k => $v) {
-                        $temp[$k] = (isset($temp[$k]) ? $temp[$k] : 0) + $v;
-                    }
-                }
-                foreach ($dates as $date) {
-                    if (isset($temp[$date])) {
-                        echo $temp[$date] . ", ";
-                    } else {
-                        echo "0, ";
-                    }
-                }
-                echo "]}, ";
-            } ?>
-        ]);
-    <?php } ?>
+    <?php
+    if ($likesChart == 'true') {
+        call_createobj($cityInformation, $totalLikesChart);
+    ?>
+        createChart('likes_chart', 'График лайков', 'Кол-во лайков', 'лайков', posts);
+        posts = {};
+    <?php
+    }
+    ?>
+
+    <?php
+    if ($commentsChart == 'true') {
+        call_createobj($cityInformation, $totalCommentsChart);
+    ?>
+        createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', 'комментариев', posts);
+        posts = {};
+    <?php
+    }
+    ?>
+
+    <?php
+    if ($repostsChart == 'true') {
+        call_createobj($cityInformation, $totalRepostsChart);
+    ?>
+        createChart('reposts_chart', 'График репостов', 'Кол-во репостов', 'репостов', posts);
+        posts = {};
+    <?php
+    }
+    ?>
+
+
+    //     <?php
+            //      if ($sentimentChart == 'true') { 
+            ?>
+    //         createRadar('sentiment_donut', "Тональность публикации", "Кол-во постов", [
+    //             <?php
+
+                    //             $keys = [];
+                    //             foreach ($cityInformation as $candidate) {
+                    //                 echo "{type: 'area', name: '" . $candidate['name'] . "', data:[";
+
+                    //                 foreach ($postsSentimentChart[$candidate['id']] as $key => $value) {
+                    //                     $sum = 0;
+                    //                     array_push($keys, $key);
+                    //                     foreach ($value as $v) {
+                    //                         $sum += $v;
+                    //                     }
+                    //                     echo $sum . ", ";
+                    //                 }
+                    //                 echo "]}, ";
+                    //             } 
+                    ?>
+    //         ], ['<?php #echo implode("', '", array_unique($keys)) 
+                    ?>']);
+    //     <?php
+            //  } 
+            ?>
 </script>

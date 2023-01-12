@@ -49,7 +49,7 @@ class MainController extends Controller
 
                 ],
                 [
-                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres'],
+                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres', 'saveprojectchanges', 'deletecity', 'moveresource'],
                     'allow' => true,
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     // 'roles' => ['@'],
@@ -152,18 +152,28 @@ class MainController extends Controller
                     // return $result;
                     break;
                 case 3:
-                    $all_data = $projectModel->get_all_data($city_id, $start_date, $end_date, $type, $first, $second, $discussionChart, $sentimentChart, $subsChart, $likesChart, $commentsChart, $repostsChart);
+                    $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type, $first, $second, $discussionChart, $sentimentChart, $subsChart, $likesChart, $commentsChart, $repostsChart);
+                    // return $all_data;
                     $temp_all = [];
-                    foreach ($all_data as $data) {
-                        $temp_all[$data['id']] = [];
+                    $subs = $all_data['subs'];
+                    unset($all_data['subs']);
+                    foreach ($all_data as $d) {
+                        foreach ($d as $data) {
+                            if (isset($data['id']))
+                                $temp_all[$data['id']] = [];
+                        }
                         // array_push($temp[$data['id']], $data);
                     }
-                    foreach ($all_data as $data) {
-                        array_push($temp_all[$data['id']], $data);
+                    foreach ($all_data as $d) {
+                        foreach ($d as $data) {
+                            if (isset($data['id']))
+                                array_push($temp_all[$data['id']], $data);
+                        }
                     }
                     $all_data = $temp_all;
-                    $candidates_data = $projectModel->get_cities_data($project_id, [$first, $second]);
-                    $result = array_merge(['all_data' => $all_data], ['candidate_data' => $candidates_data]);
+                    $all_data['subs'] = $subs;
+                    $cities_data = $projectModel->get_cities_data($project_id, [$first, $second]);
+                    $result = array_merge(['all_data' => $all_data], ['city_data' => $cities_data]);
                     break;
                 case 'index':
                     $candidates_data = $projectModel->get_cities_data($project_id);
@@ -171,6 +181,16 @@ class MainController extends Controller
                     break;
             }
         return $result;
+    }
+
+    public function actionSaveprojectchanges(){
+        if(Yii::$app->request->post()){
+            $projectname = isset($_POST['projectname']) ? $_POST['projectname'] : null;
+            $owner = isset($_POST['owner']) ? $_POST['owner'] : null;
+            $projectid = isset($_POST['projectid']) ? $_POST['projectid']:null;
+            $projectModel = new Project();
+            return $projectModel->saveprojectchanges($projectname, $owner, $projectid);
+        }
     }
 
 
@@ -262,7 +282,8 @@ class MainController extends Controller
             foreach ($res as $r) {
                 $city['resources'][$r['r_count']] = $r;
             }
-            array_push($cities, $city);
+            // array_push($cities, $city);
+            $cities[$city['id']] = $city;
         }
         $project_info['project']['cities'] = $cities;
         return $project_info;
@@ -277,12 +298,11 @@ class MainController extends Controller
     public function actionApplychanges()
     {
         $projectModel = new Project();
-
         $cityChanges = isset($_POST['cityChanges']) ? json_decode($_POST['cityChanges'], true) : null;
         $resourcesChanges = isset($_POST['resourcesChanges']) ? json_decode($_POST['resourcesChanges'], true) : null;
         $createdCities = isset($_POST['createdCities']) ? json_decode($_POST['createdCities'], true) : null;
         $createdResources = isset($_POST['createdResources']) ? json_decode($_POST['createdResources'], true) : null;
-
+        // return $createdResources;
         $dataRes = [];
         $dataCity = [];
         if (isset($cityChanges)) {
@@ -295,13 +315,31 @@ class MainController extends Controller
             $dataCity['createdCities'] = $createdCities;
         }
         if (isset($createdResources)) {
-            $dataRes['creaetedResources'] = $createdResources;
+            $dataRes['createdResources'] = $createdResources;
         }
         $sendData = [];
         $qarray = [];
         foreach ($dataCity as $d) {
             $sendData = [];
+            $temp = [];
+            foreach ($d as $value) {
+                if (isset($value['id'])) {
+                    $temp['id'] = $value['id'];
+                }
+                if (isset($value['name'])) {
+                    $temp['name'] = $value['name'];
+                }
+                if (isset($value['project_id'])) {
+                    $temp['project_id'] = $value['project_id'];
+                }
+                array_push($sendData, $temp);
+                $temp = [];
+            }
+            $f = $projectModel->updateOrCreateCities($sendData);
+            // return $projectModel->updateOrCreateCities($sendData);   
+            array_push($qarray, $f);
         }
+
         foreach ($dataRes as $d) {
             $sendData = [];
             $temp = [];
@@ -334,13 +372,14 @@ class MainController extends Controller
         }
         // return $sendData;
 
-        return (in_array('false', $qarray, true))?false:true;
+        return (in_array('false', $qarray, true)) ? false : true;
 
         // return $qarray;
     }
 
-    public function actionDeleteres(){
-        if(Yii::$app->request->post()){
+    public function actionDeleteres()
+    {
+        if (Yii::$app->request->post()) {
             $resid = Yii::$app->request->post('resid');
             // return $resid;
             $projectModel = new Project();
@@ -357,5 +396,22 @@ class MainController extends Controller
 
         return $temp;
         // exit;
+    }
+
+    public function actionDeletecity(){
+        if(Yii::$app->request->post()) {
+            $city_id = Yii::$app->request->post('city_id');
+            $projectModel = new Project();
+            return $projectModel->deletecity($city_id);
+        }
+    }
+
+    public function actionMoveresource(){
+        if(Yii::$app->request->post()) {
+            $res_id = Yii::$app->request->post('res_id');
+            $newregion = Yii::$app->request->post('newregion');
+            $projectModel = new Project();
+            return $projectModel->moveresource($res_id, $newregion);
+        }
     }
 }
