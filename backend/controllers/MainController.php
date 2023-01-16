@@ -49,7 +49,7 @@ class MainController extends Controller
 
                 ],
                 [
-                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres', 'saveprojectchanges', 'deletecity', 'moveresource'],
+                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres', 'saveprojectchanges', 'deletecity', 'moveresource', 'deleteproj'],
                     'allow' => true,
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     // 'roles' => ['@'],
@@ -117,6 +117,7 @@ class MainController extends Controller
                     $result = array_merge(['all_data' => $all_data], ['city_data' => $candidates_data]);
                     break;
                 case 2:
+
                     $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
                     // return $all_data;
                     $temp_all = [];
@@ -384,6 +385,14 @@ class MainController extends Controller
             // return $resid;
             $projectModel = new Project();
             return $projectModel->deleteres($resid);
+        }
+    }
+
+    public function actionDeleteproj(){
+        if(Yii::$app->request->post()){
+            $projid = Yii::$app->request->post('projid');
+            $projectModel  = new Project();
+            return $projectModel->deleteproj($projid);
         }
     }
 

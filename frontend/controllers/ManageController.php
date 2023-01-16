@@ -92,6 +92,14 @@ class ManageController extends AuthController
         }
     }
 
+    public function actionDeleteproj(){
+        if(Yii::$app->request->post()){
+            $projid = [];
+            $projid['projid'] = Yii::$app->request->post('projid');
+            return send_post("frontend.test.localhost/backend/main/deleteproj", $projid);
+        }
+    }
+
     public function actionEditpage()
     {
         $this->layout = 'empty';

@@ -1,4 +1,6 @@
-<?php if ($ratingToggle == 'true') { ?>
+<?php
+// var_dump($totalSubsChart);exit;
+if ($ratingToggle == 'true') { ?>
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
@@ -478,11 +480,13 @@
 
                 foreach ($date_posts[$candidate['id']] as $key => $value) {
                     $sum = 0;
-                    array_push($keys, $key);
                     foreach ($value as $v) {
                         $sum += $v;
                     }
-                    echo $sum . ", ";
+                    if ($sum > 0) {
+                        echo $sum . ", ";
+                        array_push($keys, $key);
+                    }
                 }
                 echo "]}, ";
             } ?>
@@ -541,6 +545,7 @@
         call_createobj($cityInformation, $totalSubsChart);
     ?>
         createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', 'подписчиков', posts);
+        console.log(posts)
         posts = {};
     <?php
     }

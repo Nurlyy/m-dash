@@ -2,6 +2,23 @@
 if (isset($result['projects']))
     foreach ($result['projects'] as $project) { ?>
     <div class="col-12">
+        <div class="modal inmodal" id="deleteProjModal" style="z-index: 2060 !important;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated flipInY">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Вы уверены?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="deleteProjModalParagraph"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="deleteproj(projid)" class="btn btn-white" data-dismiss="modal">Да</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="panel panel-default">
             <div class="panel-header">
                 <h2 class='text-center'>Проект: <strong><?= $project['name'] ?></strong></h2>
@@ -33,8 +50,11 @@ if (isset($result['projects']))
                         <input id="form-token" type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->csrfToken ?>" />
                         <input id="project_id" type="hidden" name="project_id" value="<?= $project['id'] ?>" />
                         <input id="state" type="hidden" name="state" value="<?= ($project['is_active'] > 0) ? $project['is_active'] - 1 : $project['is_active'] + 1 ?>" />
-                        <input type="submit" class="<?= ($project['is_active']) ? "btn btn-danger" : "btn btn-primary" ?>" style='font-size:small; margin-top: 20px;' value="<?= ($project['is_active']) ? "Отключить" : "Включить" ?> проект">
+                        <input type="submit" class="<?= ($project['is_active']) ? "btn btn-warning" : "btn btn-primary" ?>" style='font-size:small; margin-top: 20px;' value="<?= ($project['is_active']) ? "Отключить" : "Включить" ?> проект">
                     </form>
+                </div>
+                <div class="p-sm m-sm" style="float:right;">
+                    <div class="btn btn-danger" style='font-size:small; margin-top: 20px;' onclick="showDeleteProjModal(<?= $project['id'] ?>, '<?= $project['name'] ?>')" data-toggle="modal" data-target="#deleteProjModal">Удалить</div>
                 </div>
 
             </div>
@@ -48,6 +68,40 @@ if (isset($result['projects']))
 
 
 <script>
+    let projid = null;
+
+    function showDeleteProjModal(id, name = null) {
+        projid = id;
+        projname = null;
+
+        projname = name;
+
+        $("#deleteProjModalParagraph").text("Вы точно хотите удалить проект \"" + projname + "\"? \n Ваше действие будет невозможно отменить.");
+
+    }
+
+    function deleteproj(id) {
+        $.ajax({
+            url: "/manage/deleteproj",
+            type: "POST",
+            data: {
+                projid: id,
+                '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
+            },
+            error: function(xhr, tStatus, e) {
+                if (!xhr) {
+                    alert(" We have an error ");
+                    alert(tStatus + "   " + e.message);
+                } else {
+                    console.log("else: " + e.message); // the great unknown
+                }
+            },
+            success: function(resp) {
+                console.log(resp);
+            }
+        });
+
+    }
 
     function turnStateProject(project_id, state) {
         $.ajax({

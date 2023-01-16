@@ -10,7 +10,7 @@
 #HttpOnly_backend.test.localhost	FALSE	/	FALSE	0	advanced-backend	fr370r7e85rrpq4udtmf43megd
 #HttpOnly_backend.localhost	FALSE	/	FALSE	0	advanced-backend	tn5ni7rp39kbj34pg8pj43ok64
 #HttpOnly_backend.localhost	FALSE	/	FALSE	0	_csrf-backend	eaca8bc6179e81393c92120ea6c8157cafb170796fabe66ceb38d8ec59377339a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22Omv93PXrq0QgHXJTrPussJEb8VD5CCE_%22%3B%7D
-#HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	advanced-backend	eqdjpor13291u9628hm4d8arul
-#HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	_csrf-backend	bfba2cac2e8acb3ee9ce2289fe6222c2607ec095b93f8ca42de6e93f06950017a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22B7zDNmp3KF3qt3-MN8GQzBjMskWRZ0jH%22%3B%7D
-#HttpOnly_rating.imas.kz	FALSE	/	FALSE	0	advanced-backend	3pr2402e3j4tmcfskh0f3fhq73
-#HttpOnly_rating.imas.kz	FALSE	/	FALSE	0	_csrf-backend	4167793fdeb544f36f6d90a8be94b3db98f40b432b6102ec4cb52314e9c928a3a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22dBemsFcGXI9KZYydWj3KmwiWBEBTfeDr%22%3B%7D
+#HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	advanced-backend	ob57priurdouutmtkms9epelrf
+#HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	_csrf-backend	8a789c4004619bb0261a1f532179916506f65d524ef13c9928cc3d26adb97f86a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22f8Bh1kJspRCR3OeuOpmSsodegnWwzRI0%22%3B%7D
+#HttpOnly_rating.imas.kz	FALSE	/	FALSE	0	advanced-backend	l08fbkdf1o1543pbjh90dli373
+#HttpOnly_rating.imas.kz	FALSE	/	FALSE	0	_csrf-backend	68c05226adbef3737d2486aae077bfe15f2a6268e98ef4f0eb2e54b993aeb716a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22et0IdXzhtpCiI6FEJhS8NA-soHoGKf2b%22%3B%7D

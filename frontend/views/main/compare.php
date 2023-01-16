@@ -238,7 +238,7 @@
             startDate: start_date,
             endDate: end_date,
             minDate: '01.01.2022',
-            maxDate: '31.11.2022',
+            maxDate: '<?= date("d.m.Y", strtotime('today')) ?>',
             showDropdowns: true,
             // showWeekNumbers: true,
             timePicker: false,

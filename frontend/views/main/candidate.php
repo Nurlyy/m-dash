@@ -857,41 +857,41 @@ $_monthsList = array(
 
     createDonut('comments_donut', 'Всего комментариев', 'Комментариев', {
         <?php if (isset($totalCommentsDonut[$cityInformation['id']])) foreach ($totalCommentsDonut[$cityInformation['id']] as $key => $value) {
-            echo $key . ':' . $value . ', ';
+            if($value>0)echo $key . ':' . $value . ', ';
         } ?>
     });
 
     createDonut('likes_donut', 'Всего лайков', 'Лайков', {
         <?php if (isset($totalLikesDonut[$cityInformation['id']])) foreach ($totalLikesDonut[$cityInformation['id']] as $key => $value) {
-            echo $key . ':' . $value . ', ';
+            if($value>0)echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('subs_donut', 'Всего подписчиков', 'Подписчиков', {
         <?php if (isset($totalSubsDonut[$cityInformation['id']])) foreach ($totalSubsDonut[$cityInformation['id']] as $key => $value) {
-            echo $key . ':' . $value . ', ';
+            if($value>0)echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('sentiment_donut', 'Всего тональности', 'Постов', {
         <?php if (isset($postsSentimentLine[$cityInformation['id']])) foreach ($postsSentimentLine[$cityInformation['id']] as $key => $value) {
-            echo $key . ':' . $value . ', ';
+            if($value>0)echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('total_donut', 'Всего постов', 'Постов', {
         <?php if (isset($totalResourcesDonut[$cityInformation['id']])) foreach ($totalResourcesDonut[$cityInformation['id']] as $key => $value) {
-            echo $key . ':' . $value . ', ';
+            if($value>0)echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('reposts_donut', 'Всего репостов', 'Репостов', {
         <?php if (isset($totalRepostsDonut[$cityInformation['id']])) foreach ($totalRepostsDonut[$cityInformation['id']] as $key => $value) {
-            echo $key . ':' . $value . ', ';
+            if($value>0)echo $key . ':' . $value . ', ';
         } ?>
     });
 </script>

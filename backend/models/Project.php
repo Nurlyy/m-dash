@@ -91,7 +91,7 @@ class Project extends Model
     public function get_res_posts($res_id, $start_date, $end_date)
     {
         if (isset($res_id)) {
-            $query = "SELECT p.*, r.photo, r.name from res_posts p inner join resources r on p.res_id=r.id where p.res_id = {$res_id} and p.date between '{$start_date}' and '{$end_date}' order by p.date desc";
+            $query = "SELECT p.*, r.photo, r.name from res_posts p inner join resources r on p.res_id=r.id where p.res_id = {$res_id} and p.s_date between '{$start_date}' and '{$end_date}' order by p.s_date desc";
             return $this->helper::createCommand($query);
             // return $query;
         }
@@ -112,8 +112,11 @@ class Project extends Model
     public function get_all_data($city_id, $res_id, $start_date, $end_date, $type, $first = null, $second = null, $discussionChart = null, $sentimentChart = null, $subsChart = null, $likesChart = null, $commentsChart = null, $repostsChart = null)
     {
         // return $city_id;
+        // вычитаем один день для того чтобы результаты в графике не сломались
+        $s = date( 'Y-m-d', strtotime( $start_date . ' -1 day' ) );
+        $start_date = $s;
         $return = [];
-        $query = "select u.id, p.date,";
+        $query = "select u.id, DATE_FORMAT(p.s_date, '%Y-%m-%d') as date,";
         switch ($type) {
             case 1:
                 $query .=
@@ -292,9 +295,9 @@ class Project extends Model
                         . "if(s.type=10, s.count, 0) as tt_sub "
                         . "from "
                         . "sub_follow s "
-                        . "inner join resources r on r.city_id IN ({$first}, {$second}) "
+                        . "inner join resources r on r.id=s.res_id "
                         . "where "
-                        . "s.res_id = r.id "
+                        . "r.city_id IN ({$first}, {$second}) "
                         . "and s.date between '{$start_date}' "
                         . "and '{$end_date}' "
                         . "group by s.date, s.type, s.count, r.city_id";
@@ -396,8 +399,8 @@ class Project extends Model
             . (isset($city_id) ? " u.id={$city_id} and" : "")
             . (isset($res_id) ? " r.id={$res_id} and" : "")
             . ((isset($first) && isset($second)) ? " u.id IN ({$first}, {$second}) and" : "")
-            . " p.date between '{$start_date}' and '{$end_date}'"
-            . " group by p.date, u.id";
+            . " p.s_date between '{$start_date}' and '{$end_date}'"
+            . " group by DATE_FORMAT(p.s_date, '%Y-%m-%d'), u.id";
         // return $query;
 
         $return[] = $this->helper::createCommand($query);
@@ -519,6 +522,11 @@ class Project extends Model
     {
         $query = "delete from resources where id={$id}";
         return $this->helper::createCommand($query);
+    }
+
+    public function deleteproj($id){
+        $query = "delete from projects where id={$id}";
+        return $this->helper::createCommand($query) ? true : false;
     }
 
     public function updateOrCreateCities($data)
