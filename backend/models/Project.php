@@ -113,76 +113,65 @@ class Project extends Model
     {
         // return $city_id;
         // вычитаем один день для того чтобы результаты в графике не сломались
-        $s = date( 'Y-m-d', strtotime( $start_date . ' -1 day' ) );
-        $start_date = $s;
         $return = [];
         $query = "select u.id, DATE_FORMAT(p.s_date, '%Y-%m-%d') as date,";
         switch ($type) {
             case 1:
                 $query .=
-                    " count(case when p.type=1 then 1 end) as vk,"
-                    . " count(case when p.type=2 then 1 end) as fb,"
-                    . " count(case when p.type=3 then 1 end) as tw,"
-                    . " count(case when p.type=4 then 1 end) as ig,"
-                    . " count(case when p.type=5 then 1 end) as gg,"
-                    . " count(case when p.type=6 then 1 end) as yt,"
-                    . " count(case when p.type=7 then 1 end) as ok,"
-                    . " count(case when p.type=8 then 1 end) as mm,"
-                    . " count(case when p.type=9 then 1 end) as tg,"
-                    . " count(case when p.type=10 then 1 end) as tt,"
+                    " count(distinct case when p.type=1 then t.id end) as vk,"
+                    . " count(distinct case when p.type=2 then t.id end) as fb,"
+                    . " count(distinct case when p.type=3 then t.id end) as tw,"
+                    . " count(distinct case when p.type=4 then t.id end) as ig,"
+                    . " count(distinct case when p.type=5 then t.id end) as gg,"
+                    . " count(distinct case when p.type=6 then t.id end) as yt,"
+                    . " count(distinct case when p.type=7 then t.id end) as ok,"
+                    . " count(distinct case when p.type=8 then t.id end) as mm,"
+                    . " count(distinct case when p.type=9 then t.id end) as tg,"
+                    . " count(distinct case when p.type=10 then t.id end) as tt,"
 
-                    . " count(case when t.sentiment=1  and p.type = 1 then 1 end) as vk_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 1 then 1 end) as vk_neutral,"
-                    . " count(case when t.sentiment=-1  and p.type = 1 then 1 end) as vk_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 2 then 1 end) as fb_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 2 then 1 end) as fb_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 2 then 1 end) as fb_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 3 then 1 end) as tw_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 3 then 1 end) as tw_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 3 then 1 end) as tw_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 4 then 1 end) as ig_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 4 then 1 end) as ig_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 4 then 1 end) as ig_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 5 then 1 end) as gg_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 5 then 1 end) as gg_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 5 then 1 end) as gg_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 6 then 1 end) as yt_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 6 then 1 end) as yt_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 6 then 1 end) as yt_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 7 then 1 end) as ok_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 7 then 1 end) as ok_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 7 then 1 end) as ok_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 8 then 1 end) as mm_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 8 then 1 end) as mm_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 8 then 1 end) as mm_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 9 then 1 end) as tg_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 9 then 1 end) as tg_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 9 then 1 end) as tg_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 10 then 1 end) as tt_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 10 then 1 end) as tt_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 10 then 1 end) as tt_negative";
+                    . " count(distinct case when t.sentiment=1  and t.type = 1 then t.id end) as vk_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 1 then t.id end) as vk_neutral,"
+                    . " count(distinct case when t.sentiment=-1  and t.type = 1 then t.id end) as vk_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 2 then t.id end) as fb_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 2 then t.id end) as fb_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 2 then t.id end) as fb_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 3 then t.id end) as tw_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 3 then t.id end) as tw_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 3 then t.id end) as tw_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 4 then t.id end) as ig_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 4 then t.id end) as ig_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 4 then t.id end) as ig_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 5 then t.id end) as gg_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 5 then t.id end) as gg_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 5 then t.id end) as gg_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 6 then t.id end) as yt_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 6 then t.id end) as yt_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 6 then t.id end) as yt_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 7 then t.id end) as ok_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 7 then t.id end) as ok_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 7 then t.id end) as ok_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 8 then t.id end) as mm_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 8 then t.id end) as mm_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 8 then t.id end) as mm_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 9 then t.id end) as tg_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 9 then t.id end) as tg_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 9 then t.id end) as tg_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 10 then t.id end) as tt_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 10 then t.id end) as tt_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 10 then t.id end) as tt_negative";
                 break;
             case 2:
                 $query .=
-                    " count(case when p.type=1 then 1 end) as vk,"
-                    . " count(case when p.type=2 then 1 end) as fb,"
-                    . " count(case when p.type=3 then 1 end) as tw,"
-                    . " count(case when p.type=4 then 1 end) as ig,"
-                    . " count(case when p.type=5 then 1 end) as gg,"
-                    . " count(case when p.type=6 then 1 end) as yt,"
-                    . " count(case when p.type=7 then 1 end) as ok,"
-                    . " count(case when p.type=8 then 1 end) as mm,"
-                    . " count(case when p.type=9 then 1 end) as tg,"
-                    . " count(case when p.type=10 then 1 end) as tt,"
+                    " count(distinct case when p.type=1 then t.id end) as vk,"
+                    . " count(distinct case when p.type=2 then t.id end) as fb,"
+                    . " count(distinct case when p.type=3 then t.id end) as tw,"
+                    . " count(distinct case when p.type=4 then t.id end) as ig,"
+                    . " count(distinct case when p.type=5 then t.id end) as gg,"
+                    . " count(distinct case when p.type=6 then t.id end) as yt,"
+                    . " count(distinct case when p.type=7 then t.id end) as ok,"
+                    . " count(distinct case when p.type=8 then t.id end) as mm,"
+                    . " count(distinct case when p.type=9 then t.id end) as tg,"
+                    . " count(distinct case when p.type=10 then t.id end) as tt,"
 
                     . " sum(case when p.type=1 then p.comments end) as vk_comments,"
                     . " sum(case when p.type=2 then p.comments end) as fb_comments,"
@@ -217,45 +206,36 @@ class Project extends Model
                     . " sum(case when p.type=9 then p.likes end) as tg_likes,"
                     . " sum(case when p.type=10 then p.likes end) as tt_likes,"
 
-                    . " count(case when t.sentiment=1  and p.type = 1 then 1 end) as vk_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 1 then 1 end) as vk_neutral,"
-                    . " count(case when t.sentiment=-1  and p.type = 1 then 1 end) as vk_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 2 then 1 end) as fb_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 2 then 1 end) as fb_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 2 then 1 end) as fb_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 3 then 1 end) as tw_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 3 then 1 end) as tw_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 3 then 1 end) as tw_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 4 then 1 end) as ig_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 4 then 1 end) as ig_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 4 then 1 end) as ig_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 5 then 1 end) as gg_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 5 then 1 end) as gg_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 5 then 1 end) as gg_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 6 then 1 end) as yt_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 6 then 1 end) as yt_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 6 then 1 end) as yt_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 7 then 1 end) as ok_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 7 then 1 end) as ok_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 7 then 1 end) as ok_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 8 then 1 end) as mm_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 8 then 1 end) as mm_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 8 then 1 end) as mm_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 9 then 1 end) as tg_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 9 then 1 end) as tg_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 9 then 1 end) as tg_negative,"
-
-                    . " count(case when t.sentiment=1  and p.type = 10 then 1 end) as tt_positive,"
-                    . " count(case when t.sentiment=0  and p.type = 10 then 1 end) as tt_neutral,"
-                    . " count(case when t.sentiment=-1 and p.type = 10 then 1 end) as tt_negative ";
+                    . " count(distinct case when t.sentiment=1  and t.type = 1 then t.id end) as vk_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 1 then t.id end) as vk_neutral,"
+                    . " count(distinct case when t.sentiment=-1  and t.type = 1 then t.id end) as vk_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 2 then t.id end) as fb_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 2 then t.id end) as fb_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 2 then t.id end) as fb_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 3 then t.id end) as tw_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 3 then t.id end) as tw_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 3 then t.id end) as tw_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 4 then t.id end) as ig_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 4 then t.id end) as ig_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 4 then t.id end) as ig_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 5 then t.id end) as gg_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 5 then t.id end) as gg_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 5 then t.id end) as gg_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 6 then t.id end) as yt_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 6 then t.id end) as yt_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 6 then t.id end) as yt_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 7 then t.id end) as ok_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 7 then t.id end) as ok_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 7 then t.id end) as ok_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 8 then t.id end) as mm_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 8 then t.id end) as mm_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 8 then t.id end) as mm_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 9 then t.id end) as tg_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 9 then t.id end) as tg_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 9 then t.id end) as tg_negative,"
+                    . " count(distinct case when t.sentiment=1  and t.type = 10 then t.id end) as tt_positive,"
+                    . " count(distinct case when t.sentiment=0  and t.type = 10 then t.id end) as tt_neutral,"
+                    . " count(distinct case when t.sentiment=-1 and t.type = 10 then t.id end) as tt_negative ";
 
                 $q = "select r.city_id, s.date, "
                     . "if(s.type=1, s.count, 0) as vk_sub, "
@@ -305,16 +285,17 @@ class Project extends Model
                     // return $q;
                     $return['subs'] = $this->helper::createCommand($q);
                 }
-                $query .= ($discussionChart == true ? " count(case when p.type=1 then 1 end) as vk,"
-                    . " count(case when p.type=2 then 1 end) as fb,"
-                    . " count(case when p.type=3 then 1 end) as tw,"
-                    . " count(case when p.type=4 then 1 end) as ig,"
-                    . " count(case when p.type=5 then 1 end) as gg,"
-                    . " count(case when p.type=6 then 1 end) as yt,"
-                    . " count(case when p.type=7 then 1 end) as ok,"
-                    . " count(case when p.type=8 then 1 end) as mm,"
-                    . " count(case when p.type=9 then 1 end) as tg,"
-                    . " count(case when p.type=10 then 1 end) as tt,"
+                $query .= ($discussionChart == true ? 
+                    " count(distinct case when p.type=1 then t.id end) as vk,"
+                    . " count(distinct case when p.type=2 then t.id end) as fb,"
+                    . " count(distinct case when p.type=3 then t.id end) as tw,"
+                    . " count(distinct case when p.type=4 then t.id end) as ig,"
+                    . " count(distinct case when p.type=5 then t.id end) as gg,"
+                    . " count(distinct case when p.type=6 then t.id end) as yt,"
+                    . " count(distinct case when p.type=7 then t.id end) as ok,"
+                    . " count(distinct case when p.type=8 then t.id end) as mm,"
+                    . " count(distinct case when p.type=9 then t.id end) as tg,"
+                    . " count(distinct case when p.type=10 then t.id end) as tt,"
                     : "")
                     . ($commentsChart == true ? " sum(case when p.type=1 then p.comments end) as vk_comments,"
                         . " sum(case when p.type=2 then p.comments end) as fb_comments,"
@@ -349,45 +330,37 @@ class Project extends Model
                         . " sum(case when p.type=9 then p.likes end) as tg_likes,"
                         . " sum(case when p.type=10 then p.likes end) as tt_likes,"
                         : "")
-                    . ($sentimentChart == true ? " count(case when t.sentiment=1  and p.type = 1 then 1 end) as vk_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 1 then 1 end) as vk_neutral,"
-                        . " count(case when t.sentiment=-1  and p.type = 1 then 1 end) as vk_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 2 then 1 end) as fb_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 2 then 1 end) as fb_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 2 then 1 end) as fb_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 3 then 1 end) as tw_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 3 then 1 end) as tw_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 3 then 1 end) as tw_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 4 then 1 end) as ig_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 4 then 1 end) as ig_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 4 then 1 end) as ig_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 5 then 1 end) as gg_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 5 then 1 end) as gg_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 5 then 1 end) as gg_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 6 then 1 end) as yt_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 6 then 1 end) as yt_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 6 then 1 end) as yt_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 7 then 1 end) as ok_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 7 then 1 end) as ok_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 7 then 1 end) as ok_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 8 then 1 end) as mm_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 8 then 1 end) as mm_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 8 then 1 end) as mm_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 9 then 1 end) as tg_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 9 then 1 end) as tg_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 9 then 1 end) as tg_negative,"
-
-                        . " count(case when t.sentiment=1  and p.type = 10 then 1 end) as tt_positive,"
-                        . " count(case when t.sentiment=0  and p.type = 10 then 1 end) as tt_neutral,"
-                        . " count(case when t.sentiment=-1 and p.type = 10 then 1 end) as tt_negative "
+                    . ($sentimentChart == true ? 
+                        " count(case distinct when t.sentiment=1  and t.type = 1 then t.id end) as vk_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 1 then t.id end) as vk_neutral,"
+                        . " count(distinct case when t.sentiment=-1  and t.type = 1 then t.id end) as vk_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 2 then t.id end) as fb_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 2 then t.id end) as fb_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 2 then t.id end) as fb_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 3 then t.id end) as tw_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 3 then t.id end) as tw_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 3 then t.id end) as tw_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 4 then t.id end) as ig_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 4 then t.id end) as ig_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 4 then t.id end) as ig_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 5 then t.id end) as gg_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 5 then t.id end) as gg_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 5 then t.id end) as gg_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 6 then t.id end) as yt_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 6 then t.id end) as yt_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 6 then t.id end) as yt_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 7 then t.id end) as ok_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 7 then t.id end) as ok_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 7 then t.id end) as ok_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 8 then t.id end) as mm_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 8 then t.id end) as mm_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 8 then t.id end) as mm_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 9 then t.id end) as tg_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 9 then t.id end) as tg_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 9 then t.id end) as tg_negative,"
+                        . " count(distinct case when t.sentiment=1  and t.type = 10 then t.id end) as tt_positive,"
+                        . " count(distinct case when t.sentiment=0  and t.type = 10 then t.id end) as tt_neutral,"
+                        . " count(distinct case when t.sentiment=-1 and t.type = 10 then t.id end) as tt_negative "
                         : "");
                 break;
         }

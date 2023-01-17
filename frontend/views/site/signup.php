@@ -28,12 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'password')->passwordInput()->input('password', ['placeholder' => 'Пароль'])->label(false) ?>
         </div>
         <div class="form-group">
-            <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary block full-width m-b', 'name' => 'signup-button']) ?>
+            <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary block full-width m-b', 'name' => 'signup-button', 'style'=>'border-radius:15px;']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>
 
-        <a class="btn btn-sm btn-white btn-block" href="/site/login">Войти</a>
+        <a class="btn btn-sm btn-white btn-block" style='border-radius:15px;' href="/site/login">Войти</a>
     </div>
 </div>
 <!-- 

@@ -114,7 +114,6 @@ class ManageController extends AuthController
             $temp['created_date'] = $created_date;
             $temp['user_id'] = $owner;
             $result = send_post("frontend.test.localhost/backend/main/createproject", $temp);
-
             return $this->redirect('index');
         }
 
