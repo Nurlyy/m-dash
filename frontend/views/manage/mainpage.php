@@ -36,7 +36,7 @@ if (isset($result['projects']))
                     <div class="col-lg-4 col-sm-12 p-sm">
                         <h4>Городов: <strong><?= $project['cities'] ?></strong></h4>
                         </h4>
-                        <h4>Ресурсов: <strong><?= $project['resources'] ?></strong></h4>
+                        <h4>Источников: <strong><?= $project['resources'] ?></strong></h4>
                         </h4>
                     </div>
                 </div>

@@ -69,16 +69,6 @@ $res_id = null;
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <div class="col-12">
-                                                <div class="panel panel-primary" style="background-color:azure; ">
-                                                    <div class="panel-header">
-                                                        <h2 class='text-center'><strong>Добавление ресурсов</strong></h2>
-                                                    </div>
-                                                    <div style="padding: 15px;">
-                                                        <div id="res-container"></div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
 
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
@@ -107,7 +97,7 @@ $res_id = null;
                                 <div class="panel-body" id="project-<?= $city['id'] ?>">
                                     <div class="city-container row text-center " style="margin:0px;">
                                         <h4 style="padding:0px; margin: 0px;" class="col-4"><?= $city['name'] ?></h4>
-                                        <p style="padding: 0px; margin: 0px;" class="col-4"><?= count($city['resources']) ?> ресурсов</p>
+                                        <p style="padding: 0px; margin: 0px;" class="col-4"><?= count($city['resources']) ?> источников </p>
                                         <div class="col-4 text-right">
                                             <a href="" onclick="showModal(<?= $project_id ?>, <?= $city['id'] ?>); city_id=<?= $city['id'] ?>" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil" style="margin-right:10px; font-size:medium;" aria-hidden="true"></i></a>
                                             <a href="" onclick="showDeleteCityModal(<?= $city['id'] ?>)" data-toggle="modal" data-target="#deleteCityModal"><i class="fa fa-trash" style="font-size:medium;" aria-hidden="true"></i></a>
@@ -158,7 +148,7 @@ $res_id = null;
                                                     <div class="col-12">
                                                         <div class="panel panel-primary" style="background-color:azure; ">
                                                             <div class="panel-header">
-                                                                <h2 class='text-center'><strong>Список ресурсов города</strong></h2>
+                                                                <h2 class='text-center'><strong>Список источников города</strong></h2>
                                                             </div>
                                                             <div style="padding: 15px;">
                                                                 <div id="cities_container"></div>
@@ -190,7 +180,7 @@ $res_id = null;
                                                             <div class="panel-body" style="text-align: center;">
                                                                 <h3>Выберите регион:</h3>
                                                                 <select onchange="regionchange()" name="newregion" id="newregion">
-                                                                    
+
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -227,14 +217,14 @@ $res_id = null;
     let newregion = null;
     // console.log(result['project']['cities'][2])
 
-    function regionchange(){
+    function regionchange() {
         newregion = $("#newregion").val();
     }
 
     function showMoveResModal(type, res_id) {
         if (type == "id") {
             $("#newregion").html(`<option value="${city_id}" selected>${result['project']['cities'][city_id]['name']}</option>`);
-            $("#moveResModalTitle").text(`Перенос ресурса "${result['project']['cities'][city_id]['resources'][res_id]['name']}" в другой регион проекта`);
+            $("#moveResModalTitle").text(`Перенос источника "${result['project']['cities'][city_id]['resources'][res_id]['name']}" в другой регион проекта`);
             resid = res_id;
             r = result['project']['cities']
             // console.log(r);
@@ -329,19 +319,19 @@ $res_id = null;
             method: "GET",
 
         }).done(function success(data) {
-            data = `<div class="btn btn-primary collapsible col-12" style="margin-bottom:15px;"><i style="margin-right:15px;" class="fa fa-plus" aria-hidden="true"></i>Добавить новый ресурс</div>
+            data = `<div class="btn btn-primary collapsible col-12" style="margin-bottom:15px;"><i style="margin-right:15px;" class="fa fa-plus" aria-hidden="true"></i>Добавить новый источник</div>
                     <div id="collapsible-content" class="panel-body" style="display:none !important; margin-top:-30px;">
                         <div class="panel panel-primary">
                             <div class="panel-body">
-                                <h3>Название ресурса:</h3>
+                                <h3>Название источника:</h3>
                                 <input type="text" id="name" class="form-control" /><br>
-                                <h3>Ссылка ресурса:</h3>
+                                <h3>Ссылка источника:</h3>
                                 <input type="text" id="url" class="form-control" /><br>
-                                <h3>Изображение ресурса:</h3>
+                                <h3>Изображение источника:</h3>
                                 <input type="text" id="img" class="form-control" /><br>
-                                <h3>Описание ресурса:</h3>
+                                <h3>Описание источника:</h3>
                                 <input type="text" id="desc" class="form-control" /><br>
-                                <button type="button" class="btn btn-primary" onclick="addnewres()">Добавить новый ресурс</button>
+                                <button type="button" class="btn btn-primary" onclick="addnewres()">Добавить новый источник</button>
                             </div>
                         </div>
                     </div>` + data;
@@ -384,7 +374,7 @@ $res_id = null;
             }
         }
         console.log(resname);
-        $("#deleteResModalParagraph").text("Вы точно хотите удалить ресурс \"" + resname + "\"? \n Ваше действие будет невозможно отменить.");
+        $("#deleteResModalParagraph").text("Вы точно хотите удалить источник \"" + resname + "\"? \n Ваше действие будет невозможно отменить.");
 
     }
 
@@ -444,15 +434,15 @@ $res_id = null;
                     <div id="collapsible-content" class="panel-body colcontent-count-${createdResCounter}" style="display:none !important; margin-top:-30px;">
                         <div class="panel panel-primary">
                             <div class="panel-body">
-                                <h3>Название ресурса:</h3>
+                                <h3>Название источника:</h3>
                                 <input type="text" id="name_added_${createdResCounter}" class="form-control" onchange="editAddedRes(${createdResCounter}, 'name')" value="${name}" /><br>
-                                <h3>Ссылка ресурса:</h3>
+                                <h3>Ссылка источника:</h3>
                                 <input type="text" id="url_added_${createdResCounter}" class="form-control" onchange="editAddedRes(${createdResCounter}, 'url')" value="${url}" /><br>
-                                <h3>Изображение ресурса:</h3>
+                                <h3>Изображение источника:</h3>
                                 <input type="text" id="photo_added_${createdResCounter}" class="form-control" onchange="editAddedRes(${createdResCounter}, 'photo')" value="${img}" /><br>
-                                <h3>Описание ресурса:</h3>
+                                <h3>Описание источника:</h3>
                                 <input type="text" id="description_added_${createdResCounter}" class="form-control" onchange="editAddedRes(${createdResCounter}, 'description')" value="${desc}" /><br>
-                                <button type="button" class="btn btn-danger" onclick="showDeleteResModal('count', ${createdResCounter})" data-toggle="modal" data-target="#deleteResModal">Удалить ресурс</button>
+                                <button type="button" class="btn btn-danger" onclick="showDeleteResModal('count', ${createdResCounter})" data-toggle="modal" data-target="#deleteResModal">Удалить источник</button>
                             </div>
                         </div>
                     </div>`);

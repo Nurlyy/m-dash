@@ -331,7 +331,7 @@ class Project extends Model
                         . " sum(case when p.type=10 then p.likes end) as tt_likes,"
                         : "")
                     . ($sentimentChart == true ? 
-                        " count(case distinct when t.sentiment=1  and t.type = 1 then t.id end) as vk_positive,"
+                        " count(distinct case when t.sentiment=1  and t.type = 1 then t.id end) as vk_positive,"
                         . " count(distinct case when t.sentiment=0  and t.type = 1 then t.id end) as vk_neutral,"
                         . " count(distinct case when t.sentiment=-1  and t.type = 1 then t.id end) as vk_negative,"
                         . " count(distinct case when t.sentiment=1  and t.type = 2 then t.id end) as fb_positive,"

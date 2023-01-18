@@ -218,14 +218,14 @@ class MainController extends Controller
             $q = $projectModel->get_cities_count($project['id']);
             $x = 0;
             if ($q) {
-                if ($q[0]) {
-                    $r = $projectModel->get_resources_count($q[0]['ids']);
+                foreach($q as $s){
+                    $r = $projectModel->get_resources_count($s['ids']);
                     // return $r;
                     foreach ($r as $e) {
                         $x += ($e['r_count'] ? 1 : 0);
                     }
                 }
-                $project['cities'] = sizeof($q[0]);
+                $project['cities'] = sizeof($q);
             } else {
                 $project['cities'] = 0;
             }

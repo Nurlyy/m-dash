@@ -18,7 +18,7 @@ $_monthsList = array(
             <div class="panel-body">
                 <div>
                     <h1 style="margin-top:0px;padding-top:0px; margin-bottom:0px; padding-bottom:0px;"><strong><?php echo $cityInformation['name'] ?></strong></h1>
-                    <p style="margin-bottom:0px; margin-top:5px; padding-bottom:0px; padding-top:0px;">Ресурсов: <?= isset($r_count[$cityInformation['id']]) ? $r_count[$cityInformation['id']] : 0 ?></p>
+                    <p style="margin-bottom:0px; margin-top:5px; padding-bottom:0px; padding-top:0px;">Источников в соц.сетях: <?= isset($r_count[$cityInformation['id']]) ? $r_count[$cityInformation['id']] : 0 ?></p>
                     <!-- <div class="row col-lg-2 col-sm-12 justify-content-center">
                         <img style="width:10.5em; height:10.5em;" src="<?php #echo $cityInformation['photo'] 
                                                                         ?>" class="float-left rounded-circle circle-border m-b-md" alt="profile">
@@ -859,41 +859,41 @@ $_monthsList = array(
 
     createDonut('comments_donut', 'Всего комментариев', 'Комментариев', {
         <?php if (isset($totalCommentsDonut[$cityInformation['id']])) foreach ($totalCommentsDonut[$cityInformation['id']] as $key => $value) {
-            if($value>0)echo $key . ':' . $value . ', ';
+            if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
     createDonut('likes_donut', 'Всего лайков', 'Лайков', {
         <?php if (isset($totalLikesDonut[$cityInformation['id']])) foreach ($totalLikesDonut[$cityInformation['id']] as $key => $value) {
-            if($value>0)echo $key . ':' . $value . ', ';
+            if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('subs_donut', 'Всего подписчиков', 'Подписчиков', {
         <?php if (isset($totalSubsDonut[$cityInformation['id']])) foreach ($totalSubsDonut[$cityInformation['id']] as $key => $value) {
-            if($value>0)echo $key . ':' . $value . ', ';
+            if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('sentiment_donut', 'Всего тональности', 'Постов', {
         <?php if (isset($postsSentimentLine[$cityInformation['id']])) foreach ($postsSentimentLine[$cityInformation['id']] as $key => $value) {
-            if($value>0)echo $key . ':' . $value . ', ';
+            if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('total_donut', 'Всего постов', 'Постов', {
         <?php if (isset($totalResourcesDonut[$cityInformation['id']])) foreach ($totalResourcesDonut[$cityInformation['id']] as $key => $value) {
-            if($value>0)echo $key . ':' . $value . ', ';
+            if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
     createDonut('reposts_donut', 'Всего репостов', 'Репостов', {
         <?php if (isset($totalRepostsDonut[$cityInformation['id']])) foreach ($totalRepostsDonut[$cityInformation['id']] as $key => $value) {
-            if($value>0)echo $key . ':' . $value . ', ';
+            if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 </script>
