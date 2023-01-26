@@ -322,6 +322,28 @@ class MainController extends AuthController
     }
 
 
+    public function init(){
+        $session = Yii::$app->session;
+        if(!$session->isActive){
+            $session->open();
+        }
+        if(!empty($_REQUEST['lang'])){
+            if(in_array($_REQUEST['lang'], ['en', 'ru', 'kz'])){
+                $session->set('lang', $_REQUEST['lang']);
+            } else {
+                $session->set('lang', 'en');
+            }
+            
+        }
+        if(!empty($_SESSION['lang'])){
+            Yii::$app->language = $_SESSION['lang'];
+        }else{
+            Yii::$app->language = 'ru';
+        }
+        parent::init();
+    }
+
+
     public $layout = 'inspinia';
 
     public function actionIndex()
@@ -330,15 +352,21 @@ class MainController extends AuthController
         $month_ago = date('Y-m-d', strtotime('-30 days'));
         $start_date = isset($_GET['start_date']) ? Yii::$app->request->get('start_date') : $month_ago;
         $end_date = isset($_GET['end_date']) ? Yii::$app->request->get('end_date') : $today;
+        $lang = isset($_GET['lang'])?(in_array($_GET['lang'], ['ru','kz','en'])?$_GET['lang']:'ru'):'ru';
         $result = json_decode(get_web_page("rating.imas.kz/backend/main/search?type=index"), true);
-        // var_dump($result);
-        // exit;
         $this->splitData($result);
-        return $this->render('index', [
+        $vars = [
             'start_date' => $start_date,
             'end_date' => $end_date,
             'cityInformation' => $this::$cityInformation,
-        ]);
+        ];
+        // var_dump($result);
+        // exit;
+        if($result == "false"){
+            $vars['turnedOff'] = true;
+        }
+        
+        return $this->render('index', $vars);
     }
 
     public function actionDashboard()

@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'><strong>Рейтинг обсуждении</strong></h2>
+                <h2 class='text-center'><strong><?= Yii::t('frontend', 'Discussions rating') ?></strong></h2>
             </div>
             <div class="panel-body">
                 <div class="col-lg-12">
@@ -43,7 +43,7 @@
     <div class="col-lg-8 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'><strong>Тональность постов</strong></h2>
+                <h2 class='text-center'><strong><?= Yii::t('frontend', 'Sentiment of posts') ?></strong></h2>
             </div>
             <div class="panel-body">
                 <?php
@@ -132,27 +132,11 @@
             url: '/main/dashboard?start_date=' + sdate + '&end_date=' + edate,
             type: 'GET',
             success: function(data) {
-                // console.log(sdate);
                 history.pushState("/main/index#dashboard" + '?start_date=' + sdate + '&end_date=' + edate, "/main/index#dashboard" + '?start_date=' + sdate + '&end_date=' + edate, "/main/index#dashboard" + '?start_date=' + sdate + '&end_date=' + edate);
                 $('.wrapper-content').html(data);
             }
         });
     }
-
-    // function openurl(type, start_date, end_date, city_id = null) {
-    //     $.ajax({
-    //         url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""),
-    //         type: 'GET',
-    //         success: function(data) {
-    //             // $('#page-wrapper').html("");
-    //             history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""));
-    //             $('.wrapper-content').html(data);
-    //             window.scrollTo(0, 0);
-
-    //             // console.log(data);
-    //         }
-    //     });
-    // }
 
     function do_daterangepicker_stuff(start, end, label) {
 
@@ -198,33 +182,33 @@
             cancelClass: 'btn-default daterangepicker-cancel-button',
             separator: ' to ',
             locale: {
-                applyLabel: 'Ок',
-                cancelLabel: 'Отмена',
-                fromLabel: 'от',
-                toLabel: 'по',
-                customRangeLabel: 'Период',
+                applyLabel: '<?= Yii::t('frontend', 'Ok') ?>',
+                cancelLabel: '<?= Yii::t('frontend', 'Cancel') ?>',
+                fromLabel: '<?= Yii::t('frontend', 'from') ?>',
+                toLabel: '<?= Yii::t('frontend', 'to') ?>',
+                customRangeLabel: '<?= Yii::t('frontend', 'Period') ?>',
                 daysOfWeek: [
-                    'Вс',
-                    'Пн',
-                    'Вт',
-                    'Ср',
-                    'Чт',
-                    'Пт',
-                    'Сб'
+                    '<?= Yii::t('frontend', 'Su') ?>',
+                    '<?= Yii::t('frontend', 'Mo') ?>',
+                    '<?= Yii::t('frontend', 'Tu') ?>',
+                    '<?= Yii::t('frontend', 'We') ?>',
+                    '<?= Yii::t('frontend', 'Th') ?>',
+                    '<?= Yii::t('frontend', 'Fr') ?>',
+                    '<?= Yii::t('frontend', 'Sa') ?>'
                 ],
                 monthNames: [
-                    'Январь',
-                    'Февраль',
-                    'Март',
-                    'Апрель',
-                    'Май',
-                    'Июнь',
-                    'Июль',
-                    'Август',
-                    'Сентябрь',
-                    'Октябрь',
-                    'Ноябрь',
-                    'Декабрь'
+                    '<?= Yii::t('frontend', 'January') ?>',
+                    '<?= Yii::t('frontend', 'February') ?>',
+                    '<?= Yii::t('frontend', 'March') ?>',
+                    '<?= Yii::t('frontend', 'April') ?>',
+                    '<?= Yii::t('frontend', 'May') ?>',
+                    '<?= Yii::t('frontend', 'June') ?>',
+                    '<?= Yii::t('frontend', 'July') ?>',
+                    '<?= Yii::t('frontend', 'August') ?>',
+                    '<?= Yii::t('frontend', 'September') ?>',
+                    '<?= Yii::t('frontend', 'October') ?>',
+                    '<?= Yii::t('frontend', 'November') ?>',
+                    '<?= Yii::t('frontend', 'December') ?>'
                 ],
                 firstDay: 1
             }
@@ -241,13 +225,6 @@
     $(document).ready(function() {
         create_daterangepicker('<?= $start_date ?>', '<?= $end_date ?>');
 
-        // console.log(cityInformation);
-
-
-        // console.log(getDatesBetween(new Date('<?= $start_date ?>'), new Date('<?= $end_date ?>')).map(item=>{
-        //                 return item+", ";
-        //             }));
-
         Highcharts.chart('total_chart', {
             colors: ["#9c98ce", "#51223a", "#7c2a1b", "#8cdd75", "#87510e", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
             chart: {
@@ -260,7 +237,7 @@
                 fontFamily: "Droid Sans",
             },
             title: {
-                text: 'Обсуждения в медиа',
+                text: '<?= Yii::t('frontend', 'Discussions in media') ?>',
                 align: 'center'
             },
             xAxis: {
@@ -278,7 +255,7 @@
                 tickColor: "#D7D7D8",
                 tickWidth: 1,
                 title: {
-                    text: "Постов",
+                    text: "<?= Yii::t('frontend', 'Posts') ?>",
                     style: {
                         color: "#A0A0A3"
                     }
@@ -287,7 +264,7 @@
                 alternateGridColor: null,
             },
             tooltip: {
-                valueSuffix: ' постов',
+                valueSuffix: ' <?= Yii::t('frontend', 'posts') ?>',
                 backgroundColor: "#FFFFFF",
                 borderColor: "#76c0c1",
                 style: {
@@ -310,19 +287,11 @@
             },
 
             series: [{
-                name: 'Все обсуждения',
+                name: '<?= Yii::t('frontend', 'All discussions') ?>',
 
                 data: [
-                    // console.log([
                     <?php
                     foreach ($dates as $date) {
-                        // foreach ($date_posts as $key => $value) {
-                        //     if ($date == $key) {
-                        //         echo $value . ",";
-                        //         continue;
-                        //     }
-                        //     echo 0 . ",";
-                        // }
                         if (isset($date_posts[$date])) {
                             echo $date_posts[$date] . ",";
                         } else {
@@ -383,7 +352,7 @@
                 }
             },
             title: {
-                text: 'Обсуждения в ресурсах'
+                text: '<?= Yii::t('frontend', 'Discussions in resources') ?>'
             },
             plotOptions: {
                 pie: {
@@ -392,10 +361,10 @@
                 }
             },
             series: [{
-                name: 'Постов',
+                name: '<?= Yii::t('frontend', 'Posts') ?>',
                 data: [
                     <?php
-                    $socials = ['fb'=>'Facebook', 'ig'=>'Instagram', 'gg'=>'Google', 'tt'=>'TikTok','tw'=>'Twitter','mm'=>'Мой Мир', 'ok'=>'Одноклассники','vk'=>'Вконтакте','tg'=>'Telegram','yt'=>'YouTube'];
+                    $socials = ['fb'=>'Facebook', 'ig'=>'Instagram', 'gg'=>'Google', 'tt'=>'TikTok','tw'=>'Twitter','mm'=>Yii::t('frontend', 'Moi Mir') , 'ok'=>Yii::t('frontend', 'Odnoklassniki'),'vk'=>Yii::t('frontend', 'Vkontakte'),'tg'=>'Telegram','yt'=>'YouTube'];
                      foreach($totalResourcesDonut as $k=>$v){
                         if($v>0){
                             echo "['".$socials[$k]."', ".$v."],";

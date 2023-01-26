@@ -97,7 +97,6 @@ if (isset($result['projects']))
                 }
             },
             success: function(resp) {
-                console.log(resp);
             }
         });
 
@@ -123,10 +122,8 @@ if (isset($result['projects']))
             },
             success: function(resp) {
                 // nextThingToDo(resp); // deal with data returned
-                console.log(resp);
             }
 
         })
-        // console.log(!state);
     }
 </script>

@@ -3,10 +3,11 @@
 // var_dump($totalResourcesDonut);exit;
 
 $_monthsList = array(
-    "01" => "января", "02" => "февраля",
-    "03" => "марта", "04" => "апреля", "05" => "мая", "06" => "июня",
-    "07" => "июля", "08" => "августа", "09" => "сентября",
-    "10" => "октября", "11" => "ноября", "12" => "декабря"
+    "01" => Yii::t('frontend','of january'), "02" => Yii::t('frontend','of february'),
+    "03" => Yii::t('frontend','of march'), "04" => Yii::t('frontend','of april'), "05" => Yii::t('frontend','of may'), 
+    "06" => Yii::t('frontend','of june'), "07" => Yii::t('frontend','of july'), "08" => Yii::t('frontend','of august'), 
+    "09" => Yii::t('frontend','of september'), "10" => Yii::t('frontend','of october'), "11" => Yii::t('frontend','of november'), 
+    "12" => Yii::t('frontend','of december')
 );
 
 ?>
@@ -18,7 +19,7 @@ $_monthsList = array(
             <div class="panel-body">
                 <div>
                     <h1 style="margin-top:0px;padding-top:0px; margin-bottom:0px; padding-bottom:0px;"><strong><?php echo $cityInformation['name'] ?></strong></h1>
-                    <p style="margin-bottom:0px; margin-top:5px; padding-bottom:0px; padding-top:0px;">Источников в соц.сетях: <?= isset($r_count[$cityInformation['id']]) ? $r_count[$cityInformation['id']] : 0 ?></p>
+                    <p style="margin-bottom:0px; margin-top:5px; padding-bottom:0px; padding-top:0px;"><?= Yii::t('frontend', 'Sources in social networks') ?>: <?= isset($r_count[$cityInformation['id']]) ? $r_count[$cityInformation['id']] : 0 ?></p>
                     <!-- <div class="row col-lg-2 col-sm-12 justify-content-center">
                         <img style="width:10.5em; height:10.5em;" src="<?php #echo $cityInformation['photo'] 
                                                                         ?>" class="float-left rounded-circle circle-border m-b-md" alt="profile">
@@ -62,11 +63,11 @@ $_monthsList = array(
                     <div class="col-12">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li><a class="nav-link active" data-toggle="tab" href="#tab-discussion"><i class='fa fa-area-chart'></i>Обсуждение</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-subs"><i class='fa fa-user'></i>Подписчики</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-likes"><i class='fa fa-heart'></i>Лайки</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-comments"><i class='fa fa-comment'></i>Комментарии</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-reposts"><i class='fa fa-reply'></i>Репосты</a></li>
+                                <li><a class="nav-link active" data-toggle="tab" href="#tab-discussion"><i class='fa fa-area-chart'></i><?= Yii::t('frontend', 'Discussion') ?></a></li>
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-subs"><i class='fa fa-user'></i><?= Yii::t('frontend', 'Subscribers') ?></a></li>
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-likes"><i class='fa fa-heart'></i><?= Yii::t('frontend', 'Likes') ?></a></li>
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-comments"><i class='fa fa-comment'></i><?= Yii::t('frontend', 'Comments') ?></a></li>
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-reposts"><i class='fa fa-reply'></i><?= Yii::t('frontend', 'Reposts') ?></a></li>
                             </ul>
                             <div class="tab-content">
                                 <div role="tabpanel" id="tab-discussion" class="tab-pane active">
@@ -286,7 +287,7 @@ $_monthsList = array(
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h2 class='text-center m-md'><strong>Лента постов</strong></h2>
+                <h2 class='text-center m-md'><strong><?= Yii::t('frontend', 'Posts feed') ?></strong></h2>
                 <div class="row">
                     <div class='col-12' style=' display:flex; flex-wrap:nowrap; overflow-x:auto; gap:10px; '>
                         <?php
@@ -309,7 +310,7 @@ $_monthsList = array(
                                                                                                 echo "globe'></i> СМИ";
                                                                                                 break;
                                                                                             case 1:
-                                                                                                echo "vk'></i> Вконтакте";
+                                                                                                echo "vk'></i>".Yii::t('frontend', 'Vkontakte');
                                                                                                 break;
                                                                                             case 2:
                                                                                                 echo "facebook'></i> Facebook";
@@ -327,10 +328,10 @@ $_monthsList = array(
                                                                                                 echo "youtube'></i> Youtube";
                                                                                                 break;
                                                                                             case 7:
-                                                                                                echo "odnoklassniki'></i> Одноклассники";
+                                                                                                echo "odnoklassniki'></i>".Yii::t('frontend', 'Odnoklassniki');
                                                                                                 break;
                                                                                             case 8:
-                                                                                                echo "envelope'></i> Мой Мир";
+                                                                                                echo "envelope'></i>".Yii::t('frontend', 'Moi Mir');
                                                                                                 break;
                                                                                             case 9:
                                                                                                 echo "telegram'></i> Telegram";
@@ -367,7 +368,7 @@ $_monthsList = array(
                                                                                 echo "СМИ";
                                                                                 break;
                                                                             case 1:
-                                                                                echo "Вконтакте";
+                                                                                echo Yii::t('frontend', 'Vkontakte');
                                                                                 break;
                                                                             case 2:
                                                                                 echo "Facebook";
@@ -385,10 +386,10 @@ $_monthsList = array(
                                                                                 echo "Youtube";
                                                                                 break;
                                                                             case 7:
-                                                                                echo "Одноклассники";
+                                                                                echo Yii::t('frontend', 'Odnoklassniki');
                                                                                 break;
                                                                             case 8:
-                                                                                echo "Мой Мир";
+                                                                                echo Yii::t('frontend', 'Moi Mir');
                                                                                 break;
                                                                             case 9:
                                                                                 echo "Telegram";
@@ -406,7 +407,7 @@ $_monthsList = array(
                                                                 <p><?= str_split($post['text'], 100)[0] ?>...</p>
                                                                 <div class="post-sentiment<?php echo $post['sentiment']
                                                                                             ?>">
-                                                                    <?php echo (($post['sentiment'] == 1) ? 'Позитив' : (($post['sentiment'] == 0) ? 'Нейтрал' : (($post['sentiment'] == -1) ? 'Негатив' : null))) ?>
+                                                                    <?php echo (($post['sentiment'] == 1) ? Yii::t('frontend', 'Positive') : (($post['sentiment'] == 0) ? Yii::t('frontend', 'Neutral') : (($post['sentiment'] == -1) ? Yii::t('frontend', 'Negative') : null))) ?>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -476,21 +477,6 @@ $_monthsList = array(
 
     }
 
-    // function openurl(type, start_date, end_date, city_id = null) {
-    //     $.ajax({
-    //         url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""),
-    //         type: 'GET',
-    //         success: function(data) {
-    //             // $('#page-wrapper').html("");
-    //             history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((city_id != null) ? "&city_id=" + city_id : ""));
-    //             $('.wrapper-content').html(data);
-    //             window.scrollTo(0,0);
-
-    //             // console.log(data);
-    //         }
-    //     });
-    // }
-
     function do_daterangepicker_stuff(start, end, label) {
 
         $('#reportrange span').html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
@@ -514,7 +500,6 @@ $_monthsList = array(
 
 
         const string_date = start_date + ' - ' + end_date;
-        console.log(string_date);
         const daterangepicker_setting = {
             format: 'DD.MM.YYYY',
             startDate: start_date,
@@ -534,33 +519,33 @@ $_monthsList = array(
             cancelClass: 'btn-default daterangepicker-cancel-button',
             separator: ' to ',
             locale: {
-                applyLabel: 'Ок',
-                cancelLabel: 'Отмена',
-                fromLabel: 'от',
-                toLabel: 'по',
-                customRangeLabel: 'Период',
+                applyLabel: '<?= Yii::t('frontend', 'Ok') ?>',
+                cancelLabel: '<?= Yii::t('frontend', 'Cancel') ?>',
+                fromLabel: '<?= Yii::t('frontend', 'from') ?>',
+                toLabel: '<?= Yii::t('frontend', 'to') ?>',
+                customRangeLabel: '<?= Yii::t('frontend', 'Period') ?>',
                 daysOfWeek: [
-                    'Вс',
-                    'Пн',
-                    'Вт',
-                    'Ср',
-                    'Чт',
-                    'Пт',
-                    'Сб'
+                    '<?= Yii::t('frontend', 'Su') ?>',
+                    '<?= Yii::t('frontend', 'Mo') ?>',
+                    '<?= Yii::t('frontend', 'Tu') ?>',
+                    '<?= Yii::t('frontend', 'We') ?>',
+                    '<?= Yii::t('frontend', 'Th') ?>',
+                    '<?= Yii::t('frontend', 'Fr') ?>',
+                    '<?= Yii::t('frontend', 'Sa') ?>'
                 ],
                 monthNames: [
-                    'Январь',
-                    'Февраль',
-                    'Март',
-                    'Апрель',
-                    'Май',
-                    'Июнь',
-                    'Июль',
-                    'Август',
-                    'Сентябрь',
-                    'Октябрь',
-                    'Ноябрь',
-                    'Декабрь'
+                    '<?= Yii::t('frontend', 'January') ?>',
+                    '<?= Yii::t('frontend', 'February') ?>',
+                    '<?= Yii::t('frontend', 'March') ?>',
+                    '<?= Yii::t('frontend', 'April') ?>',
+                    '<?= Yii::t('frontend', 'May') ?>',
+                    '<?= Yii::t('frontend', 'June') ?>',
+                    '<?= Yii::t('frontend', 'July') ?>',
+                    '<?= Yii::t('frontend', 'August') ?>',
+                    '<?= Yii::t('frontend', 'September') ?>',
+                    '<?= Yii::t('frontend', 'October') ?>',
+                    '<?= Yii::t('frontend', 'November') ?>',
+                    '<?= Yii::t('frontend', 'December') ?>'
                 ],
                 firstDay: 1
             }
@@ -603,30 +588,29 @@ $_monthsList = array(
             } else if (keys[i] == 'tt') {
                 datas_name = 'TikTok'
             } else if (keys[i] == 'vk') {
-                datas_name = 'Вконтакте'
+                datas_name = '<?= Yii::t('frontend', 'Vkontakte'); ?>'
             } else if (keys[i] == 'ok') {
-                datas_name = 'Одноклассники'
+                datas_name = '<?= Yii::t('frontend', 'Odnoklassniki'); ?>'
             } else if (keys[i] == 'yt') {
                 datas_name = 'YouTube'
             } else if (keys[i] == 'mm') {
-                datas_name = 'Мой Мир'
+                datas_name = '<?= Yii::t('frontend', 'Moi Mir'); ?>'
             } else if (keys[i] == 'tw') {
                 datas_name = 'Twitter'
             } else if (keys[i] == 'gg') {
                 datas_name = 'Google+'
             } else if (keys[i] == 'positive') {
-                datas_name = 'Позитив'
+                datas_name = '<?= Yii::t('frontend', 'Positive}'); ?>'
             } else if (keys[i] == 'neutral') {
-                datas_name = 'Нейтрал'
+                datas_name = '<?= Yii::t('frontend', 'Neutral'); ?>'
             } else if (keys[i] == 'negative') {
-                datas_name = 'Негатив'
+                datas_name = '<?= Yii::t('frontend', 'Negative'); ?>'
             }
             datas[i] = {
                 name: datas_name,
                 data: temp
             }
         }
-        console.log(datas)
 
         Highcharts.chart(container, {
             colors: ["#9c98ce", "#51223a", "#7c2a1b", "#8cdd75", "#87510e", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
@@ -746,21 +730,21 @@ $_monthsList = array(
             } else if (keys[i] == 'tg') {
                 datas[i] = ["Telegram", data[keys[i]]];
             } else if (keys[i] == 'positive') {
-                datas[i] = ["Позитив", data[keys[i]]];
+                datas[i] = ['<?= Yii::t('frontend', 'Positive}'); ?>', data[keys[i]]];
             } else if (keys[i] == 'neutral') {
-                datas[i] = ["Нейтрал", data[keys[i]]];
+                datas[i] = ['<?= Yii::t('frontend', 'Neutral'); ?>', data[keys[i]]];
             } else if (keys[i] == 'negative') {
-                datas[i] = ["Негатив", data[keys[i]]];
+                datas[i] = ['<?= Yii::t('frontend', 'Negative'); ?>', data[keys[i]]];
             } else if (keys[i] == 'tt') {
                 datas[i] = ['TikTok', data[keys[i]]];
             } else if (keys[i] == 'vk') {
-                datas[i] = ['Вконтакте', data[keys[i]]];
+                datas[i] = ['<?= Yii::t('frontend', 'Vkontakte'); ?>', data[keys[i]]];
             } else if (keys[i] == 'ok') {
-                datas[i] = ['Одноклассники', data[keys[i]]];
+                datas[i] = ['<?= Yii::t('frontend', 'Odnoklassniki'); ?>', data[keys[i]]];
             } else if (keys[i] == 'yt') {
                 datas[i] = ['YouTube', data[keys[i]]];
             } else if (keys[i] == 'mm') {
-                datas[i] = ['Мой Мир', data[keys[i]]];
+                datas[i] = ['<?= Yii::t('frontend', 'Moi Mir'); ?>', data[keys[i]]];
             } else if (keys[i] == 'tw') {
                 datas[i] = ['Twitter', data[keys[i]]];
             } else if (keys[i] == 'gg') {
@@ -792,7 +776,7 @@ $_monthsList = array(
         });
     };
 
-    createChart('total_chart', 'Публикации источников', 'Кол-во постов', 'постов', {
+    createChart('total_chart', '<?= Yii::t('frontend', 'Publications of sources') ?>', '<?= Yii::t('frontend', 'Count of posts') ?>', '<?= Yii::t('frontend', 'posts') ?>', {
         // Формирование объекта с ключ/значениями для js из массива php
         <?php if (isset($date_posts[$cityInformation['id']])) {
             foreach ($date_posts[$cityInformation['id']] as $key => $value) {
@@ -807,7 +791,7 @@ $_monthsList = array(
         } ?>
     });
 
-    createChart('sentiment_chart', 'Тональность постов', 'Кол-во постов', 'постов', {
+    createChart('sentiment_chart', '<?= Yii::t('frontend', 'Sentiment of posts') ?>', '<?= Yii::t('frontend', 'Count of posts') ?>', '<?= Yii::t('frontend', 'posts') ?>', {
         <?php if (isset($postsSentimentChart[$cityInformation['id']])) foreach ($postsSentimentChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
@@ -817,7 +801,7 @@ $_monthsList = array(
         } ?>
     });
 
-    createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', 'подписчиков', {
+    createChart('subs_chart', '<?= Yii::t('frontend', 'Subscribers Chart') ?>', '<?= Yii::t('frontend', 'Number of followers') ?>', '<?= Yii::t('frontend', 'subscribers') ?>', {
         <?php if (isset($totalSubsChart[$cityInformation['id']])) foreach ($totalSubsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
@@ -827,7 +811,7 @@ $_monthsList = array(
         } ?>
     });
 
-    createChart('likes_chart', 'График лайков', 'Кол-во лайков', 'лайков', {
+    createChart('likes_chart', '<?= Yii::t('frontend', 'Likes Chart') ?>', '<?= Yii::t('frontend', 'Number of likes') ?>', '<?= Yii::t('frontend', 'likes') ?>', {
         <?php if (isset($totalLikesChart[$cityInformation['id']])) foreach ($totalLikesChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
@@ -837,7 +821,7 @@ $_monthsList = array(
         } ?>
     });
 
-    createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', 'комментариев', {
+    createChart('comments_chart', '<?= Yii::t('frontend', 'Comments Chart') ?>', '<?= Yii::t('frontend', 'Number of comments') ?>', '<?= Yii::t('frontend', 'comments') ?>', {
         <?php if (isset($totalCommentsChart[$cityInformation['id']])) foreach ($totalCommentsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
@@ -847,7 +831,7 @@ $_monthsList = array(
         } ?>
     });
 
-    createChart('reposts_chart', 'График репостов', 'Кол-во репостов', 'репостов', {
+    createChart('reposts_chart', '<?= Yii::t('frontend', 'Reposts Chart') ?>', '<?= Yii::t('frontend', 'Number of reposts') ?>', '<?= Yii::t('frontend', 'reposts') ?>', {
         <?php if (isset($totalRepostsChart[$cityInformation['id']])) foreach ($totalRepostsChart[$cityInformation['id']] as $key => $value) {
             echo $key . ":{";
             foreach ($value as $k => $v) {
@@ -857,41 +841,41 @@ $_monthsList = array(
         } ?>
     });
 
-    createDonut('comments_donut', 'Всего комментариев', 'Комментариев', {
+    createDonut('comments_donut', '<?= Yii::t('frontend', 'Total Comments') ?>', '<?= Yii::t('frontend', 'Comments') ?>', {
         <?php if (isset($totalCommentsDonut[$cityInformation['id']])) foreach ($totalCommentsDonut[$cityInformation['id']] as $key => $value) {
             if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
-    createDonut('likes_donut', 'Всего лайков', 'Лайков', {
+    createDonut('likes_donut', '<?= Yii::t('frontend', 'Total likes') ?>', '<?= Yii::t('frontend', 'Likes') ?>', {
         <?php if (isset($totalLikesDonut[$cityInformation['id']])) foreach ($totalLikesDonut[$cityInformation['id']] as $key => $value) {
             if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
-    createDonut('subs_donut', 'Всего подписчиков', 'Подписчиков', {
+    createDonut('subs_donut', '<?= Yii::t('frontend', 'Total Subscribers') ?>', '<?= Yii::t('frontend', 'Subscribers') ?>', {
         <?php if (isset($totalSubsDonut[$cityInformation['id']])) foreach ($totalSubsDonut[$cityInformation['id']] as $key => $value) {
             if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
-    createDonut('sentiment_donut', 'Всего тональности', 'Постов', {
+    createDonut('sentiment_donut', '<?= Yii::t('frontend', 'Total sentiment') ?>', '<?= Yii::t('frontend', 'Posts') ?>', {
         <?php if (isset($postsSentimentLine[$cityInformation['id']])) foreach ($postsSentimentLine[$cityInformation['id']] as $key => $value) {
             if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
-    createDonut('total_donut', 'Всего постов', 'Постов', {
+    createDonut('total_donut', '<?= Yii::t('frontend', 'Total posts') ?>', '<?= Yii::t('frontend', 'Posts') ?>', {
         <?php if (isset($totalResourcesDonut[$cityInformation['id']])) foreach ($totalResourcesDonut[$cityInformation['id']] as $key => $value) {
             if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>
     });
 
 
-    createDonut('reposts_donut', 'Всего репостов', 'Репостов', {
+    createDonut('reposts_donut', '<?= Yii::t('frontend', 'Total reposts') ?>', '<?= Yii::t('frontend', 'Reposts') ?>', {
         <?php if (isset($totalRepostsDonut[$cityInformation['id']])) foreach ($totalRepostsDonut[$cityInformation['id']] as $key => $value) {
             if ($value > 0) echo $key . ':' . $value . ', ';
         } ?>

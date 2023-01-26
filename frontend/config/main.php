@@ -9,6 +9,7 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
+    // 'language' => 'ru',
     'defaultRoute' => 'main/index',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -38,22 +39,37 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'i18n' => [
+            'translations' => [
+                'frontend*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/translations',
+                ],
+                'backend*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/translations',
+                ],
+            ],
+        ],
         'urlManager' => [
+            // 'class' => 'cetver\LanguageUrlManager\UrlManager',
+            // 'languages' => ['en', 'ru', 'kz'],
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'scriptUrl'=>'/index.php',
+            // 'scriptUrl' => '/index.php',
             'baseUrl' => '/',
             //'suffix' => '.html',
             'rules' => [
                 '' => 'main/index',
-                '<action>'=>'main/index',
+                '<action>' => 'main/index',
                 'manage/<action>' => 'manage/<action>',
                 'main/<action>' => 'main/<action>',
                 'site/<action>' => 'site/<action>',
                 '<controller>/<action>' => 'site/error',
             ],
         ],
-        
+
+
     ],
     'params' => $params,
 ];

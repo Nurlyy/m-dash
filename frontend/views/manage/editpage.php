@@ -215,7 +215,6 @@ $res_id = null;
     let result = <?= json_encode($result) ?>;
     let city_id = null;
     let newregion = null;
-    // console.log(result['project']['cities'][2])
 
     function regionchange() {
         newregion = $("#newregion").val();
@@ -227,7 +226,6 @@ $res_id = null;
             $("#moveResModalTitle").text(`Перенос источника "${result['project']['cities'][city_id]['resources'][res_id]['name']}" в другой регион проекта`);
             resid = res_id;
             r = result['project']['cities']
-            // console.log(r);
             Object.entries(r).forEach(([key, value]) => {
                 if (Number(value['id']) != city_id) {
                     $("#newregion").append(`<option value="${value['id']}">${value['name']}</option>`)
@@ -255,7 +253,6 @@ $res_id = null;
                 }
             },
             success: function(resp) {
-                console.log(resp);
                 $("#col-id-" + resid).remove();
                 $(".colcontent-id-" + resid).remove();
             }
@@ -285,7 +282,6 @@ $res_id = null;
                 }
             },
             success: function(resp) {
-                console.log(resp);
                 $("#project-" + city_id).remove();
             }
         });
@@ -373,7 +369,6 @@ $res_id = null;
                 resname = name;
             }
         }
-        console.log(resname);
         $("#deleteResModalParagraph").text("Вы точно хотите удалить источник \"" + resname + "\"? \n Ваше действие будет невозможно отменить.");
 
     }
@@ -400,7 +395,6 @@ $res_id = null;
                     }
                 },
                 success: function(resp) {
-                    console.log(resp);
                 }
             });
             $("#col-id-" + id).remove();
@@ -484,12 +478,10 @@ $res_id = null;
             resourcesChanges[resource_id][field_name] = field_value;
         }
         resourcesChanges[resource_id]['id'] = resource_id;
-        // console.log(resourcesChanges);
 
     }
 
     function saveChanges() {
-        // console.log(createdCities);
         postdata = {
             cityChanges: cityChanges,
             resourcesChanges: resourcesChanges,
@@ -497,7 +489,6 @@ $res_id = null;
             createdCities: createdCities,
             '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
         };
-        // console.log(postdata);
 
         $.ajax({
             url: "/manage/applychanges",
@@ -512,7 +503,6 @@ $res_id = null;
                 }
             },
             success: function(resp) {
-                console.log(resp);
                 cityChanges = {};
                 resourcesChanges = {};
                 createdResources = {};
@@ -547,7 +537,6 @@ $res_id = null;
                 }
             },
             success: function(resp) {
-                console.log(resp);
                 projectname = null;
                 owner = null;
                 projectid = null;

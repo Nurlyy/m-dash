@@ -14,16 +14,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <div>
         <div>
 
-            <h4 class="logo-name">iMAS</h4>
+            <img alt="img" src="/img/logo_imas.png" height="40px">
             <p class='logo-subtitle'>Rating</p>
 
         </div>
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'options' => ['class' => 'm-t']]); ?>
         <div class="form-group">
-            <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label(false)->input('username', ['placeholder'=>'Имя пользователя']) ?>
+            <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label(false)->input('username', ['placeholder' => 'Имя пользователя']) ?>
         </div>
         <div class="form-group">
-        <?= $form->field($model, 'password')->passwordInput()->label(false)->input('password', ['placeholder'=>'Пароль']) ?>
+            <?= $form->field($model, 'password')->passwordInput()->label(false)->input('password', ['placeholder' => 'Пароль']) ?>
         </div>
         <div class="form-group">
             <?= $form->field($model, 'rememberMe')->checkbox() ?>
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton('Войти', ['class' => 'btn btn-primary block full-width m-b', 'name' => 'login-button', 'style'=>'border-radius:15px;']) ?>
+            <?= Html::submitButton('Войти', ['class' => 'btn btn-primary block full-width m-b', 'name' => 'login-button', 'style' => 'border-radius:15px;']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

@@ -91,7 +91,7 @@ class MainController extends Controller
         $commentsChart = isset($_GET['commentsChart']) ? $_GET['commentsChart'] : false;
         $repostsChart = isset($_GET['repostsChart']) ? $_GET['repostsChart'] : false;
         $result = [];
-        if ($project_state == 1)
+        if ($project_state == 1) {
             switch ($type) {
                 case 1:
                     $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
@@ -181,14 +181,18 @@ class MainController extends Controller
                     $result = ['city_data' => $candidates_data];
                     break;
             }
-        return $result;
+            return $result;
+        } else {
+            return "false";
+        }
     }
 
-    public function actionSaveprojectchanges(){
-        if(Yii::$app->request->post()){
+    public function actionSaveprojectchanges()
+    {
+        if (Yii::$app->request->post()) {
             $projectname = isset($_POST['projectname']) ? $_POST['projectname'] : null;
             $owner = isset($_POST['owner']) ? $_POST['owner'] : null;
-            $projectid = isset($_POST['projectid']) ? $_POST['projectid']:null;
+            $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
             $projectModel = new Project();
             return $projectModel->saveprojectchanges($projectname, $owner, $projectid);
         }
@@ -218,7 +222,7 @@ class MainController extends Controller
             $q = $projectModel->get_cities_count($project['id']);
             $x = 0;
             if ($q) {
-                foreach($q as $s){
+                foreach ($q as $s) {
                     $r = $projectModel->get_resources_count($s['ids']);
                     // return $r;
                     foreach ($r as $e) {
@@ -388,8 +392,9 @@ class MainController extends Controller
         }
     }
 
-    public function actionDeleteproj(){
-        if(Yii::$app->request->post()){
+    public function actionDeleteproj()
+    {
+        if (Yii::$app->request->post()) {
             $projid = Yii::$app->request->post('projid');
             $projectModel  = new Project();
             return $projectModel->deleteproj($projid);
@@ -407,16 +412,18 @@ class MainController extends Controller
         // exit;
     }
 
-    public function actionDeletecity(){
-        if(Yii::$app->request->post()) {
+    public function actionDeletecity()
+    {
+        if (Yii::$app->request->post()) {
             $city_id = Yii::$app->request->post('city_id');
             $projectModel = new Project();
             return $projectModel->deletecity($city_id);
         }
     }
 
-    public function actionMoveresource(){
-        if(Yii::$app->request->post()) {
+    public function actionMoveresource()
+    {
+        if (Yii::$app->request->post()) {
             $res_id = Yii::$app->request->post('res_id');
             $newregion = Yii::$app->request->post('newregion');
             $projectModel = new Project();

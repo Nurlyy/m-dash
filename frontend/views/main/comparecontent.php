@@ -4,7 +4,7 @@ if ($ratingToggle == 'true') { ?>
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'><strong>Рейтинг обсуждении</strong></h2>
+                <h2 class='text-center'><strong><?= Yii::t('frontend', 'Discussions rating') ?></strong></h2>
             </div>
             <div class="panel-body">
                 <div class="col-lg-12">
@@ -50,7 +50,7 @@ if ($ratingToggle == 'true') { ?>
     <div class="col-lg-8 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'><strong>Тональность постов</strong></h2>
+                <h2 class='text-center'><strong><?= Yii::t('frontend', 'Sentiment of posts') ?></strong></h2>
             </div>
             <div class="panel-body">
                 <?php
@@ -276,7 +276,6 @@ if ($ratingToggle == 'true') { ?>
                 data: temp
             }
         }
-        console.log(datas)
 
         Highcharts.chart(container, {
             colors: ["#9c98ce", "#51223a", "#7c2a1b", "#8cdd75", "#87510e", "#7bd3f6", "#7c260b", "#ee8f71", "#76c0c1", "#a18376"],
@@ -413,23 +412,23 @@ if ($ratingToggle == 'true') { ?>
             } else if (keys[i] == 'tt') {
                 keys[i] = 'TikTok'
             } else if (keys[i] == 'mm') {
-                keys[i] = 'Мой Мир'
+                keys[i] = '<?= Yii::t('frontend', 'Moi Mir'); ?>'
             } else if (keys[i] == 'yt') {
                 keys[i] = 'YouTube'
             } else if (keys[i] == 'ok') {
-                keys[i] = 'Одноклассники'
+                keys[i] = '<?= Yii::t('frontend', 'Odnoklassniki'); ?>'
             } else if (keys[i] == 'tw') {
                 keys[i] = 'Twitter'
             } else if (keys[i] == 'gg') {
                 keys[i] = 'Google+'
             } else if (keys[i] == 'vk') {
-                keys[i] = 'Вконтакте'
+                keys[i] = '<?= Yii::t('frontend', 'Vkontakte'); ?>'
             } else if (keys[i] == 'positive') {
-                keys[i] = 'Позитив'
+                keys[i] = '<?= Yii::t('frontend', 'Positive}'); ?>'
             } else if (keys[i] == 'neutral') {
-                keys[i] = 'Нейтрал'
+                keys[i] = '<?= Yii::t('frontend', 'Neutral'); ?>'
             } else if (keys[i] == 'negative') {
-                keys[i] = 'Негатив'
+                keys[i] = '<?= Yii::t('frontend', 'Negative'); ?>'
             }
         }
         Highcharts.chart(container, {
@@ -444,7 +443,7 @@ if ($ratingToggle == 'true') { ?>
 
             xAxis: {
                 accessibility: {
-                    rangeDescription: 'Показатель'
+                    rangeDescription: '<?= Yii::t('frontend', 'Index') ?>'
                 },
                 categories: keys
             },
@@ -471,7 +470,7 @@ if ($ratingToggle == 'true') { ?>
 
 
     <?php if ($discussionChart == 'true') { ?>
-        createRadar('total_radar', 'Публикации', 'Кол-во постов', [
+        createRadar('total_radar', '<?= Yii::t('frontend', 'Publications') ?>', '<?= Yii::t('frontend', 'Count of posts') ?>', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
             $keys = [];
@@ -494,7 +493,7 @@ if ($ratingToggle == 'true') { ?>
     <?php } ?>
 
     <?php if ($sentimentChart == 'true') { ?>
-        createRadar('total_donut', 'Публикации', 'Кол-во постов', [
+        createRadar('total_donut', '<?= Yii::t('frontend', 'Publications') ?>', '<?= Yii::t('frontend', 'Count of posts') ?>', [
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
             $keys = [];
@@ -534,7 +533,7 @@ if ($ratingToggle == 'true') { ?>
     if ($discussionChart == 'true') {
         call_createobj($cityInformation, $date_posts);
     ?>
-        createChart('total_chart', 'Публикации источников', 'Кол-во постов', 'постов', posts);
+        createChart('total_chart', '<?= Yii::t('frontend', 'Publications of sources') ?>', '<?= Yii::t('frontend', 'Count of posts') ?>', '<?= Yii::t('frontend', 'posts') ?>', posts);
         posts = {};
     <?php
     }
@@ -544,8 +543,7 @@ if ($ratingToggle == 'true') { ?>
     if ($subsChart == 'true') {
         call_createobj($cityInformation, $totalSubsChart);
     ?>
-        createChart('subs_chart', 'График подписчиков', 'Кол-во подписчиков', 'подписчиков', posts);
-        console.log(posts)
+        createChart('subs_chart', '<?= Yii::t('frontend', 'Subscribers Chart') ?>', '<?= Yii::t('frontend', 'Number of followers') ?>', '<?= Yii::t('frontend', 'subscribers') ?>', posts);
         posts = {};
     <?php
     }
@@ -555,7 +553,7 @@ if ($ratingToggle == 'true') { ?>
     if ($likesChart == 'true') {
         call_createobj($cityInformation, $totalLikesChart);
     ?>
-        createChart('likes_chart', 'График лайков', 'Кол-во лайков', 'лайков', posts);
+        createChart('likes_chart', '<?= Yii::t('frontend', 'Likes Chart') ?>', '<?= Yii::t('frontend', 'Number of likes') ?>', '<?= Yii::t('frontend', 'likes') ?>', posts);
         posts = {};
     <?php
     }
@@ -565,7 +563,7 @@ if ($ratingToggle == 'true') { ?>
     if ($commentsChart == 'true') {
         call_createobj($cityInformation, $totalCommentsChart);
     ?>
-        createChart('comments_chart', 'График комментариев', 'Кол-во комментариев', 'комментариев', posts);
+        createChart('comments_chart', '<?= Yii::t('frontend', 'Comments Chart') ?>', '<?= Yii::t('frontend', 'Number of comments') ?>', '<?= Yii::t('frontend', 'comments') ?>', posts)
         posts = {};
     <?php
     }
@@ -575,7 +573,7 @@ if ($ratingToggle == 'true') { ?>
     if ($repostsChart == 'true') {
         call_createobj($cityInformation, $totalRepostsChart);
     ?>
-        createChart('reposts_chart', 'График репостов', 'Кол-во репостов', 'репостов', posts);
+        createChart('reposts_chart', '<?= Yii::t('frontend', 'Reposts Chart') ?>', '<?= Yii::t('frontend', 'Number of reposts') ?>', '<?= Yii::t('frontend', 'reposts') ?>', posts);
         posts = {};
     <?php
     }

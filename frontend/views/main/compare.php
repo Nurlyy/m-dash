@@ -2,14 +2,14 @@
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
-                <h2 class='text-center'><strong>Сравнение активности в регионах</strong></h2>
+                <h2 class='text-center'><strong><?= Yii::t('frontend', 'Comparison of activity in the regions') ?></strong></h2>
             </div>
             <div class="panel-body">
                 <div class="col-lg-12 row no-margins" style='justify-content:center;'>
                     <div class="col-lg-4 col-md-12 col-sm-12" style='display:flex; flex-direction:column; gap: 10px; justify-content:center;'>
                         <div class="btn-group">
                             <select class="btn inline-block" style='width:100%;background: #ededed' id="firstSelect">
-                                <option value="select">Выбрать регион</option>
+                                <option value="select"><?= Yii::t('frontend', 'Choose region') ?></option>
                                 <?php foreach ($cityInformation as $candidate) { ?>
                                     <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
                                 <?php } ?>
@@ -17,7 +17,7 @@
                         </div>
                         <div class="btn-group">
                             <select class="btn inline-block" style='width:100%;background: #ededed' id="secondSelect">
-                                <option value="select">Выбрать регион</option>
+                                <option value="select"><?= Yii::t('frontend', 'Choose region') ?></option>
                                 <?php foreach ($cityInformation as $candidate) { ?>
                                     <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
                                 <?php } ?>
@@ -30,17 +30,17 @@
                                 <label class="toggle">
                                     <input class="toggle-checkbox" id='discussionChart' type="checkbox" checked>
                                     <div class="toggle-switch"></div>
-                                    <span class="toggle-label">Обсуждения</span>
+                                    <span class="toggle-label"><?= Yii::t('frontend', 'Discussions') ?></span>
                                 </label>
                                 <label class="toggle">
                                     <input class="toggle-checkbox" id='sentimentChart' type="checkbox" checked>
                                     <div class="toggle-switch"></div>
-                                    <span class="toggle-label">Тональность обсуждении</span>
+                                    <span class="toggle-label"><?= Yii::t('frontend', 'Sentiment of the discussions') ?></span>
                                 </label>
                                 <label class="toggle">
                                     <input class="toggle-checkbox" id='rating' type="checkbox" checked>
                                     <div class="toggle-switch"></div>
-                                    <span class="toggle-label">Рейтинг</span>
+                                    <span class="toggle-label"><?= Yii::t('frontend', 'Rating') ?></span>
                                 </label>
                             </div>
                         </div>
@@ -49,22 +49,22 @@
                                 <label class="toggle">
                                     <input class="toggle-checkbox" id='subsChart' type="checkbox" checked>
                                     <div class="toggle-switch"></div>
-                                    <span class="toggle-label">Подписчики</span>
+                                    <span class="toggle-label"><?= Yii::t('frontend', 'Subscribers') ?></span>
                                 </label>
                                 <label class="toggle">
                                     <input class="toggle-checkbox" id='likesChart' type="checkbox" checked>
                                     <div class="toggle-switch"></div>
-                                    <span class="toggle-label">Лайки</span>
+                                    <span class="toggle-label"><?= Yii::t('frontend', 'Likes') ?></span>
                                 </label>
                                 <label class="toggle">
                                     <input class="toggle-checkbox" id='commentsChart' type="checkbox" checked>
                                     <div class="toggle-switch"></div>
-                                    <span class="toggle-label">Комментарии</span>
+                                    <span class="toggle-label"><?= Yii::t('frontend', 'Comments') ?></span>
                                 </label>
                                 <label class="toggle">
                                     <input class="toggle-checkbox" id='repostsChart' type="checkbox" checked>
                                     <div class="toggle-switch"></div>
-                                    <span class="toggle-label">Репосты, ответы</span>
+                                    <span class="toggle-label"><?= Yii::t('frontend', 'Reposts, answers') ?></span>
                                 </label>
                                 <!-- <label class="toggle">
                                     <input class="toggle-checkbox" type="checkbox" checked>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="col-12 text-center m-t-md">
-                    <button class='btn btn-primary' onclick="compare(start_date, end_date)" style='width:200px; border-radius: 15px;'>Сравнить</button>
+                    <button class='btn btn-primary' onclick="compare(start_date, end_date)" style='width:200px; border-radius: 15px;'><?= Yii::t('frontend', 'Compare') ?></button>
                 </div>
             </div>
         </div>
@@ -123,7 +123,6 @@
         edate = (edate.includes(".")) ? edate.split(".")[2] + "-" + edate.split(".")[1] + "-" + edate.split(".")[0] : edate;
         var f = document.getElementById('firstSelect').value;
         var s = document.getElementById('secondSelect').value;
-        console.log(f);
         discussionChart = $("#discussionChart").is(":checked");
         sentimentChart = $("#sentimentChart").is(":checked");
         subsChart = $("#subsChart").is(":checked");
@@ -132,7 +131,6 @@
         repostsChart = $("#repostsChart").is(":checked");
         rating = $("#rating").is(":checked");
 
-        // console.log('/main/comparecontent?start_date=' + sdate + '&end_date=' + edate + '&first=' + f + '&second=' + s + "&discussionChart=" + discussionChart + "&sentimentChart=" + sentimentChart + "&subsChart=" + subsChart + "&likesChart=" + likesChart + "&commentsChart=" + commentsChart + "&repostsChart=" + repostsChart + "&birthday=" + birthday + "&experience=" + experience)
         if (f != s && f != "select" && s != "select") {
             if (discussionChart == true || sentimentChart == true || rating == true || subsChart == true || commentsChart == true || likesChart == true || repostsChart == true) {
                 $.ajax({
@@ -145,7 +143,7 @@
                 });
             }
         } else {
-            alert("Выберите корректные данные");
+            alert("<?= Yii::t('frontend', 'Choose correct data') ?>");
         }
     }
 
@@ -175,7 +173,6 @@
                     url: '/main/compare?start_date=' + sdate + '&end_date=' + edate,
                     type: 'GET',
                     success: function(data) {
-                        // console.log(sdate);
                         history.pushState("", "", "/main/index#compare" + '?start_date=' + sdate + '&end_date=' + edate + '&first=' + f + '&second=' + s + "&discussionChart=" + discussionChart + "&sentimentChart=" + sentimentChart + "&subsChart=" + subsChart + "&likesChart=" + likesChart + "&commentsChart=" + commentsChart + "&repostsChart=" + repostsChart + "&rating=" + rating);
                         $('.wrapper-content').html(data);
                         startCompare();
@@ -187,7 +184,6 @@
                 url: '/main/compare?start_date=' + sdate + '&end_date=' + edate,
                 type: 'GET',
                 success: function(data) {
-                    // console.log(sdate);
                     history.pushState("", "", "/main/index#compare" + '?start_date=' + sdate + '&end_date=' + edate);
                     $('.wrapper-content').html(data);
                 }
@@ -196,20 +192,6 @@
 
 
     }
-
-    // function openurl(type, start_date, end_date, candidate_id = null) {
-    //     $.ajax({
-    //         url: '/main/' + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""),
-    //         type: 'GET',
-    //         success: function(data) {
-    //             // $('#page-wrapper').html("");
-    //             history.pushState("/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""), "/main/index#" + type + '?start_date=' + start_date.split(".")[2] + "-" + start_date.split(".")[1] + "-" + start_date.split(".")[0] + '&end_date=' + end_date.split(".")[2] + "-" + end_date.split(".")[1] + "-" + end_date.split(".")[0] + ((candidate_id != null) ? "&candidate_id=" + candidate_id : ""));
-    //             $('.wrapper-content').html(data);
-    //             window.scrollTo(0,0);
-    //             // console.log(data);
-    //         }
-    //     });
-    // }
 
     function do_daterangepicker_stuff(start, end, label) {
         $('#reportrange span').html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
@@ -252,33 +234,33 @@
             cancelClass: 'btn-default daterangepicker-cancel-button',
             separator: ' to ',
             locale: {
-                applyLabel: 'Ок',
-                cancelLabel: 'Отмена',
-                fromLabel: 'от',
-                toLabel: 'по',
-                customRangeLabel: 'Период',
+                applyLabel: '<?= Yii::t('frontend', 'Ok') ?>',
+                cancelLabel: '<?= Yii::t('frontend', 'Cancel') ?>',
+                fromLabel: '<?= Yii::t('frontend', 'from') ?>',
+                toLabel: '<?= Yii::t('frontend', 'to') ?>',
+                customRangeLabel: '<?= Yii::t('frontend', 'Period') ?>',
                 daysOfWeek: [
-                    'Вс',
-                    'Пн',
-                    'Вт',
-                    'Ср',
-                    'Чт',
-                    'Пт',
-                    'Сб'
+                    '<?= Yii::t('frontend', 'Su') ?>',
+                    '<?= Yii::t('frontend', 'Mo') ?>',
+                    '<?= Yii::t('frontend', 'Tu') ?>',
+                    '<?= Yii::t('frontend', 'We') ?>',
+                    '<?= Yii::t('frontend', 'Th') ?>',
+                    '<?= Yii::t('frontend', 'Fr') ?>',
+                    '<?= Yii::t('frontend', 'Sa') ?>'
                 ],
                 monthNames: [
-                    'Январь',
-                    'Февраль',
-                    'Март',
-                    'Апрель',
-                    'Май',
-                    'Июнь',
-                    'Июль',
-                    'Август',
-                    'Сентябрь',
-                    'Октябрь',
-                    'Ноябрь',
-                    'Декабрь'
+                    '<?= Yii::t('frontend', 'January') ?>',
+                    '<?= Yii::t('frontend', 'February') ?>',
+                    '<?= Yii::t('frontend', 'March') ?>',
+                    '<?= Yii::t('frontend', 'April') ?>',
+                    '<?= Yii::t('frontend', 'May') ?>',
+                    '<?= Yii::t('frontend', 'June') ?>',
+                    '<?= Yii::t('frontend', 'July') ?>',
+                    '<?= Yii::t('frontend', 'August') ?>',
+                    '<?= Yii::t('frontend', 'September') ?>',
+                    '<?= Yii::t('frontend', 'October') ?>',
+                    '<?= Yii::t('frontend', 'November') ?>',
+                    '<?= Yii::t('frontend', 'December') ?>'
                 ],
                 firstDay: 1
             }
