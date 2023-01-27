@@ -1,7 +1,7 @@
 <?php
 if (isset($result['projects']))
     foreach ($result['projects'] as $project) { ?>
-    <div class="col-12">
+    <div class="col-12" id="project-<?= $project['id'] ?>">
         <div class="modal inmodal" id="deleteProjModal" style="z-index: 2060 !important;" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated flipInY">
@@ -46,12 +46,7 @@ if (isset($result['projects']))
                     <div class="btn btn-primary" style='font-size:small; margin-top: 20px;' onclick="openurl('manage', 'editpage?project_id=<?= $project['id'] ?>')">Изменить</div>
                 </div>
                 <div class="p-sm m-sm">
-                    <form action="turnstateproject" method="POST">
-                        <input id="form-token" type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->csrfToken ?>" />
-                        <input id="project_id" type="hidden" name="project_id" value="<?= $project['id'] ?>" />
-                        <input id="state" type="hidden" name="state" value="<?= ($project['is_active'] > 0) ? $project['is_active'] - 1 : $project['is_active'] + 1 ?>" />
-                        <input type="submit" class="<?= ($project['is_active']) ? "btn btn-warning" : "btn btn-primary" ?>" style='font-size:small; margin-top: 20px;' value="<?= ($project['is_active']) ? "Отключить" : "Включить" ?> проект">
-                    </form>
+                    <button id="stateButton-<?= $project['id'] ?>" onclick="turnStateProject(<?= $project['id'] ?>)" class="<?= ($project['is_active']) ? "btn btn-warning" : "btn btn-primary" ?>"  style='font-size:small; margin-top: 20px;'><?= ($project['is_active']) ? "Отключить" : "Включить" ?> проект</button>
                 </div>
                 <div class="p-sm m-sm" style="float:right;">
                     <div class="btn btn-danger" style='font-size:small; margin-top: 20px;' onclick="showDeleteProjModal(<?= $project['id'] ?>, '<?= $project['name'] ?>')" data-toggle="modal" data-target="#deleteProjModal">Удалить</div>
@@ -68,7 +63,13 @@ if (isset($result['projects']))
 
 
 <script>
-    let projid = null;
+    projid = null;
+    projects = <?= json_encode($result['projects']) ?>;
+    temp = {};
+    projects.forEach(element => {
+        temp[element['id']] = element;
+    });
+    projects = temp;
 
     function showDeleteProjModal(id, name = null) {
         projid = id;
@@ -76,7 +77,7 @@ if (isset($result['projects']))
 
         projname = name;
 
-        $("#deleteProjModalParagraph").text("Вы точно хотите удалить проект \"" + projname + "\"? \n Ваше действие будет невозможно отменить.");
+        $("#deleteProjModalParagraph").text("Вы действительно хотите удалить проект \"" + projname + "\"? \n Ваше действие будет невозможно отменить.");
 
     }
 
@@ -97,30 +98,46 @@ if (isset($result['projects']))
                 }
             },
             success: function(resp) {
+                toastr.error(`Проект "${projects[id].name}" удален`,'')
+                $("#project-"+id).remove();
+                delete projects.id;
             }
         });
 
     }
 
-    function turnStateProject(project_id, state) {
+    function turnStateProject(project_id) {
+        project = projects[project_id];
         $.ajax({
-            method: "POST",
+            type: "POST",
             url: "/manage/turnstateproject",
             data: {
                 project_id: project_id,
-                state: !state,
+                state: (project.is_active == 0)?1:0,
+                "<?= Yii::$app->request->csrfParam ?>":"<?= Yii::$app->request->csrfToken ?>"
             },
             type: "POST",
-            dataType: 'json',
             error: function(xhr, tStatus, e) {
                 if (!xhr) {
-                    alert(" We have an error ");
-                    alert(tStatus + "   " + e.message);
+                    console.log(" We have an error ");
+                    console.log(tStatus + "   " + e.message);
                 } else {
-                    alert("else: " + e.message); // the great unknown
+                    console.log("else: " + e.message); // the great unknown
                 }
             },
             success: function(resp) {
+                project.is_active = (project.is_active == 0)?1:0;
+                $("#stateButton-"+project_id).removeClass();
+                if(project.is_active == 1){
+                    $("#stateButton-"+project_id).addClass("btn btn-warning");
+                    $("#stateButton-"+project_id).text("Отключить проект");
+                    toastr.success(`Проект "${project.name}" включен`,'')
+                } else if(project.is_active == 0){
+                    $("#stateButton-"+project_id).addClass('btn btn-primary');
+                    $("#stateButton-"+project_id).text("Включить проект");
+                    toastr.success(`Проект "${project.name}" отключен`,'')
+                }
+                
                 // nextThingToDo(resp); // deal with data returned
             }
 

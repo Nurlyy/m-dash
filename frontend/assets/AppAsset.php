@@ -20,6 +20,8 @@ class AppAsset extends AssetBundle
         "css/animate.css",
         "css/style.css",
         "css/plugins/ladda/ladda-themeless.min.css",
+        "css/plugins/footable/footable.core.css",
+        "css/plugins/toastr/toastr.min.css",
     ];
     public $js = [
         "js/jquery-3.1.1.min.js",
@@ -58,7 +60,8 @@ class AppAsset extends AssetBundle
         "https://code.highcharts.com/highcharts-more.js",
         "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.4/html2canvas.min.js",
         "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js",
-
+        "js/plugins/footable/footable.all.min.js",
+        "js/plugins/toastr/toastr.min.js",
     ];
 
     public $depends = [

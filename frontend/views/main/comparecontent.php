@@ -424,7 +424,7 @@ if ($ratingToggle == 'true') { ?>
             } else if (keys[i] == 'vk') {
                 keys[i] = '<?= Yii::t('frontend', 'Vkontakte'); ?>'
             } else if (keys[i] == 'positive') {
-                keys[i] = '<?= Yii::t('frontend', 'Positive}'); ?>'
+                keys[i] = '<?= Yii::t('frontend', 'Positive'); ?>'
             } else if (keys[i] == 'neutral') {
                 keys[i] = '<?= Yii::t('frontend', 'Neutral'); ?>'
             } else if (keys[i] == 'negative') {

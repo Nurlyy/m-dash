@@ -1,6 +1,11 @@
-<?php $city_id = null;
+<?php 
+$city_id = null;
 $res_name = "";
 $res_id = null;
+$this->registerCssFile("css/plugins/toastr/toastr.min.css");
+$this->registerJsFile("js/plugins/toastr/toastr.min.js");
+
+
 
 ?>
 <div class="col-12 text-center">
@@ -207,14 +212,15 @@ $res_id = null;
 </div>
 
 <script>
-    let createdResCounter = 0;
-    let restype = null;
-    let resid = null;
-    let changedName = null;
-    let createdCityCounter = 0;
-    let result = <?= json_encode($result) ?>;
-    let city_id = null;
-    let newregion = null;
+    // console.log(<?= $project_id ?>)
+    createdResCounter = 0;
+    restype = null;
+    resid = null;
+    changedName = null;
+    createdCityCounter = 0;
+    result = <?= json_encode($result) ?>;
+    city_id = null;
+    newregion = null;
 
     function regionchange() {
         newregion = $("#newregion").val();
@@ -459,14 +465,6 @@ $res_id = null;
         url = document.getElementById("url").value = " ";
         desc = document.getElementById("desc").value = " ";
 
-        // saveChanges();
-
-        // $('.modal').modal('hide');
-        // showModal(<?php #echo $project_id 
-                        ?>, <?php #echo $city_id 
-                            ?>)
-        // $('#editModal').modal('show');
-
     }
 
     function updateSaveArrays(resource_id, field_name) {
@@ -519,6 +517,7 @@ $res_id = null;
         projectname = $("#projectname").val();
         owner = $("#owner").val();
         projectid = <?= $project_id ?>;
+        
         $.ajax({
             url: "/manage/saveprojectchanges",
             data: {
@@ -537,9 +536,12 @@ $res_id = null;
                 }
             },
             success: function(resp) {
+                console.log(resp);
+                toastr.success(`Проект "${projectname}" успешно сохранен`,'')
                 projectname = null;
                 owner = null;
                 projectid = null;
+                // window.location.reload();
             }
         });
     }

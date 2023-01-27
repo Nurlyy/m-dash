@@ -285,7 +285,7 @@ class Project extends Model
                     // return $q;
                     $return['subs'] = $this->helper::createCommand($q);
                 }
-                $query .= ($discussionChart == true ? 
+                $query .= ($discussionChart == true ?
                     " count(distinct case when p.type=1 then t.id end) as vk,"
                     . " count(distinct case when p.type=2 then t.id end) as fb,"
                     . " count(distinct case when p.type=3 then t.id end) as tw,"
@@ -330,7 +330,7 @@ class Project extends Model
                         . " sum(case when p.type=9 then p.likes end) as tg_likes,"
                         . " sum(case when p.type=10 then p.likes end) as tt_likes,"
                         : "")
-                    . ($sentimentChart == true ? 
+                    . ($sentimentChart == true ?
                         " count(distinct case when t.sentiment=1  and t.type = 1 then t.id end) as vk_positive,"
                         . " count(distinct case when t.sentiment=0  and t.type = 1 then t.id end) as vk_neutral,"
                         . " count(distinct case when t.sentiment=-1  and t.type = 1 then t.id end) as vk_negative,"
@@ -381,11 +381,15 @@ class Project extends Model
     }
 
 
-    public function createProject($project_name, $user_id, $created_date)
+    public function createProject($project_name, $user_id, $created_date, $projectid)
     {
         // return $project_name;
         if (isset($project_name) && isset($user_id)) {
-            $query = "insert into projects (name, user_id, created_date, is_active) values ('{$project_name}', {$user_id}, '{$created_date}', 0)";
+            if (isset($projectid)) {
+                $query = "update projects set name={$project_name}, user_id={$user_id} where id={$projectid}";
+            } else {
+                $query = "insert into projects (name, user_id, created_date, is_active) values ('{$project_name}', {$user_id}, '{$created_date}', 0)";
+            }
             return $this->helper::createCommand($query);
         } else return false;
     }
@@ -431,17 +435,27 @@ class Project extends Model
                 $type = "0";
                 if (isset($d['url'])) {
                     // return "FDKKPJFIOPDSFDSP";
-                    if (strpos($d['url'], 'vk')!==false || strpos($d['url'], 'vkontakte')!==false) {$type == "1";}
-                    else if (strpos($d['url'], 'facebook')!==false) {$type == "2";}
-                    else if (strpos($d['url'], 'twitter')!==false) {$type == "3";}
-                    else if (strpos($d['url'], 'instagram')!==false) {$type == "4";}
-                    else if (strpos($d['url'], 'google')!==false) {$type == "5";}
-                    else if (strpos($d['url'], 'youtube')!==false) {$type == "6";}
-                    else if (strpos($d['url'], 'ok.ru')!==false) {$type == "7";}
-                    else if (strpos($d['url'], 'mail.ru')!==false) {$type == "8";}
-                    else if (strpos($d['url'], 'telegram')!==false) {$type == "9";}
-                    else if (strpos($d['url'], 'tiktok')!==false) {$type == "10";}
-                    else $type = 0;
+                    if (strpos($d['url'], 'vk') !== false || strpos($d['url'], 'vkontakte') !== false) {
+                        $type == "1";
+                    } else if (strpos($d['url'], 'facebook') !== false) {
+                        $type == "2";
+                    } else if (strpos($d['url'], 'twitter') !== false) {
+                        $type == "3";
+                    } else if (strpos($d['url'], 'instagram') !== false) {
+                        $type == "4";
+                    } else if (strpos($d['url'], 'google') !== false) {
+                        $type == "5";
+                    } else if (strpos($d['url'], 'youtube') !== false) {
+                        $type == "6";
+                    } else if (strpos($d['url'], 'ok.ru') !== false) {
+                        $type == "7";
+                    } else if (strpos($d['url'], 'mail.ru') !== false) {
+                        $type == "8";
+                    } else if (strpos($d['url'], 'telegram') !== false) {
+                        $type == "9";
+                    } else if (strpos($d['url'], 'tiktok') !== false) {
+                        $type == "10";
+                    } else $type = 0;
                 }
                 // return "FDKKPJFIOPDSFDSP";
                 if (isset($d['id'])) {
@@ -497,7 +511,8 @@ class Project extends Model
         return $this->helper::createCommand($query);
     }
 
-    public function deleteproj($id){
+    public function deleteproj($id)
+    {
         $query = "delete from projects where id={$id}";
         return $this->helper::createCommand($query) ? true : false;
     }
@@ -544,9 +559,35 @@ class Project extends Model
         return $this->helper::createCommand($query) ? true : false;
     }
 
-    public function moveresource($res_id, $newregion){
+    public function moveresource($res_id, $newregion)
+    {
         $query = "update resources set city_id={$newregion} where id={$res_id}";
         // return $query;
         return $this->helper::createCommand($query);
+    }
+
+
+    public function getusersinformation()
+    {
+        $query = "SELECT u.id, u.username, u.email, u.status, u.created_at, p.name, p.id as pid FROM `user` as u left join projects as p on p.user_id = u.id where u.status != 3";
+        return $this->helper::createCommand($query);
+    }
+
+    public function deleteuser($id)
+    {
+        $query = "DELETE FROM `user` WHERE id={$id}";
+        return $this->helper::createCommand($query) ? 'true' : 'false';
+    }
+
+    public function getStatus($id)
+    {
+        $query = "SELECT u.status, p.name FROM `user` as u left join projects as p on p.user_id = u.id WHERE u.id={$id}";
+        return $this->helper::createCommand($query);
+    }
+
+    public function setStatus($id, $status)
+    {
+        $query = "UPDATE `user` SET `status` = {$status} WHERE `id` = {$id}";
+        return $this->helper::createCommand($query) ? "true" : "false";
     }
 }

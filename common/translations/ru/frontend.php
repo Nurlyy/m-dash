@@ -23,7 +23,7 @@ return [
     'Exit' => 'Выход',
     'Yes' => 'Да',
     'No' => 'Нет',
-    'Are you sure' => 'Вы уверены?',
+    'Are you sure' => 'Вы уверены',
     'Export' => 'Экспорт',
     'Discussions rating' => 'Рейтинг обсуждении',
     'Sentiment of posts' => 'Тональность постов',

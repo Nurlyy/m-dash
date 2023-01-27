@@ -49,7 +49,7 @@ class MainController extends Controller
 
                 ],
                 [
-                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres', 'saveprojectchanges', 'deletecity', 'moveresource', 'deleteproj'],
+                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres', 'saveprojectchanges', 'deletecity', 'moveresource', 'deleteproj', 'getusersinformation', 'deleteuser', 'changestatus'],
                     'allow' => true,
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     // 'roles' => ['@'],
@@ -245,26 +245,12 @@ class MainController extends Controller
     {
         $projectModel = new Project();
         // $post = json_decode($_POST);
+        $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
         $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : null;
         $created_date = isset($_POST['created_date']) ? $_POST['created_date'] : null;
         $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : null;
-        return $projectModel->createProject($project_name, $user_id, $created_date);
+        return $projectModel->createProject($project_name, $user_id, $created_date, $projectid);
         // return $_POST;
-    }
-
-
-    public function actionAddcandidate()
-    {
-        $projectModel = new Project();
-        $candidate_name = isset($_POST['candidate_name']) ? $_POST['candidate_name'] : null;
-        $partia = isset($_POST['partia']) ? $_POST['partia'] : null;
-        $fb_account = isset($_POST['fb_account']) ? $_POST['fb_account'] : null;
-        $ig_account = isset($_POST['ig_account']) ? $_POST['ig_account'] : null;
-        $web_site = isset($_POST['web_site']) ? $_POST['web_site'] : null;
-        $photo = isset($_POST['photo']) ? $_POST['photo'] : null;
-        $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : null;
-        $experience = isset($_POST['experience']) ? $_POST['experience'] : null;
-        $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
     }
 
     public function actionRemoveproject()
@@ -429,5 +415,39 @@ class MainController extends Controller
             $projectModel = new Project();
             return $projectModel->moveresource($res_id, $newregion);
         }
+    }
+
+    public function actionGetusersinformation(){
+        $projectModel = new Project();
+        $users = $projectModel->getusersinformation();
+        return $users;
+    }
+
+    public function actionDeleteuser(){
+        $projectModel = new Project();
+        $id = isset($_POST['id']) ? $_POST['id'] : null;
+        $name = $projectModel->getStatus($id)[0]['name'];
+        if($name == null) {
+            return $projectModel->deleteuser($id)?"true":"false";
+        }
+        return false;
+    }
+
+    public function actionChangestatus(){
+        $projectModel = new Project();
+        $id = isset($_POST['id']) ? $_POST['id'] : null;
+        $status = $projectModel->getStatus($id)[0];
+        $name = $status['name'];
+        $status = $status['status'];
+        if($name == null){
+            if($status == "10"){
+                return $projectModel->setStatus($id, "9");
+            }else if($status == "9"){
+                return $projectModel->setStatus($id, "10");
+            }
+        }
+        
+        // return $status;
+        return 'false';
     }
 }

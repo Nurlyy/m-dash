@@ -23,6 +23,9 @@ $this->registerJsFile("js/sripts.js");
             <li>
                 <a href="#createproject" onclick='openurl("manage","createproject")'><i class="fa fa-plus"></i> <span class="nav-label">Создать проект</span></a>
             </li>
+            <li>
+                <a href="#users" onclick='openurl("manage","users")'><i class="fa fa-user"></i> <span class="nav-label">Пользователи</span></a>
+            </li>
             <!-- <li>
                 <a href="#" onclick='openurl("compare", start_date, end_date)'><i class="fa fa-clone"></i> <span class="nav-label">Сравнить</span></a>
             </li> -->
@@ -86,7 +89,7 @@ $this->registerJsFile("js/sripts.js");
         if (urlString.includes('#') && urlString.split('#')[1]) {
             var controller = urlString.split('#');
             var action = controller[1].split('?');
-            if (['mainpage', 'project', 'createproject', 'editpage'].includes(action[0])) {
+            if (['mainpage', 'project', 'createproject', 'editpage', 'users'].includes(action[0])) {
                 if (action[1]) {
                     if (action[1].includes("first=")) {
                         var url = "/manage/" + action[0];
