@@ -8,6 +8,28 @@ use Exception;
 
 class AuthController extends Controller
 {
+
+    public function init()
+    {
+        $session = Yii::$app->session;
+        if (!$session->isActive) {
+            $session->open();
+        }
+        if (!empty($_REQUEST['lang'])) {
+            if (in_array($_REQUEST['lang'], ['en', 'ru', 'kz'])) {
+                $session->set('lang', $_REQUEST['lang']);
+            } else {
+                $session->set('lang', 'en');
+            }
+        }
+        if (!empty($_SESSION['lang'])) {
+            Yii::$app->language = $_SESSION['lang'];
+        } else {
+            Yii::$app->language = 'ru';
+        }
+        parent::init();
+    }
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();

@@ -25,7 +25,6 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         "js/jquery-3.1.1.min.js",
-        "js/scripts.js",
         "js/popper.min.js",
         "js/bootstrap.js",
         "js/plugins/metisMenu/jquery.metisMenu.js",
@@ -50,6 +49,7 @@ class AppAsset extends AssetBundle
         "js/plugins/sparkline/jquery.sparkline.min.js",
         "js/demo/sparkline-demo.js",
         "js/plugins/chartJs/Chart.min.js",
+        "js/scripts.js",
         "https://code.highcharts.com/maps/highmaps.js",
         "https://code.highcharts.com/mapdata/countries/kz/kz-all.js",
         "https://code.highcharts.com/highcharts.js",
