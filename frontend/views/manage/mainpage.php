@@ -46,7 +46,7 @@ if (isset($result['projects']))
                     <div class="btn btn-primary" style='font-size:small; margin-top: 20px;' onclick="openurl('manage', 'editpage?project_id=<?= $project['id'] ?>')">Изменить</div>
                 </div>
                 <div class="p-sm m-sm">
-                    <button id="stateButton-<?= $project['id'] ?>" onclick="turnStateProject(<?= $project['id'] ?>)" class="<?= ($project['is_active']) ? "btn btn-warning" : "btn btn-primary" ?>"  style='font-size:small; margin-top: 20px;'><?= ($project['is_active']) ? "Отключить" : "Включить" ?> проект</button>
+                    <button id="stateButton-<?= $project['id'] ?>" onclick="turnStateProject(<?= $project['id'] ?>)" class="<?= ($project['is_active']) ? "btn btn-warning" : "btn btn-primary" ?>" style='font-size:small; margin-top: 20px;'><?= ($project['is_active']) ? "Отключить" : "Включить" ?> проект</button>
                 </div>
                 <div class="p-sm m-sm" style="float:right;">
                     <div class="btn btn-danger" style='font-size:small; margin-top: 20px;' onclick="showDeleteProjModal(<?= $project['id'] ?>, '<?= $project['name'] ?>')" data-toggle="modal" data-target="#deleteProjModal">Удалить</div>
@@ -98,8 +98,8 @@ if (isset($result['projects']))
                 }
             },
             success: function(resp) {
-                toastr.error(`Проект "${projects[id].name}" удален`,'')
-                $("#project-"+id).remove();
+                toastr.error(`Проект "${projects[id].name}" удален`, '')
+                $("#project-" + id).remove();
                 delete projects.id;
             }
         });
@@ -113,8 +113,8 @@ if (isset($result['projects']))
             url: "/manage/turnstateproject",
             data: {
                 project_id: project_id,
-                state: (project.is_active == 0)?1:0,
-                "<?= Yii::$app->request->csrfParam ?>":"<?= Yii::$app->request->csrfToken ?>"
+                state: (project.is_active == 0) ? 1 : 0,
+                "<?= Yii::$app->request->csrfParam ?>": "<?= Yii::$app->request->csrfToken ?>"
             },
             type: "POST",
             error: function(xhr, tStatus, e) {
@@ -126,18 +126,24 @@ if (isset($result['projects']))
                 }
             },
             success: function(resp) {
-                project.is_active = (project.is_active == 0)?1:0;
-                $("#stateButton-"+project_id).removeClass();
-                if(project.is_active == 1){
-                    $("#stateButton-"+project_id).addClass("btn btn-warning");
-                    $("#stateButton-"+project_id).text("Отключить проект");
-                    toastr.success(`Проект "${project.name}" включен`,'')
-                } else if(project.is_active == 0){
-                    $("#stateButton-"+project_id).addClass('btn btn-primary');
-                    $("#stateButton-"+project_id).text("Включить проект");
-                    toastr.success(`Проект "${project.name}" отключен`,'')
+                if (resp == 'true') {
+                    project.is_active = (project.is_active == 0) ? 1 : 0;
+                    $("#stateButton-" + project_id).removeClass();
+                    if (project.is_active == 1) {
+                        $("#stateButton-" + project_id).addClass("btn btn-warning");
+                        $("#stateButton-" + project_id).text("Отключить проект");
+                        toastr.success(`Проект "${project.name}" включен`, '')
+                    } else if (project.is_active == 0) {
+                        $("#stateButton-" + project_id).addClass('btn btn-primary');
+                        $("#stateButton-" + project_id).text("Включить проект");
+                        toastr.success(`Проект "${project.name}" отключен`, '')
+                    }
+                } else {
+                    console.log(resp=='true')
+                    toastr.error(`Произошла ошибка при отключении проекта "${project.name}" `, '')
                 }
-                
+
+
                 // nextThingToDo(resp); // deal with data returned
             }
 

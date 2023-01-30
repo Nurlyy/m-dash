@@ -272,6 +272,7 @@ class MainController extends AuthController
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11) {
             $result = json_decode(get_web_page("rating.imas.kz/backend/main/search?type=1&start_date={$start_date}&end_date={$end_date}"), true);
+            // var_dump($result);exit;
             $this->splitData($result);
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];

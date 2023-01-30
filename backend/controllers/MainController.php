@@ -12,6 +12,8 @@ use Yii;
 use common\models\User;
 use common\components\AccessRule;
 use yii\filters\AccessControl;
+use app\models\Projects;
+use app\models\City;
 
 // use yii\filters\auth\QueryParamAuth;
 
@@ -68,10 +70,10 @@ class MainController extends Controller
     public function actionSearch()
     {
         $projectModel = new Project();
-        $project_cities = $projectModel->getProjectCandidates(Yii::$app->user->id);
-        $project_id = $projectModel->getProjectId(Yii::$app->user->id);
-        $project_state = $project_id[0]['is_active'];
-        $project_id = $project_id[0]['id'];
+        $project = Projects::getProjectForUser(Yii::$app->user->id);
+        $project_id = $project->id;
+        $project_state = $project->is_active;
+        $project_cities = City::getCitiesForProject($project->id);
         $temp = [];
         foreach ($project_cities as $i) {
             array_push($temp, $i['id']);
@@ -190,24 +192,22 @@ class MainController extends Controller
     public function actionSaveprojectchanges()
     {
         if (Yii::$app->request->post()) {
-            $projectname = isset($_POST['projectname']) ? $_POST['projectname'] : null;
-            $owner = isset($_POST['owner']) ? $_POST['owner'] : null;
             $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
-            $projectModel = new Project();
-            return $projectModel->saveprojectchanges($projectname, $owner, $projectid);
+            $project = Projects::findOne(['id' => $projectid]);
+            isset($_POST['projectname']) ? $project->name = $_POST['projectname'] : null;
+            isset($_POST['owner']) ? $project->owner = $_POST['owner'] : null;
+            return $project->save();
         }
     }
 
 
     public function actionTurnstateproject()
     {
-        $projectModel = new Project();
-        $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
-        $state = isset($_POST['state']) ? $_POST['state'] : "0";
-        // return $state;
-        if (isset($project_id) && isset($state))
-            return $projectModel->turnOffProject($project_id, $state);
-        else return false;
+        if(Yii::$app->request->isPost && isset($_POST['project_id']) && isset($_POST['state'])){
+            $project = Projects::findOne(['id'=>$_POST['project_id']]);
+            $project->is_active = intval($_POST['state']);
+            return $project->save();
+        }
     }
 
 

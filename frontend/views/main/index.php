@@ -6,6 +6,10 @@ use yii\helpers\Html;
 
 $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
 
+// if(isset($turnedOff) && $turnedOff){
+//     echo "<h1>Проект временно отключен</h1>";exit;
+// }
+
 ?>
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
@@ -114,6 +118,7 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
     <?php if (isset($turnedOff)) { ?>
         isTurnedOff = (<?= $turnedOff ?>) ? true : false;
     <?php } ?>
+    
 
     function createPdf() {
         if ($("#comparecontent")) {
@@ -144,6 +149,9 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
     }
 
     window.onload = function() {
+        if(isTurnedOff){
+            $('.wrapper-content').html("<h1 class='text-danger'><strong>Проект временно отключен</strong></h1>   ");
+        }
         let urlString = window.location.href.toString();
 
         if (urlString.includes('#') && urlString.split('#')[1]) {
@@ -164,11 +172,9 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                     type: 'GET',
                     success: function(data) {
                         history.pushState("", "", "/main/index#" + words[1] + (words[1].includes('lang')?'':'&lang=<?= Yii::$app->language ?>'))
-                        if (isTurnedOff === false) {
+                        if (isTurnedOff == false) {
                             $('.wrapper-content').html(data);
                             startCompare();
-                        } else {
-                            $('.wrapper-content').html("<h1 class='text-danger'><strong>Проект временно отключен</strong></h1>   ");
                         }
                     }
                 });

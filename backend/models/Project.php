@@ -13,19 +13,6 @@ class Project extends Model
      */
     private $helper = Helper::class;
 
-    public function temp()
-    {
-        $query = "SELECT * FROM city";
-        return $this->helper::createCommand($query);
-    }
-
-    public function getProjectCandidates($user_id)
-    {
-        $query = "select c.id from projects p inner join city c on p.id=c.project_id where p.user_id = {$user_id};";
-        // return $query;
-        return $this->helper::createCommand($query);
-    }
-
     public function turnOffProject($project_id, $state)
     {
         $query = "update projects set is_active = :is_active where id = :project_id";
@@ -46,12 +33,6 @@ class Project extends Model
     {
         $query = Yii::$app->db->createCommand("select id as ids from city where project_id = :project_id")->bindValues([':project_id' => $project_id])->queryAll();
         return $query;
-    }
-
-    public function getProjectId($user_id)
-    {
-        $query = "select * from projects where user_id = {$user_id};";
-        return $this->helper::createCommand($query);
     }
 
     public function get_free_users()
@@ -111,8 +92,6 @@ class Project extends Model
 
     public function get_all_data($city_id, $res_id, $start_date, $end_date, $type, $first = null, $second = null, $discussionChart = null, $sentimentChart = null, $subsChart = null, $likesChart = null, $commentsChart = null, $repostsChart = null)
     {
-        // return $city_id;
-        // вычитаем один день для того чтобы результаты в графике не сломались
         $return = [];
         $query = "select u.id, DATE_FORMAT(p.s_date, '%Y-%m-%d') as date,";
         switch ($type) {
@@ -369,14 +348,29 @@ class Project extends Model
             . " inner join posts_metrics p on r.id = p.res_id"
             . " inner join res_posts t on r.id = t.res_id and p.item_id=t.item_id"
             . " where"
-            . (isset($city_id) ? " u.id={$city_id} and" : "")
-            . (isset($res_id) ? " r.id={$res_id} and" : "")
-            . ((isset($first) && isset($second)) ? " u.id IN ({$first}, {$second}) and" : "")
-            . " p.s_date between '{$start_date}' and '{$end_date}'"
+            . (isset($city_id) ? " u.id= :city_id and" : "")
+            . (isset($res_id) ? " r.id= :res_id and" : "")
+            . ((isset($first) && isset($second)) ? " u.id IN (:first, :second) and" : "")
+            . " p.s_date between :start_date and :end_date"
             . " group by DATE_FORMAT(p.s_date, '%Y-%m-%d'), u.id";
         // return $query;
+        if (isset($city_id)) {
+            $bindValues[':city_id'] = $city_id;
+        }
+        if (isset($res_id)) {
+            $bindValues[':res_id'] = $res_id;
+        }
+        if (isset($first) && isset($second)) {
+            $bindValues[':first'] = $first;
+            $bindValues[':second'] = $second;
+        }
+        if (isset($start_date) && isset($end_date)) {
+            $bindValues[':start_date'] = $start_date;
+            $bindValues[':end_date'] = $end_date;
+        }
+        // return Yii::$app->db->createCommand($query)->bindValues($bindValues)->queryAll();
 
-        $return[] = $this->helper::createCommand($query);
+        $return[] = Yii::$app->db->createCommand($query)->bindValues($bindValues)->queryAll();
         return $return;
     }
 
@@ -392,25 +386,6 @@ class Project extends Model
             }
             return $this->helper::createCommand($query);
         } else return false;
-    }
-
-
-    public function createCandidate($candidate_name, $partia, $fb_account, $ig_account, $web_site, $photo, $birthday, $experience, $project_id)
-    {
-        $query = "insert into candidate (candidate_name, partia, fb_account, ig_account, web_site, photo, birthday, experience, project_id) values ("
-            . "'{$candidate_name}', '{$partia}', '{$fb_account}', '{$ig_account}', '{$web_site}', '{$photo}', '{$birthday}', '{$experience}', '{$project_id}'";
-        if ($this->helper::createCommand($query)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public function removeCandidate($candidate_id)
-    {
-        $query = "update table candidate set isdeleted = 1 where candidate_id = '{$candidate_id}'";
-        return $this->helper::createCommand($query);
     }
 
     public function removeProject($project_id)
