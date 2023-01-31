@@ -117,6 +117,7 @@
                     }
                 },
                 success: function(data) {
+                    console.log(data);
                     if (status == 9) {
                         $("#status-" + id).removeClass();
                         $("#status-" + id).addClass('fa fa-check text-navy');

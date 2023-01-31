@@ -207,7 +207,7 @@ class MainController extends Controller
         $projects = Projects::find()->asArray()->all();
         foreach ($projects as $key => $project) {
             $user = User::findOne(['id' => intval($project['user_id'])]);
-            $cities = City::find()->where('project_id='. $project['id'])->asArray()->all();
+            $cities = City::find()->where('project_id=' . $project['id'])->asArray()->all();
             $project['username'] = $user->username;
             $project['email'] = $user->email;
             $project['cities'] = sizeof($cities);
@@ -217,7 +217,7 @@ class MainController extends Controller
                 foreach ($cities as $city) {
                     $project['resources'] += Resources::find()->where(['city_id' => $city['id']])->count();
                 }
-            }else {
+            } else {
                 $project['resources'] = 0;
             }
             $projects[$key] = $project;
@@ -231,17 +231,22 @@ class MainController extends Controller
 
     public function actionCreateproject()
     {
-        if (isset($_POST['id'])) {$project = Projects::findOne(['id' => $_POST['id']]);}
-        else {$project = new Projects();$project->is_active = 0;$project->created_date = $_POST['created_date'];}
+        if (isset($_POST['id'])) {
+            $project = Projects::findOne(['id' => $_POST['id']]);
+        } else {
+            $project = new Projects();
+            $project->is_active = 0;
+            $project->created_date = $_POST['created_date'];
+        }
         // $project = new Projects();
         $project->name = $_POST['name'];
 
         $project->user_id = $_POST['user_id'];
-        
+
         // if(isset($_POST['project_name'])) $project->name = $_POST['project_name'];
         // if(isset($_POST['created_date'])) $project->created_date = $_POST['created_date'];
         // if(isset($_POST['user_id'])) $project->user_id = $_POST['user_id'];
-        
+
         // $projectModel = new Project();
         // // $post = json_decode($_POST);
         // $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
@@ -381,20 +386,8 @@ class MainController extends Controller
     {
         if (Yii::$app->request->post()) {
             $projid = Yii::$app->request->post('projid');
-            $projectModel  = new Project();
-            return $projectModel->deleteproj($projid);
+            return Projects::findOne(['id' => $projid])->delete();
         }
-    }
-
-
-    public function actionTemp()
-    {
-        $projectModel = new Project();
-
-        $temp = $projectModel->get_free_users();
-
-        return $temp;
-        // exit;
     }
 
     public function actionDeletecity()
@@ -417,39 +410,30 @@ class MainController extends Controller
     }
 
     public function actionGetusersinformation()
-    {
-        $projectModel = new Project();
-        $users = $projectModel->getusersinformation();
-        return $users;
+    {   
+        return Projects::getUsersInformation();
     }
 
     public function actionDeleteuser()
     {
-        $projectModel = new Project();
         $id = isset($_POST['id']) ? $_POST['id'] : null;
-        $name = $projectModel->getStatus($id)[0]['name'];
-        if ($name == null) {
-            return $projectModel->deleteuser($id) ? "true" : "false";
+        $user = User::findOne(['id' => intval($id)]);
+        if(Projects::getProjectForUser($user->id) === null){
+            return $user->delete();
         }
-        return false;
     }
 
     public function actionChangestatus()
     {
-        $projectModel = new Project();
         $id = isset($_POST['id']) ? $_POST['id'] : null;
-        $status = $projectModel->getStatus($id)[0];
-        $name = $status['name'];
-        $status = $status['status'];
-        if ($name == null) {
-            if ($status == "10") {
-                return $projectModel->setStatus($id, "9");
-            } else if ($status == "9") {
-                return $projectModel->setStatus($id, "10");
+        $user = User::findOne(['id' => intval($id)]);
+        if (Projects::getProjectForUser($user->id) === null) {
+            if ($user->status == 10) {
+                $user->status = 9;
+            } else if ($user->status == 9) {
+                $user->status = 10;
             }
+            return $user->save();
         }
-
-        // return $status;
-        return 'false';
     }
 }
