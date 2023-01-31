@@ -14,6 +14,7 @@ use common\components\AccessRule;
 use yii\filters\AccessControl;
 use app\models\Projects;
 use app\models\City;
+use app\models\Resources;
 
 // use yii\filters\auth\QueryParamAuth;
 
@@ -51,7 +52,7 @@ class MainController extends Controller
 
                 ],
                 [
-                    'actions' => ['createproject', 'addcandidate', 'removeproject', 'removecandidate', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres', 'saveprojectchanges', 'deletecity', 'moveresource', 'deleteproj', 'getusersinformation', 'deleteuser', 'changestatus'],
+                    'actions' => ['createproject', 'removeproject', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres', 'deletecity', 'moveresource', 'deleteproj', 'getusersinformation', 'deleteuser', 'changestatus'],
                     'allow' => true,
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     // 'roles' => ['@'],
@@ -189,22 +190,10 @@ class MainController extends Controller
         }
     }
 
-    public function actionSaveprojectchanges()
-    {
-        if (Yii::$app->request->post()) {
-            $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
-            $project = Projects::findOne(['id' => $projectid]);
-            isset($_POST['projectname']) ? $project->name = $_POST['projectname'] : null;
-            isset($_POST['owner']) ? $project->owner = $_POST['owner'] : null;
-            return $project->save();
-        }
-    }
-
-
     public function actionTurnstateproject()
     {
-        if(Yii::$app->request->isPost && isset($_POST['project_id']) && isset($_POST['state'])){
-            $project = Projects::findOne(['id'=>$_POST['project_id']]);
+        if (Yii::$app->request->isPost && isset($_POST['project_id']) && isset($_POST['state'])) {
+            $project = Projects::findOne(['id' => $_POST['project_id']]);
             $project->is_active = intval($_POST['state']);
             return $project->save();
         }
@@ -213,44 +202,54 @@ class MainController extends Controller
 
     public function actionGetprojects()
     {
-        // return "fdsafdsa";
         $result['projects'] = [];
         $projectModel = new Project();
-        $projects = $projectModel->getProjects();
-        foreach ($projects as $project) {
-            // (!$result['projects'][$project['id']])?$result['projects'][$project['id']]=[]:$result['projects'][$project['id']];
-            $q = $projectModel->get_cities_count($project['id']);
-            $x = 0;
-            if ($q) {
-                foreach ($q as $s) {
-                    $r = $projectModel->get_resources_count($s['ids']);
-                    // return $r;
-                    foreach ($r as $e) {
-                        $x += ($e['r_count'] ? 1 : 0);
-                    }
+        $projects = Projects::find()->asArray()->all();
+        foreach ($projects as $key => $project) {
+            $user = User::findOne(['id' => intval($project['user_id'])]);
+            $cities = City::find()->where('project_id='. $project['id'])->asArray()->all();
+            $project['username'] = $user->username;
+            $project['email'] = $user->email;
+            $project['cities'] = sizeof($cities);
+            $project['resources'] = 0;
+            // return $cities;
+            if (sizeof($cities) > 0) {
+                foreach ($cities as $city) {
+                    $project['resources'] += Resources::find()->where(['city_id' => $city['id']])->count();
                 }
-                $project['cities'] = sizeof($q);
-            } else {
-                $project['cities'] = 0;
+            }else {
+                $project['resources'] = 0;
             }
-
-            $project['resources'] = $x;
-            array_push($result['projects'], $project);
+            $projects[$key] = $project;
+            $project = null;
+            $cities = 0;
+            $user = null;
         }
-        return $result;
+        return $projects;
     }
 
 
     public function actionCreateproject()
     {
-        $projectModel = new Project();
-        // $post = json_decode($_POST);
-        $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
-        $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : null;
-        $created_date = isset($_POST['created_date']) ? $_POST['created_date'] : null;
-        $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : null;
-        return $projectModel->createProject($project_name, $user_id, $created_date, $projectid);
-        // return $_POST;
+        if (isset($_POST['id'])) {$project = Projects::findOne(['id' => $_POST['id']]);}
+        else {$project = new Projects();$project->is_active = 0;$project->created_date = $_POST['created_date'];}
+        // $project = new Projects();
+        $project->name = $_POST['name'];
+
+        $project->user_id = $_POST['user_id'];
+        
+        // if(isset($_POST['project_name'])) $project->name = $_POST['project_name'];
+        // if(isset($_POST['created_date'])) $project->created_date = $_POST['created_date'];
+        // if(isset($_POST['user_id'])) $project->user_id = $_POST['user_id'];
+        
+        // $projectModel = new Project();
+        // // $post = json_decode($_POST);
+        // $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
+        // $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : null;
+        // $created_date = isset($_POST['created_date']) ? $_POST['created_date'] : null;
+        // $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : null;
+        // return $projectModel->createProject($project_name, $user_id, $created_date, $projectid);
+        return $project->save();
     }
 
     public function actionRemoveproject()
@@ -417,36 +416,39 @@ class MainController extends Controller
         }
     }
 
-    public function actionGetusersinformation(){
+    public function actionGetusersinformation()
+    {
         $projectModel = new Project();
         $users = $projectModel->getusersinformation();
         return $users;
     }
 
-    public function actionDeleteuser(){
+    public function actionDeleteuser()
+    {
         $projectModel = new Project();
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         $name = $projectModel->getStatus($id)[0]['name'];
-        if($name == null) {
-            return $projectModel->deleteuser($id)?"true":"false";
+        if ($name == null) {
+            return $projectModel->deleteuser($id) ? "true" : "false";
         }
         return false;
     }
 
-    public function actionChangestatus(){
+    public function actionChangestatus()
+    {
         $projectModel = new Project();
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         $status = $projectModel->getStatus($id)[0];
         $name = $status['name'];
         $status = $status['status'];
-        if($name == null){
-            if($status == "10"){
+        if ($name == null) {
+            if ($status == "10") {
                 return $projectModel->setStatus($id, "9");
-            }else if($status == "9"){
+            } else if ($status == "9") {
                 return $projectModel->setStatus($id, "10");
             }
         }
-        
+
         // return $status;
         return 'false';
     }

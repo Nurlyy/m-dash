@@ -31,8 +31,9 @@
             type: "POST",
             data: {project_name: name, owner: owner, "<?= Yii::$app->request->csrfParam ?>":"<?= Yii::$app->request->csrfToken ?>"},
             success: function (data) {
+                console.log(data);
                 toastr.success(`Проект "${name}" успешно создан`,'')
-                openurl('manage', 'mainpage');
+                // openurl('manage', 'mainpage');
             }
         })
     }

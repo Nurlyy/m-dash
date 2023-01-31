@@ -43,7 +43,6 @@ class ManageController extends AuthController
             'class' => VerbFilter::class,
             'actions' => [
                 'create' => ['POST'],
-                // 'turnstateproject' => ['POST'],
             ],
         ];
         return $behaviors;
@@ -59,7 +58,7 @@ class ManageController extends AuthController
     {
         $this->layout = 'empty';
         $result = json_decode(get_web_page("rating.imas.kz/backend/main/getprojects"), true);
-        // return var_dump($result);
+        // var_dump($result);exit;
         return $this->render('mainpage', ['result' => $result]);
     }
 
@@ -71,10 +70,8 @@ class ManageController extends AuthController
             $project_name = Yii::$app->request->post('project_name');
             $created_date = date('Y-m-d', strtotime('today'));
             $owner = Yii::$app->request->post('owner');
-            // var_dump($owner);
-            // exit; 
             $temp = [];
-            $temp['project_name'] = $project_name;
+            $temp['name'] = $project_name;
             $temp['created_date'] = $created_date;
             $temp['user_id'] = $owner;
             if ($owner !== null && $owner !== "" && $project_name != null && $project_name !== "")
@@ -112,9 +109,9 @@ class ManageController extends AuthController
             // var_dump($owner);
             // exit; 
             $temp = [];
-            $temp['project_name'] = $project_name;
+            $temp['name'] = $project_name;
             $temp['created_date'] = $created_date;
-            $temp['projectid'] = $projectid;
+            $temp['id'] = $projectid;
             $temp['user_id'] = $owner;
             $result = send_post("rating.imas.kz/backend/main/createproject", $temp);
             return $this->redirect('index');
@@ -201,7 +198,7 @@ class ManageController extends AuthController
             $projectname = isset($_POST['projectname']) ? $_POST['projectname'] : null;
             $owner = isset($_POST['owner']) ? $_POST['owner'] : null;
             $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
-            $result = send_post("rating.imas.kz/backend/main/saveprojectchanges", ['projectname' => $projectname, 'owner' => $owner, 'projectid' => $projectid]);
+            $result = send_post("rating.imas.kz/backend/main/createproject", ['name' => $projectname, 'user_id' => $owner, 'id' => $projectid]);
             return $result;
         }
     }

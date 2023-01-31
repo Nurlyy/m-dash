@@ -158,7 +158,7 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
             var words = urlString.split('#');
             var action = words[1].split('?');
             if (['dashboard', 'candidate', 'compare', 'comparecontent'].includes(action[0])) {
-                if (action[1]) {
+                if (action[1] && !action[1].includes('lang=')) {
                     if (action[1].includes("first=")) {
                         var url = "/main/" + action[0] + "?" + action[1].split("&first=")[0];
                     } else {
@@ -181,8 +181,6 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
 
             }
         } else {
-
-
             $.ajax({
                 url: '/main/dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>',
                 type: 'GET',
@@ -191,7 +189,6 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                     $('.wrapper-content').html(data);
                 }
             });
-
         }
     }
 

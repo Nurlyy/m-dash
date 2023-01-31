@@ -1,6 +1,6 @@
 <?php
-if (isset($result['projects']))
-    foreach ($result['projects'] as $project) { ?>
+if (isset($result))
+    foreach ($result as $project) { ?>
     <div class="col-12" id="project-<?= $project['id'] ?>">
         <div class="modal inmodal" id="deleteProjModal" style="z-index: 2060 !important;" aria-hidden="true">
             <div class="modal-dialog">
@@ -64,7 +64,7 @@ if (isset($result['projects']))
 
 <script>
     projid = null;
-    projects = <?= json_encode($result['projects']) ?>;
+    projects = <?= json_encode($result) ?>;
     temp = {};
     projects.forEach(element => {
         temp[element['id']] = element;
@@ -139,7 +139,8 @@ if (isset($result['projects']))
                         toastr.success(`Проект "${project.name}" отключен`, '')
                     }
                 } else {
-                    console.log(resp=='true')
+                    console.log(resp);
+                    console.log(resp == 'true')
                     toastr.error(`Произошла ошибка при отключении проекта "${project.name}" `, '')
                 }
 
