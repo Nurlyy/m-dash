@@ -66,6 +66,7 @@ class ManageController extends AuthController
     {
         $this->layout = 'empty';
         $result = json_decode(get_web_page("rating.imas.kz/backend/main/getfreeusers"), true);
+        // var_dump($result);exit;
         if (Yii::$app->request->post()) {
             $project_name = Yii::$app->request->post('project_name');
             $created_date = date('Y-m-d', strtotime('today'));
@@ -120,6 +121,7 @@ class ManageController extends AuthController
         $project_id = $_GET['project_id'];
         // var_dump($project_id);exit;
         $result = json_decode(get_web_page("rating.imas.kz/backend/main/getproject?project_id={$project_id}"), true);
+        // var_dump($result);exit;
         $users = json_decode(get_web_page("rating.imas.kz/backend/main/getfreeusers"), true);
         // echo "<pre>";
         // var_dump($result['project']['cities']);
@@ -215,8 +217,7 @@ class ManageController extends AuthController
     public function actionUsers()
     {
         $this->layout = 'empty';
-        $users = json_decode(get_web_page("rating.imas.kz/backend/main/getusersinformation"), true);
-        return $this->render('users', ['users' => $users]);
+        return $this->render('users');
     }
 
     public function actionDeleteuser()

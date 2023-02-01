@@ -232,6 +232,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
             $("#moveResModalTitle").text(`Перенос источника "${result['project']['cities'][city_id]['resources'][res_id]['name']}" в другой регион проекта`);
             resid = res_id;
             r = result['project']['cities']
+            console.log(r);
             Object.entries(r).forEach(([key, value]) => {
                 if (Number(value['id']) != city_id) {
                     $("#newregion").append(`<option value="${value['id']}">${value['name']}</option>`)
@@ -259,6 +260,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
                 }
             },
             success: function(resp) {
+                console.log(resp);
                 $("#col-id-" + resid).remove();
                 $(".colcontent-id-" + resid).remove();
             }

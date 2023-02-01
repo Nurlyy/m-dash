@@ -12,13 +12,23 @@ use yii\db\Query;
  * 
  * @property integer $id
  * @property string $name
- * @property string $user_id
+ * @property integer $user_id
  * @property string $created_date
  * @property integer $is_active
  */
 
 class Projects extends ActiveRecord
-{
+{ 
+    public function rules(){
+        return [
+            [['name', 'user_id', 'created_date'], 'required'],
+            [['name'], 'string', 'max'=>150],
+            [['user_id'], 'integer'],
+            ['user_id', 'checkUser'],
+            [['is_active'], 'integer', 'max'=>1],
+            [['created_date'], 'date', 'format'=>'Y-m-d']
+        ];
+    }
 
     public static function tableName()
     {
@@ -37,5 +47,12 @@ class Projects extends ActiveRecord
             ->leftJoin(['p' => 'projects'], '`u`.`id` = `p`.`user_id`')
             ->all();
         return $query->createCommand()->queryAll();;
+    }
+
+    public function checkUser($attribute, $params){
+        $user = User::findOne(['id' => $this->user_id]);
+        if(!$user === null && !$this->getProjectForUser($this->user_id)===null){
+            $this->addError($attribute, "User does not exist or already has a project");
+        }
     }
 }

@@ -14,7 +14,7 @@ if (!empty($result['project']['cities'][$city_id]['resources'])) {
                     <h3>Описание ресурса:</h3>
                     <input type="text" id="description_<?= $resource['r_count'] ?>" onchange="updateSaveArrays(<?= $resource['r_count'] ?>, 'description', this.field_value )" class="form-control" value="<?= $resource['description'] ?>" /><br>
                     <button type="button" style="margin-right:15px;" class="btn btn-danger" onclick="showDeleteResModal('id', <?= $resource['r_count'] ?>, '<?= ($resource['name']) ? $resource['name'] : $resource['url'] ?>')" data-toggle="modal" data-target="#deleteResModal">Удалить ресурс</button>
-                    <button type="button" class="btn btn-warning" onclick="showMoveResModal('id', <?= $resource['r_count'] ?>)" data-toggle="modal" data-target="#moveResModal">Перенести ресурс</button>
+                    <button type="button" class="btn btn-warning" onclick="showMoveResModal('id', <?= $resource['id'] ?>)" data-toggle="modal" data-target="#moveResModal">Перенести ресурс</button>
                 </div>
             </div>
         </div>

@@ -21,6 +21,7 @@
 </div>
 
 <script>
+    console.log(<?= json_encode($result)?>)
     function createproject() {
         $("#button").prop("disabled",true);
         name = $("#projectname").val();

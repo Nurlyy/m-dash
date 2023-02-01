@@ -4,27 +4,29 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * 
+ * @property integer type
+ * @property integer city_id
+ * @property integer owner_id
+ * @property string name
+ * @property string url
+ * @property string description
+ * @property string photo
+ */
+
 class Resources extends ActiveRecord
 {
     public static function tableName(){
-        return '{{resources}}';
+        return '{{%resources}}';
     }
 
     public function rules(){
         return [
-            [['type', 'city_id', 'name', 'url', 'owner_id'], 'required'],
+            [['city_id', 'name', 'url'], 'required'],
             [['type', 'city_id', 'owner_id'], 'integer'],
             [['name', 'url', 'description', 'photo'], 'string'],
         ];
-    }
-
-    public function save($runValidation = true, $attributeNames = null)
-    {
-        if ($this->getIsNewRecord()) {
-            return $this->insert($runValidation, $attributeNames);
-        } else {
-            return $this->update($runValidation, $attributeNames) !== false;
-        }
     }
 
 }

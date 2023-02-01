@@ -202,8 +202,6 @@ class MainController extends Controller
 
     public function actionGetprojects()
     {
-        $result['projects'] = [];
-        $projectModel = new Project();
         $projects = Projects::find()->asArray()->all();
         foreach ($projects as $key => $project) {
             $user = User::findOne(['id' => intval($project['user_id'])]);
@@ -212,7 +210,6 @@ class MainController extends Controller
             $project['email'] = $user->email;
             $project['cities'] = sizeof($cities);
             $project['resources'] = 0;
-            // return $cities;
             if (sizeof($cities) > 0) {
                 foreach ($cities as $city) {
                     $project['resources'] += Resources::find()->where(['city_id' => $city['id']])->count();
@@ -238,56 +235,40 @@ class MainController extends Controller
             $project->is_active = 0;
             $project->created_date = $_POST['created_date'];
         }
-        // $project = new Projects();
         $project->name = $_POST['name'];
-
         $project->user_id = $_POST['user_id'];
-
-        // if(isset($_POST['project_name'])) $project->name = $_POST['project_name'];
-        // if(isset($_POST['created_date'])) $project->created_date = $_POST['created_date'];
-        // if(isset($_POST['user_id'])) $project->user_id = $_POST['user_id'];
-
-        // $projectModel = new Project();
-        // // $post = json_decode($_POST);
-        // $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
-        // $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : null;
-        // $created_date = isset($_POST['created_date']) ? $_POST['created_date'] : null;
-        // $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : null;
-        // return $projectModel->createProject($project_name, $user_id, $created_date, $projectid);
         return $project->save();
-    }
-
-    public function actionRemoveproject()
-    {
-        $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : null;
-        $projectModel = new Project();
-        $projectModel->removeProject($project_id);
     }
 
     public function actionGetproject()
     {
-        $projectModel = new Project();
         $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : null;
-        $project_info['project'] = $projectModel->getProject($project_id)[0];
-        $x = $projectModel->get_cities_data($project_id);
-        $cities = [];
-        foreach ($x as $city) {
-            $res = $projectModel->get_resources_count($city['id']);
+        $project = [];
+        $project['project'] = Projects::find()->where(['id' => $project_id])->asArray()->one();
+        $project['project']['username'] = User::find()->select('username')->where(['id' => $project['project']['user_id']])->one()['username'];
+        $cities = City::find()->where(['project_id' => $project_id])->asArray()->all();
+        $cities_new = [];
+        foreach($cities as $key=>$city){
+            $resources = Resources::find()->where(['city_id' => $city['id']])->asArray()->all();
             $city['resources'] = [];
-            foreach ($res as $r) {
-                $city['resources'][$r['r_count']] = $r;
+            foreach($resources as $resource){
+                $city['resources'][$resource['id']] = $resource;
             }
-            // array_push($cities, $city);
-            $cities[$city['id']] = $city;
+            $cities_new[$city['id']] = $city;
         }
-        $project_info['project']['cities'] = $cities;
-        return $project_info;
+        $project['project']['cities'] = $cities_new;
+        return $project;
     }
 
     public function actionGetfreeusers()
     {
-        $projectModel = new Project();
-        return $projectModel->get_free_users();
+        $projectUsers = Projects::find()->select('user_id')->asArray()->all();
+        $project_user_ids = [];
+        foreach($projectUsers as $users){
+            array_push($project_user_ids, $users['user_id']);
+        }
+        $users = User::find()->select(['username',  'id'])->where(['not in', 'id', $project_user_ids])->andWhere('status != 3')->all();
+        return $users;
     }
 
     public function actionApplychanges()
@@ -376,9 +357,7 @@ class MainController extends Controller
     {
         if (Yii::$app->request->post()) {
             $resid = Yii::$app->request->post('resid');
-            // return $resid;
-            $projectModel = new Project();
-            return $projectModel->deleteres($resid);
+            return Resources::findOne(['id' => $resid])->delete();
         }
     }
 
@@ -394,8 +373,7 @@ class MainController extends Controller
     {
         if (Yii::$app->request->post()) {
             $city_id = Yii::$app->request->post('city_id');
-            $projectModel = new Project();
-            return $projectModel->deletecity($city_id);
+            return City::findOne(['id' => $city_id])->delete();
         }
     }
 
@@ -404,8 +382,9 @@ class MainController extends Controller
         if (Yii::$app->request->post()) {
             $res_id = Yii::$app->request->post('res_id');
             $newregion = Yii::$app->request->post('newregion');
-            $projectModel = new Project();
-            return $projectModel->moveresource($res_id, $newregion);
+            $resource = Resources::findOne(['id' => $res_id]);
+            $resource->city_id = $newregion;
+            return $resource->save();
         }
     }
 
