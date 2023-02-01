@@ -4,29 +4,26 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * 
+ * @property integer project_id
+ * @property string name
+ */
 
 class City extends ActiveRecord
 {
 
     public static function tableName(){
-        return '{{city}}';
+        return '{{%city}}';
     }
 
     public function rules(){
         return [
             [['name', 'project_id'], 'required'],
             [['name'], 'string'],
-            [['project_id'], 'integer'],
+            [['project_id', 'res_count'], 'integer'],
+            [['res_count'], 'default', 'value' => 0]
         ];
-    }
-
-    public function save($runValidation = true, $attributeNames = null)
-    {
-        if ($this->getIsNewRecord()) {
-            return $this->insert($runValidation, $attributeNames);
-        } else {
-            return $this->update($runValidation, $attributeNames) !== false;
-        }
     }
 
     public static function getCitiesForProject($project_id){

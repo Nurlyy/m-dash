@@ -503,6 +503,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
                 }
             },
             success: function(resp) {
+                console.log(resp)
                 cityChanges = {};
                 resourcesChanges = {};
                 createdResources = {};

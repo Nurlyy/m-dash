@@ -248,10 +248,10 @@ class MainController extends Controller
         $project['project']['username'] = User::find()->select('username')->where(['id' => $project['project']['user_id']])->one()['username'];
         $cities = City::find()->where(['project_id' => $project_id])->asArray()->all();
         $cities_new = [];
-        foreach($cities as $key=>$city){
+        foreach ($cities as $key => $city) {
             $resources = Resources::find()->where(['city_id' => $city['id']])->asArray()->all();
             $city['resources'] = [];
-            foreach($resources as $resource){
+            foreach ($resources as $resource) {
                 $city['resources'][$resource['id']] = $resource;
             }
             $cities_new[$city['id']] = $city;
@@ -264,7 +264,7 @@ class MainController extends Controller
     {
         $projectUsers = Projects::find()->select('user_id')->asArray()->all();
         $project_user_ids = [];
-        foreach($projectUsers as $users){
+        foreach ($projectUsers as $users) {
             array_push($project_user_ids, $users['user_id']);
         }
         $users = User::find()->select(['username',  'id'])->where(['not in', 'id', $project_user_ids])->andWhere('status != 3')->all();
@@ -273,12 +273,10 @@ class MainController extends Controller
 
     public function actionApplychanges()
     {
-        $projectModel = new Project();
         $cityChanges = isset($_POST['cityChanges']) ? json_decode($_POST['cityChanges'], true) : null;
         $resourcesChanges = isset($_POST['resourcesChanges']) ? json_decode($_POST['resourcesChanges'], true) : null;
         $createdCities = isset($_POST['createdCities']) ? json_decode($_POST['createdCities'], true) : null;
         $createdResources = isset($_POST['createdResources']) ? json_decode($_POST['createdResources'], true) : null;
-        // return $createdResources;
         $dataRes = [];
         $dataCity = [];
         if (isset($cityChanges)) {
@@ -293,64 +291,75 @@ class MainController extends Controller
         if (isset($createdResources)) {
             $dataRes['createdResources'] = $createdResources;
         }
-        $sendData = [];
         $qarray = [];
+        // todo: move city between projects not integrated
+        // $city->project_id = $value['project_id']
         foreach ($dataCity as $d) {
-            $sendData = [];
-            $temp = [];
             foreach ($d as $value) {
                 if (isset($value['id'])) {
-                    $temp['id'] = $value['id'];
+                    $city = City::findOne(['id' => $value['id']]);
+                } else {
+                    $city = new City();
                 }
                 if (isset($value['name'])) {
-                    $temp['name'] = $value['name'];
+                    $city->name = $value['name'];
                 }
                 if (isset($value['project_id'])) {
-                    $temp['project_id'] = $value['project_id'];
+                    $city->project_id = $value['project_id'];
                 }
-                array_push($sendData, $temp);
-                $temp = [];
+                array_push($qarray, $city->save());
             }
-            $f = $projectModel->updateOrCreateCities($sendData);
-            // return $projectModel->updateOrCreateCities($sendData);   
-            array_push($qarray, $f);
         }
 
         foreach ($dataRes as $d) {
-            $sendData = [];
-            $temp = [];
             foreach ($d as $value) {
                 if (isset($value['id'])) {
-                    $temp['id'] = $value['id'];
-                }
-                if (isset($value['name'])) {
-                    $temp['name'] = $value['name'];
+                    $resource = Resources::find(['id' => $value['id']]);
+                } else {
+                    $resource = new Resources();
                 }
                 if (isset($value['url'])) {
-                    $temp['url'] = $value['url'];
+                    $type = 0;
+                    if (strpos($value['url'], 'vk') !== false || strpos($value['url'], 'vkontakte') !== false) {
+                        $type == 1;
+                    } else if (strpos($value['url'], 'facebook') !== false) {
+                        $type == 2;
+                    } else if (strpos($value['url'], 'twitter') !== false) {
+                        $type == 3;
+                    } else if (strpos($value['url'], 'instagram') !== false) {
+                        $type == 4;
+                    } else if (strpos($value['url'], 'google') !== false) {
+                        $type == 5;
+                    } else if (strpos($value['url'], 'youtube') !== false) {
+                        $type == 6;
+                    } else if (strpos($value['url'], 'ok.ru') !== false) {
+                        $type == 7;
+                    } else if (strpos($value['url'], 'mail.ru') !== false) {
+                        $type == 8;
+                    } else if (strpos($value['url'], 'telegram') !== false) {
+                        $type == 9;
+                    } else if (strpos($value['url'], 'tiktok') !== false) {
+                        $type == 10;
+                    } else $type = 0;
+                    $resource->type = $type;
+                    $resource->url = $value['url'];
                 }
-                if (isset($value['photo'])) {
-                    $temp['photo'] = $value['photo'];
-                }
-                if (isset($value['description'])) {
-                    $temp['description'] = $value['description'];
+                if (isset($value['name'])) {
+                    $resource->name = $value['name'];
                 }
                 if (isset($value['city_id'])) {
-                    $temp['city_id'] = $value['city_id'];
+                    $resource->city_id = $value['city_id'];
                 }
-                array_push($sendData, $temp);
-                $temp = [];
+                if (isset($value['photo'])) {
+                    $resource->photo = $value['photo'];
+                }
+                if (isset($value['description'])) {
+                    $resource->description = $value['description'];
+                }
+                array_push($qarray, $resource->save());
             }
-            // return $sendData;
-            // return ($projectModel->updateOrCreateResources($sendData));
-            $f = $projectModel->updateOrCreateResources($sendData);
-            array_push($qarray, $f);
         }
-        // return $sendData;
-
-        return (in_array('false', $qarray, true)) ? false : true;
-
-        // return $qarray;
+        return (in_array(false, $qarray, true)) ? false : true;
     }
 
     public function actionDeleteres()
@@ -389,7 +398,7 @@ class MainController extends Controller
     }
 
     public function actionGetusersinformation()
-    {   
+    {
         return Projects::getUsersInformation();
     }
 
@@ -397,7 +406,7 @@ class MainController extends Controller
     {
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         $user = User::findOne(['id' => intval($id)]);
-        if(Projects::getProjectForUser($user->id) === null){
+        if (Projects::getProjectForUser($user->id) === null) {
             return $user->delete();
         }
     }
