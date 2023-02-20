@@ -166,15 +166,12 @@ class ManageController extends AuthController
             $cityChanges = isset($_POST['cityChanges']) ? $_POST['cityChanges'] : null;
             $resourcesChanges = isset($_POST['resourcesChanges']) ? $_POST['resourcesChanges'] : null;
             $createdResources = isset($_POST['createdResources']) ? $_POST['createdResources'] : null;
-            $createdCities = isset($_POST['createdCities']) ? $_POST['createdCities'] : null;
+            // $createdCities = isset($_POST['createdCities']) ? $_POST['createdCities'] : null;
             if ($cityChanges) {
                 $sendData['cityChanges'] = json_encode($cityChanges);
             }
             if ($resourcesChanges) {
                 $sendData['resourcesChanges'] = json_encode($resourcesChanges);
-            }
-            if ($createdCities) {
-                $sendData['createdCities'] = json_encode($createdCities);
             }
             if ($createdResources) {
                 $sendData['createdResources'] = json_encode($createdResources);
@@ -267,5 +264,32 @@ class ManageController extends AuthController
         $this->layout = 'empty';
         $users = json_decode(get_web_page("rating.imas.kz/backend/main/getusersinformation"), true);
         return $this->render('_users_table', ['users' => $users]);
+    }
+
+    public function actionGetcities(){
+        // return "true";
+        $project_id = $_GET['project_id'];
+        if(isset($project_id)){
+            $cities = json_decode(get_web_page("rating.imas.kz/backend/main/getcities?project_id=$project_id"), true);
+            return $this->renderAjax('_cities', ['cities' => $cities, 'project_id' => $project_id]);
+        }
+        return 'false';
+    }
+
+    public function actionCreateCity(){
+        if($this->request->isPost){
+            $project_id = $_POST['project_id'];
+            $city_name = $_POST['city_name'];
+            return send_post("rating.imas.kz/backend/main/create-city", ['project_id' => $project_id, 'city_name' => $city_name]);
+        }
+    }
+
+    public function actionGetCitiesList(){
+        $project_id = $_GET['project_id'];
+        if(isset($project_id)){
+            $cities = get_web_page("rating.imas.kz/backend/main/getcities?project_id=$project_id");
+            return $cities;
+        }
+        return 'false';
     }
 }

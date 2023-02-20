@@ -52,7 +52,11 @@ class MainController extends Controller
 
                 ],
                 [
-                    'actions' => ['createproject', 'removeproject', 'getprojects', 'temp', 'turnstateproject', 'getfreeusers', 'getproject', 'applychanges', 'deleteres', 'deletecity', 'moveresource', 'deleteproj', 'getusersinformation', 'deleteuser', 'changestatus'],
+                    'actions' => ['createproject', 'removeproject', 'getprojects', 
+                                    'temp', 'turnstateproject', 'getfreeusers', 'getproject', 
+                                    'applychanges', 'deleteres', 'deletecity', 'moveresource', 
+                                    'deleteproj', 'getusersinformation', 'deleteuser', 'changestatus', 
+                                    'getcities', 'create-city'],
                     'allow' => true,
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     // 'roles' => ['@'],
@@ -179,7 +183,6 @@ class MainController extends Controller
         }
     }
 
-
     public function actionGetprojects()
     {
         $projects = Projects::find()->asArray()->all();
@@ -192,7 +195,7 @@ class MainController extends Controller
             $project['resources'] = 0;
             if (sizeof($cities) > 0) {
                 foreach ($cities as $city) {
-                    $project['resources'] += Resources::find()->where(['city_id' => $city['id']])->count();
+                    $project['resources'] += Resources::find()->where(['city_id' => $city['id'], 'status' => 1])->count();
                 }
             } else {
                 $project['resources'] = 0;
@@ -229,7 +232,7 @@ class MainController extends Controller
         $cities = City::find()->where(['project_id' => $project_id])->asArray()->all();
         $cities_new = [];
         foreach ($cities as $key => $city) {
-            $resources = Resources::find()->where(['city_id' => $city['id']])->asArray()->all();
+            $resources = Resources::find()->where(['city_id' => $city['id'], 'status' => 1])->asArray()->all();
             $city['resources'] = [];
             foreach ($resources as $resource) {
                 $city['resources'][$resource['id']] = $resource;
@@ -255,7 +258,7 @@ class MainController extends Controller
     {
         $cityChanges = isset($_POST['cityChanges']) ? json_decode($_POST['cityChanges'], true) : null;
         $resourcesChanges = isset($_POST['resourcesChanges']) ? json_decode($_POST['resourcesChanges'], true) : null;
-        $createdCities = isset($_POST['createdCities']) ? json_decode($_POST['createdCities'], true) : null;
+        // $createdCities = isset($_POST['createdCities']) ? json_decode($_POST['createdCities'], true) : null;
         $createdResources = isset($_POST['createdResources']) ? json_decode($_POST['createdResources'], true) : null;
         $dataRes = [];
         $dataCity = [];
@@ -264,9 +267,6 @@ class MainController extends Controller
         }
         if (isset($resourcesChanges)) {
             $dataRes['resourcesChanges'] = $resourcesChanges;
-        }
-        if (isset($createdCities)) {
-            $dataCity['createdCities'] = $createdCities;
         }
         if (isset($createdResources)) {
             $dataRes['createdResources'] = $createdResources;
@@ -297,6 +297,7 @@ class MainController extends Controller
                     $resource = Resources::find(['id' => $value['id']]);
                 } else {
                     $resource = new Resources();
+                    $resource->status = 1;
                 }
                 if (isset($value['url'])) {
                     $type = 0;
@@ -346,7 +347,9 @@ class MainController extends Controller
     {
         if (Yii::$app->request->post()) {
             $resid = Yii::$app->request->post('resid');
-            return Resources::findOne(['id' => $resid])->delete();
+            $resource = Resources::findOne(['id' => $resid]);
+            $resource->status = 0;
+            return $resource->save();
         }
     }
 
@@ -402,6 +405,31 @@ class MainController extends Controller
                 $user->status = 10;
             }
             return $user->save();
+        }
+    }
+
+    public function actionGetcities(){
+        $project_id = $_GET['project_id'];
+        if(isset($project_id)){
+            // return 'true';
+            $cities = City::find()->where(['project_id' => $project_id])->asArray()->all();
+            foreach($cities as &$city){
+                $city['resources'] = Resources::find()->select(['id', 'name', 'city_id', 'status'])->where(['city_id' => $city['id'], 'status' => 1])->asArray()->all();
+            }
+            return $cities; 
+        }
+        return 'false';
+    }
+
+    public function actionCreateCity(){
+        if($this->request->isPost){
+            $project_id = $_POST['project_id'];
+            $city_name = $_POST['city_name'];
+            $city = new City();
+            $city->project_id = $project_id;
+            $city->name = $city_name;
+            $city->validate();
+            return $city->save();
         }
     }
 }

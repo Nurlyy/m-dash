@@ -61,12 +61,12 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                 <li>
                     <div class="dropdown">
                         <button class="btn btn-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src='<?php if(Yii::$app->language=='kz'){echo "/img/flags/32/Kazakhstan.png"; } else if(Yii::$app->language=='ru'){echo "/img/flags/32/Russia.png"; } else {echo "/img/flags/32/United-Kingdom.png";} ?>'>
+                            <?php if(Yii::$app->language=='kz'){echo "KZ"; } else if(Yii::$app->language=='ru'){echo "RU"; } else {echo "EN";} ?>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="/main/index?lang=kz"><img src="/img/flags/32/Kazakhstan.png">  Қазақша</a>
-                            <a class="dropdown-item" href="/main/index?lang=ru"><img src="/img/flags/32/Russia.png">  Русский</a>
-                            <a class="dropdown-item" href="/main/index?lang=en"><img src="/img/flags/32/United-Kingdom.png">  English</a>
+                            <a class="dropdown-item" href="/main/index?lang=kz">KZ  Қазақша</a>
+                            <a class="dropdown-item" href="/main/index?lang=ru">RU  Русский</a>
+                            <a class="dropdown-item" href="/main/index?lang=en">EN  English</a>
                         </div>
                     </div>
                 </li>
@@ -91,7 +91,6 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                     <h4 class="modal-title"><?= Yii::t('frontend','Are you sure') ?>?</h4>
                 </div>
                 <div class="modal-footer">
-                    <!-- <button type="button" onclick="logout()" class="btn btn-white" data-dismiss="modal">Да</button> -->
                     <form action="/site/logout" method="POST"><input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->getCsrfToken() ?>" /><input type="submit" value="<?= Yii::t('frontend','Yes') ?>" class="btn btn-white" /></form>
                     <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('frontend','No') ?></button>
                 </div>

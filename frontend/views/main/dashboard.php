@@ -18,9 +18,6 @@
                                 if($key == $id){?>
                                 <div class="ibox-content">
                                     <div class="row">
-                                        <!-- <a onclick='openurl("city", start_date, end_date, <?php #echo $id ?>)' class="float-left">
-                                            <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?php #echo $cityInformation[$id]['photo'] ?>">
-                                        </a> -->
                                         <div class="media-body ">
                                             <h4 class="float-right text-navy"><?php echo (isset($rating[$id]) && $rating[$id]!=0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?> %</h4>
                                             <a style="font-size:15px;" onclick='openurl("main","city", start_date, end_date, <?= $id ?>)'><strong><?= $cityInformation[$id]['name'] ?></strong></a>

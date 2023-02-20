@@ -1,4 +1,4 @@
-<?php 
+<?php
 $city_id = null;
 $res_name = "";
 $res_id = null;
@@ -60,7 +60,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                         <h4 class="modal-title text-center">Добавление города</h4><br>
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveChanges()">Сохранить</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="createCity()">Сохранить</button>
                                     </div>
 
                                     <div class="modal-body">
@@ -77,7 +77,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
 
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="createCityName(); saveChanges()">Сохранить</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="createCity();">Сохранить</button>
                                             </div>
                                         </div>
                                     </div>
@@ -96,114 +96,9 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
                                 <h4 class="col-12" style="text-align:center;"><i style="margin-right:15px;" class="fa fa-plus" aria-hidden="true"></i>Добавить</h4>
                             </div>
                         </div>
-                        <?php
-                        if (!empty($result['project']['cities'])) {
-                            foreach ($result['project']['cities'] as $city) { ?>
-                                <div class="panel-body" id="project-<?= $city['id'] ?>">
-                                    <div class="city-container row text-center " style="margin:0px;">
-                                        <h4 style="padding:0px; margin: 0px;" class="col-4"><?= $city['name'] ?></h4>
-                                        <p style="padding: 0px; margin: 0px;" class="col-4"><?= count($city['resources']) ?> источников </p>
-                                        <div class="col-4 text-right">
-                                            <a href="" onclick="showModal(<?= $project_id ?>, <?= $city['id'] ?>); city_id=<?= $city['id'] ?>" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil" style="margin-right:10px; font-size:medium;" aria-hidden="true"></i></a>
-                                            <a href="" onclick="showDeleteCityModal(<?= $city['id'] ?>)" data-toggle="modal" data-target="#deleteCityModal"><i class="fa fa-trash" style="font-size:medium;" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                            <div id="cityModal">
-                                <div class="modal inmodal delresmodal" id="deleteResModal" style="z-index: 2060 !important;" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content animated flipInY">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                <h4 class="modal-title">Вы уверены?</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p id="deleteResModalParagraph"></p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" onclick="deleteres(restype, resid)" class="btn btn-white" data-dismiss="modal">Да</button>
-                                                <!-- <form action="/manage/deleteresource" method="POST"><input type="hidden" name="res_id" value="<?= $res_id ?>"><input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->getCsrfToken() ?>" /><input type="submit" value="Да" class="btn btn-white" /></form> -->
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="cities">
 
-                                <div class="modal inmodal fade" id="editModal" style="overflow-y:auto !important; overflow-x: hidden;" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" style="overflow-y:auto !important; overflow-x: hidden;">
-                                        <div class="modal-content" style="overflow-y:auto !important; overflow-x: hidden;">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                <h4 class="modal-title text-center">Редактирование города</h4><br>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveChanges()">Сохранить</button>
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <div class="row">
-                                                    <div class="col-12 justify-content-center">
-                                                        <div class="panel panel-default" style="background-color:azure; ">
-                                                            <div class="panel-body" style="text-align: center;">
-                                                                <h3>Название:</h3>
-                                                                <input id="cityname" onchange="cityNameChange()" type="text" class="form-control" style="width: 300px; margin-left: auto; margin-right: auto;" /><br>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="panel panel-primary" style="background-color:azure; ">
-                                                            <div class="panel-header">
-                                                                <h2 class='text-center'><strong>Список источников города</strong></h2>
-                                                            </div>
-                                                            <div style="padding: 15px;">
-                                                                <div id="cities_container"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveChanges()">Сохранить</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="modal inmodal" id="moveResModal" style="overflow-y:auto !important; overflow-x: hidden; z-index:2500 !important; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content animated flipInY">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                <h4 id="moveResModalTitle" class="modal-title text-center"></h4><br>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-12 justify-content-center">
-                                                        <div class="panel panel-default" style="background-color:azure; ">
-                                                            <div class="panel-body" style="text-align: center;">
-                                                                <h3>Выберите регион:</h3>
-                                                                <select onchange="regionchange()" name="newregion" id="newregion">
-
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveMove()">Сохранить</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } else { ?>
-                            <h3 style="padding:20px; font-style:normal;">Список пуст</h3>
-                        <?php } ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -212,7 +107,6 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
 </div>
 
 <script>
-    // console.log(<?= $project_id ?>)
     createdResCounter = 0;
     restype = null;
     resid = null;
@@ -221,19 +115,73 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
     result = <?= json_encode($result) ?>;
     city_id = null;
     newregion = null;
+    cities = null;
+
+    function getCities() {
+        $.ajax({
+            url: '/manage/getcities?project_id=<?= $project_id ?>',
+            method: "GET",
+            error: function(xhr, tStatus, e) {
+                if (!xhr) {
+                    alert(" We have an error ");
+                    alert(tStatus + "   " + e.message);
+                } else {
+                    console.log("else: " + e.message); // the great unknown
+                }
+            },
+            success: function(data) {
+                $(".cities").html(data);
+            }
+        });
+        $.ajax({
+            url: "/manage/get-cities-list?project_id=<?= $project_id ?>",
+            method: "GET",
+            success: function(data) {
+                cities = JSON.parse(data);
+                temp = {};
+                Object.entries(cities).forEach(([key, value]) => {
+                    tempres = {};
+                    if (value['resources'] !== 'undefined') {
+                        Object.entries(value['resources']).forEach(([reskey, res]) => {
+                            tempres[res['id']] = res;
+                        });
+                    }
+                    value['resources'] = tempres;
+                    temp[value['id']] = value;
+                })
+                cities = temp;
+            },
+            error: function(xhr, tStatus, e) {
+                if (!xhr) {
+                    alert(" We have an error ");
+                    alert(tStatus + "   " + e.message);
+                } else {
+                    console.log("else: " + e.message); // the great unknown
+                }
+            },
+        })
+    }
+
+    getCities();
 
     function regionchange() {
         newregion = $("#newregion").val();
+        // console.log(resid);
+        // console.log(newregion);
+        if (city_id == newregion) {
+
+            newregion = null;
+        }
     }
 
     function showMoveResModal(type, res_id) {
         if (type == "id") {
-            $("#newregion").html(`<option value="${city_id}" selected>${result['project']['cities'][city_id]['name']}</option>`);
-            $("#moveResModalTitle").text(`Перенос источника "${result['project']['cities'][city_id]['resources'][res_id]['name']}" в другой регион проекта`);
+            $("#newregion").html(`<option value="${city_id}" selected>${cities[city_id]['name']}</option>`);
+            $("#moveResModalTitle").text(`Перенос источника "${cities[city_id]['resources'][res_id]['name']}" в другой регион проекта`);
             resid = res_id;
-            r = result['project']['cities']
-            console.log(r);
-            Object.entries(r).forEach(([key, value]) => {
+            // r = result['project']['cities']
+            // console.log(resid);
+            Object.entries(cities).forEach(([key, value]) => {
                 if (Number(value['id']) != city_id) {
                     $("#newregion").append(`<option value="${value['id']}">${value['name']}</option>`)
                 }
@@ -243,33 +191,30 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
     }
 
     function saveMove() {
-        $.ajax({
-            url: "/manage/moveresource",
-            data: {
-                res_id: resid,
-                newregion: newregion,
-                '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
-            },
-            type: "POST",
-            error: function(xhr, tStatus, e) {
-                if (!xhr) {
-                    alert(" We have an error ");
-                    alert(tStatus + "   " + e.message);
-                } else {
-                    console.log("else: " + e.message); // the great unknown
+        if (newregion != null) {
+            console.log(newregion);
+            $.ajax({
+                url: "/manage/moveresource",
+                data: {
+                    res_id: resid,
+                    newregion: newregion,
+                    '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
+                },
+                type: "POST",
+                success: function(resp) {
+                    console.log(resp);
+                    $("#col-id-" + resid).remove();
+                    $(".colcontent-id-" + resid).remove();
                 }
-            },
-            success: function(resp) {
-                console.log(resp);
-                $("#col-id-" + resid).remove();
-                $(".colcontent-id-" + resid).remove();
-            }
-        })
+            })
+        }
+
     }
 
 
     function showDeleteCityModal(cityid) {
-        $("#deleteCityModalParagraph").text(`Вы точно хотите удалить город ${result['project']['cities'][cityid]['name']}? Ваше действие нельзя будет отменить`);
+        city_name = cities[cityid]['name'];
+        $("#deleteCityModalParagraph").text(`Вы точно хотите удалить город ${city_name}? Ваше действие нельзя будет отменить`);
         city_id = cityid
     }
 
@@ -281,29 +226,26 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
                 '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
             },
             type: "POST",
-            error: function(xhr, tStatus, e) {
-                if (!xhr) {
-                    alert(" We have an error ");
-                    alert(tStatus + "   " + e.message);
-                } else {
-                    console.log("else: " + e.message); // the great unknown
-                }
-            },
             success: function(resp) {
-                $("#project-" + city_id).remove();
+                getCities();
             }
         });
     }
 
-
-
-    function createCityName() {
-        pid = <?= $project_id ?>;
+    function createCity() {
         cname = $("#create_cityname").val();
-        createdCities[createdCityCounter] = {};
-        createdCities[createdCityCounter]['name'] = cname;
-        createdCities[createdCityCounter]['project_id'] = pid;
-        createdCityCounter += 1;
+        $.ajax({
+            url: '/manage/create-city',
+            type: "POST",
+            data: {
+                '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->csrfToken ?>',
+                'project_id': <?= $project_id ?>,
+                'city_name': cname
+            },
+            success: function() {
+                getCities();
+            },
+        })
     }
 
 
@@ -317,7 +259,8 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
 
 
     function showModal(project_id, city_id) {
-        $("#cityname").val(result['project']['cities'][city_id]['name']);
+        // city_name = $("#city_name_" + cityid).text();
+        $("#cityname").val($("#city_name_" + city_id).text());
         $.ajax({
             url: "/manage/showmodal?project_id=" + project_id + "&city_id=" + city_id,
             method: "GET",
@@ -354,13 +297,13 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
                     }
                 });
             }
+            // getCities();
         })
     }
 
     var cityChanges = {};
     var resourcesChanges = {};
     var createdResources = {};
-    var createdCities = {};
 
     function showDeleteResModal(type, id, name = null) {
         restype = type;
@@ -402,8 +345,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
                         console.log("else: " + e.message); // the great unknown
                     }
                 },
-                success: function(resp) {
-                }
+                success: function(resp) {}
             });
             $("#col-id-" + id).remove();
             $(".colcontent-id-" + id).remove();
@@ -486,7 +428,6 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
             cityChanges: cityChanges,
             resourcesChanges: resourcesChanges,
             createdResources: createdResources,
-            createdCities: createdCities,
             '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->getCsrfToken() ?>'
         };
 
@@ -507,7 +448,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
                 cityChanges = {};
                 resourcesChanges = {};
                 createdResources = {};
-                createdCities = {};
+                getCities();
                 // window.location.reload();
             }
         });
@@ -520,7 +461,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
         projectname = $("#projectname").val();
         owner = $("#owner").val();
         projectid = <?= $project_id ?>;
-        
+
         $.ajax({
             url: "/manage/saveprojectchanges",
             data: {
@@ -540,7 +481,7 @@ $this->registerJsFile("js/plugins/toastr/toastr.min.js");
             },
             success: function(resp) {
                 console.log(resp);
-                toastr.success(`Проект "${projectname}" успешно сохранен`,'')
+                toastr.success(`Проект "${projectname}" успешно сохранен`, '')
                 projectname = null;
                 owner = null;
                 projectid = null;
