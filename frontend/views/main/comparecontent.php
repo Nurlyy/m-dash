@@ -20,14 +20,14 @@ if ($ratingToggle == 'true') { ?>
                                 if ($key == $id) { ?>
                                     <div class="ibox-content">
                                         <div class="row">
-                                            <!-- <a onclick='openurl("candidate", start_date, end_date, <?php #echo $id 
+                                            <!-- <a onclick='openurl("city", start_date, end_date, <?php #echo $id 
                                                                                                         ?>)' class="float-left">
                                             <img alt="image" style='width:50px;margin-right:10px;' class="rounded-circle" src="<?php #echo $cityInformation[$id]['photo'] 
                                                                                                                                 ?>">
                                         </a> -->
                                             <div class="media-body ">
                                                 <h4 class="float-right text-navy"><?php echo (isset($rating[$id]) && $rating[$id] != 0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?> %</h4>
-                                                <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $id ?>)'><strong><?= $cityInformation[$id]['name'] ?></strong></a>
+                                                <a style="font-size:15px;" onclick='openurl("city", start_date, end_date, <?= $id ?>)'><strong><?= $cityInformation[$id]['name'] ?></strong></a>
                                                 <div class="progress progress-mini">
                                                     <div style="width: <?php echo (isset($rating[$id]) && $rating[$id] != 0 ? round(($rating[$id] / $total) * 100, 2) : 0) ?>%;" class="progress-bar"></div>
                                                 </div>
@@ -58,22 +58,22 @@ if ($ratingToggle == 'true') { ?>
                 foreach ($postsSentimentLine as $key => $sentiment) {
                     $total[$key] = (isset($total[$key]) ? $total[$key] : 0) + $sentiment['positive'] + $sentiment['neutral'] + $sentiment['negative'];
                 }
-                foreach ($cityInformation as $candidate) { ?>
+                foreach ($cityInformation as $city) { ?>
                     <div class="ibox-content" style='position:relative !important;'>
-                        <a style="font-size:15px;" onclick='openurl("candidate", start_date, end_date, <?= $candidate["id"] ?>)'><strong><?= $candidate['name'] ?></strong></a>
+                        <a style="font-size:15px;" onclick='openurl("city", start_date, end_date, <?= $city["id"] ?>)'><strong><?= $city['name'] ?></strong></a>
                         <div style='position:inherit; width:100%; margin-bottom:20px;'>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; width:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['positive'] != 0 ? round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['positive'] != 0 ? round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['neutral'] != 0 ? round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%;width:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['neutral'] != 0 ? round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['neutral'] != 0 ? round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%</h5>
-                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['negative'] != 0 ? round(((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100) + (($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100)), 2) : 0 ?>%;width:<?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['negative'] != 0 ? round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['negative'] != 0 ? round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; width:<?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['positive'] != 0 ? round((($postsSentimentLine[$city['id']]['positive'] / $total[$city['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['positive'] != 0 ? round((($postsSentimentLine[$city['id']]['positive'] / $total[$city['id']]) * 100), 2) : 0 ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['neutral'] != 0 ? round((($postsSentimentLine[$city['id']]['positive'] / $total[$city['id']]) * 100), 2) : 0 ?>%;width:<?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['neutral'] != 0 ? round((($postsSentimentLine[$city['id']]['neutral'] / $total[$city['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['neutral'] != 0 ? round((($postsSentimentLine[$city['id']]['neutral'] / $total[$city['id']]) * 100), 2) : 0 ?>%</h5>
+                            <h5 style='position:absolute; text-align:center; color:slategrey; margin-top:5px; margin-left:<?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['negative'] != 0 ? round(((($postsSentimentLine[$city['id']]['positive'] / $total[$city['id']]) * 100) + (($postsSentimentLine[$city['id']]['neutral'] / $total[$city['id']]) * 100)), 2) : 0 ?>%;width:<?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['negative'] != 0 ? round((($postsSentimentLine[$city['id']]['negative'] / $total[$city['id']]) * 100), 2) : 0 ?>%; height: fit-content;'><?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['negative'] != 0 ? round((($postsSentimentLine[$city['id']]['negative'] / $total[$city['id']]) * 100), 2) : 0 ?>%</h5>
                         </div>
                         <div class="progress" style='height:8px !important;'>
-                            <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['positive'] != 0 ? round((($postsSentimentLine[$candidate['id']]['positive'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%;display:block;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['positive'] != 0 ? round((($postsSentimentLine[$city['id']]['positive'] / $total[$city['id']]) * 100), 2) : 0 ?>%;display:block;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
-                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['neutral'] != 0 ? round((($postsSentimentLine[$candidate['id']]['neutral'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['neutral'] != 0 ? round((($postsSentimentLine[$city['id']]['neutral'] / $total[$city['id']]) * 100), 2) : 0 ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
-                            <div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?= isset($postsSentimentLine[$candidate['id']]) && $postsSentimentLine[$candidate['id']]['negative'] != 0 ? round((($postsSentimentLine[$candidate['id']]['negative'] / $total[$candidate['id']]) * 100), 2) : 0 ?>%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?= isset($postsSentimentLine[$city['id']]) && $postsSentimentLine[$city['id']]['negative'] != 0 ? round((($postsSentimentLine[$city['id']]['negative'] / $total[$city['id']]) * 100), 2) : 0 ?>%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
                         </div>
@@ -474,10 +474,10 @@ if ($ratingToggle == 'true') { ?>
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
             $keys = [];
-            foreach ($cityInformation as $candidate) {
-                echo "{type: 'area', name: '" . $candidate['name'] . "', data:[";
+            foreach ($cityInformation as $city) {
+                echo "{type: 'area', name: '" . $city['name'] . "', data:[";
 
-                foreach ($date_posts[$candidate['id']] as $key => $value) {
+                foreach ($date_posts[$city['id']] as $key => $value) {
                     $sum = 0;
                     foreach ($value as $v) {
                         $sum += $v;
@@ -497,10 +497,10 @@ if ($ratingToggle == 'true') { ?>
             // Формирование объекта с ключ/значениями для js из массива php
             <?php
             $keys = [];
-            foreach ($cityInformation as $candidate) {
-                echo "{type: 'area', name: '" . $candidate['name'] . "', data:[";
+            foreach ($cityInformation as $city) {
+                echo "{type: 'area', name: '" . $city['name'] . "', data:[";
 
-                foreach ($postsSentimentChart[$candidate['id']] as $key => $value) {
+                foreach ($postsSentimentChart[$city['id']] as $key => $value) {
                     $sum = 0;
                     array_push($keys, $key);
                     foreach ($value as $v) {
@@ -587,10 +587,10 @@ if ($ratingToggle == 'true') { ?>
     //             <?php
 
                     //             $keys = [];
-                    //             foreach ($cityInformation as $candidate) {
-                    //                 echo "{type: 'area', name: '" . $candidate['name'] . "', data:[";
+                    //             foreach ($cityInformation as $city) {
+                    //                 echo "{type: 'area', name: '" . $city['name'] . "', data:[";
 
-                    //                 foreach ($postsSentimentChart[$candidate['id']] as $key => $value) {
+                    //                 foreach ($postsSentimentChart[$city['id']] as $key => $value) {
                     //                     $sum = 0;
                     //                     array_push($keys, $key);
                     //                     foreach ($value as $v) {

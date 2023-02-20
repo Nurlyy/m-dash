@@ -25,8 +25,8 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
             <li>
                 <a href="#"><i class="fa fa-globe"></i> <span class="nav-label"><?= Yii::t('frontend','Cities') ?></span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <?php foreach ($cityInformation as $candidate) { ?>
-                        <li><a onclick='openurl("main", "candidate", start_date, end_date, <?= $candidate["id"] ?>)' href='#candidate<?= $candidate['id'] ?>'><?= $candidate['name'] ?></a></li>
+                    <?php foreach ($cityInformation as $city) { ?>
+                        <li><a onclick='openurl("main", "city", start_date, end_date, <?= $city["id"] ?>)' href='#city<?= $city['id'] ?>'><?= $city['name'] ?></a></li>
                     <?php } ?>
                 </ul>
             </li>
@@ -157,7 +157,7 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
         if (urlString.includes('#') && urlString.split('#')[1]) {
             var words = urlString.split('#');
             var action = words[1].split('?');
-            if (['dashboard', 'candidate', 'compare', 'comparecontent'].includes(action[0])) {
+            if (['dashboard', 'city', 'compare', 'comparecontent'].includes(action[0])) {
                 if (action[1] && !action[1].includes('lang=')) {
                     if (action[1].includes("first=")) {
                         var url = "/main/" + action[0] + "?" + action[1].split("&first=")[0];

@@ -313,7 +313,7 @@ class MainController extends AuthController
         }
     }
 
-    public function actionCandidate()
+    public function actionCity()
     {
         $this->layout = 'empty';
         $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
@@ -330,7 +330,7 @@ class MainController extends AuthController
                 }
             }
             $this::$cityInformation = $temp;
-            return $this->render('candidate', [
+            return $this->render('city', [
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'cityInformation' => $this::$cityInformation,

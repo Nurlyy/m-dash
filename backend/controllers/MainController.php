@@ -98,41 +98,28 @@ class MainController extends Controller
             switch ($type) {
                 case 1:
                     $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
-                    // return $all_data;
-                    // $result = $all_data;
-                    // break;
                     $temp_all = [];
                     $all_data = $all_data[0];
                     foreach ($all_data as $data) {
-                        // return $data['id'];
                         $temp_all[$data['id']] = [];
-                        // array_push($temp[$data['id']], $data);
                     }
                     foreach ($all_data as $data) {
                         if (isset($data['id']))
                             array_push($temp_all[$data['id']], $data);
                     }
                     $all_data = $temp_all;
-                    // return $temp_all;
-                    // break;
-                    $candidates_data = $projectModel->get_cities_data($project_id, [$city_id]);
-                    // return $candidates_data;
-                    $result = array_merge(['all_data' => $all_data], ['city_data' => $candidates_data]);
+                    $cities_data = $projectModel->get_cities_data($project_id, [$city_id]);
+                    $result = array_merge(['all_data' => $all_data], ['city_data' => $cities_data]);
                     break;
                 case 2:
 
                     $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
-                    // return $all_data;
                     $temp_all = [];
                     $subs = $all_data['subs'];
                     unset($all_data['subs']);
-                    // return $subs;
-                    // return $all_data;
                     $all_data = $all_data[0];
                     foreach ($all_data as $data) {
-                        // return $data['id'];
                         $temp_all[$data['id']] = [];
-                        // array_push($temp[$data['id']], $data);
                     }
                     foreach ($all_data as $data) {
                         if (isset($data['id']))
@@ -140,24 +127,18 @@ class MainController extends Controller
                     }
                     $all_data = $temp_all;
                     $all_data['subs'] = $subs;
-                    // return $all_data;
                     $r_count = $projectModel->get_resources_count($city_id);
-                    $candidates_data = $projectModel->get_cities_data($project_id, [$city_id]);
-                    $candidate_posts[$city_id] = [];
-                    // return $candidates_data;
+                    $cities_data = $projectModel->get_cities_data($project_id, [$city_id]);
+                    $city_posts[$city_id] = [];
                     foreach ($r_count as $r) {
                         if ($r['city_id'] == $city_id) {
-                            array_push($candidate_posts[$city_id], $projectModel->get_res_posts($r['r_count'], $start_date, $end_date));
+                            array_push($city_posts[$city_id], $projectModel->get_res_posts($r['r_count'], $start_date, $end_date));
                         }
                     }
-                    // return $candidate_posts;
-                    // $candidate_posts = $projectModel->get_res_posts($city_id, $start_date, $end_date);
-                    $result = array_merge(['all_data' => $all_data], ['city_data' => $candidates_data], ['city_posts' => $candidate_posts], ['r_count' => $r_count]);
-                    // return $result;
+                    $result = array_merge(['all_data' => $all_data], ['city_data' => $cities_data], ['city_posts' => $city_posts], ['r_count' => $r_count]);
                     break;
                 case 3:
                     $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type, $first, $second, $discussionChart, $sentimentChart, $subsChart, $likesChart, $commentsChart, $repostsChart);
-                    // return $all_data;
                     $temp_all = [];
                     $subs = $all_data['subs'];
                     unset($all_data['subs']);
@@ -166,7 +147,6 @@ class MainController extends Controller
                             if (isset($data['id']))
                                 $temp_all[$data['id']] = [];
                         }
-                        // array_push($temp[$data['id']], $data);
                     }
                     foreach ($all_data as $d) {
                         foreach ($d as $data) {
@@ -180,8 +160,8 @@ class MainController extends Controller
                     $result = array_merge(['all_data' => $all_data], ['city_data' => $cities_data]);
                     break;
                 case 'index':
-                    $candidates_data = $projectModel->get_cities_data($project_id);
-                    $result = ['city_data' => $candidates_data];
+                    $cities_data = $projectModel->get_cities_data($project_id);
+                    $result = ['city_data' => $cities_data];
                     break;
             }
             return $result;

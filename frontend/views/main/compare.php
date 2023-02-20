@@ -10,16 +10,16 @@
                         <div class="btn-group">
                             <select class="btn inline-block" style='width:100%;background: #ededed' id="firstSelect">
                                 <option value="select"><?= Yii::t('frontend', 'Choose region') ?></option>
-                                <?php foreach ($cityInformation as $candidate) { ?>
-                                    <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
+                                <?php foreach ($cityInformation as $city) { ?>
+                                    <option value="<?= $city['id'] ?>"><?= $city['name'] ?></option>
                                 <?php } ?>
                             </select>
                         </div>
                         <div class="btn-group">
                             <select class="btn inline-block" style='width:100%;background: #ededed' id="secondSelect">
                                 <option value="select"><?= Yii::t('frontend', 'Choose region') ?></option>
-                                <?php foreach ($cityInformation as $candidate) { ?>
-                                    <option value="<?= $candidate['id'] ?>"><?= $candidate['name'] ?></option>
+                                <?php foreach ($cityInformation as $city) { ?>
+                                    <option value="<?= $city['id'] ?>"><?= $city['name'] ?></option>
                                 <?php } ?>
                             </select>
                         </div>
