@@ -156,7 +156,9 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
         if (urlString.includes('#') && urlString.split('#')[1]) {
             var words = urlString.split('#');
             var action = words[1].split('?');
+            // console.log(action);
             if (['dashboard', 'city', 'compare', 'comparecontent'].includes(action[0])) {
+                console.log(action);
                 if (action[1] && !action[1].includes('lang=')) {
                     if (action[1].includes("first=")) {
                         var url = "/main/" + action[0] + "?" + action[1].split("&first=")[0];
@@ -178,6 +180,15 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                     }
                 });
 
+            } else {
+                $.ajax({
+                url: '/main/dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>',
+                type: 'GET',
+                success: function(data) {
+                    history.pushState("", "", "/main/index#dashboard?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>&lang=<?= Yii::$app->language ?>")
+                    $('.wrapper-content').html(data);
+                }
+            });
             }
         } else {
             $.ajax({
