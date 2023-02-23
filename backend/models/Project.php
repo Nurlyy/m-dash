@@ -68,7 +68,6 @@ class Project extends Model
                     . " count(distinct case when p.type=8 then t.id end) as mm,"
                     . " count(distinct case when p.type=9 then t.id end) as tg,"
                     . " count(distinct case when p.type=10 then t.id end) as tt,"
-
                     . " count(distinct case when t.sentiment=1  and t.type = 1 then t.id end) as vk_positive,"
                     . " count(distinct case when t.sentiment=0  and t.type = 1 then t.id end) as vk_neutral,"
                     . " count(distinct case when t.sentiment=-1  and t.type = 1 then t.id end) as vk_negative,"
@@ -329,7 +328,7 @@ class Project extends Model
             $bindValues[':start_date'] = $start_date;
             $bindValues[':end_date'] = $end_date;
         }
-        // return Yii::$app->db->createCommand($query)->bindValues($bindValues)->queryAll();
+        // return Yii::$app->db->createCommand($query)->bindValues($bindValues)->getRawSql();
 
         $return[] = Yii::$app->db->createCommand($query)->bindValues($bindValues)->queryAll();
         return $return;

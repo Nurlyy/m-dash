@@ -166,7 +166,7 @@ $this->registerCssFile("css/plugins/ladda/ladda-themeless.min.css");
                         var url = '/main/' + words[1];
                     }
                 } else {
-                    var url = '/main/' + action[0] + '?start_date=<?php echo $start_date ?>&end_date=<?php echo $end_date ?>';
+                    var url = '/main/' + action[0] + "?" + action[1]; 
                 }
                 $.ajax({
                     url: url,

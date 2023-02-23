@@ -65,15 +65,26 @@ class MainController extends AuthController
             foreach ($rawArray[$id] as $key => $dates) {
                 $prev = 0;
                 foreach ($dates as $date => $value) {
-                    $chartArray[$id][$key][$date] = (isset($prev) && $prev > 0 && $value > 0) ? (($value - $prev <= 0) ? 0 : $value - $prev) : $value;
-                    if (isset($donutArray[$id][$key])) {
-                        $donutArray[$id][$key] += (isset($prev) && $prev > 0 && $value > 0) ? (($value - $prev <= 0) ? 0 : $value - $prev) : $value;
-                    } else {
-                        $donutArray[$id][$key] = (isset($prev) && $prev > 0 && $value > 0) ? (($value - $prev <= 0) ? 0 : $value - $prev) : $value;
+                    // $chartArray[$id][$key][$date] = (isset($prev) && $prev > 0 && $value > 0) ? (($value - $prev <= 0) ? 0 : $value - $prev) : $value;
+                    $chartArray[$id][$key][$date] = (isset($prev) && $prev > 0 && $value > 0) ? $value - $prev : $value;
+                    if ($type == 'donut') {
+                        if (isset($donutArray[$id][$key])) {
+                            // $donutArray[$id][$key] += (isset($prev) && $prev > 0 && $value > 0) ? (($value - $prev <= 0) ? 0 : $value - $prev) : $value;
+                            $donutArray[$id][$key] += (isset($prev) && $prev > 0 && $value > 0) ? $value - $prev : $value;
+                        } else {
+                            // $donutArray[$id][$key] = (isset($prev) && $prev > 0 && $value > 0) ? (($value - $prev <= 0) ? 0 : $value - $prev) : $value;
+                            $donutArray[$id][$key] = (isset($prev) && $prev > 0 && $value > 0) ? $value - $prev : $value;
+                        }
                     }
+                    // echo '<pre>';
+                    // var_dump($chartArray[$id][$key][$date]);
+                    // echo '</pre>';
                     (isset($value) && $value > 0) ? $prev = $value : $prev = $prev;
                 }
             }
+            // echo '<pre>';
+            //         var_dump($chartArray);
+            //         echo '</pre>';
             if ($type == "chart") {
                 return $chartArray;
             } else if ($type == "donut") {
@@ -91,16 +102,44 @@ class MainController extends AuthController
                     foreach ($result['all_data'][$c_data['id']] as $value) {
                         $this->set_data($c_data['id'], $value, explode(" ", $value['date'])[0]);
                     }
-                    $this::$totalResourcesDonut[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$date_posts, 'donut')[$c_data['id']];
-                    $this::$postsSentimentLine[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$postsSentimentChart, 'donut')[$c_data['id']];
+                    // echo '<pre>';
+                    // $temp = [];
+                    // $tmp = 0;
+                    // foreach ($this::$postsSentimentChart as $post) {
+                    //     foreach ($post as $kilt => $bbb) {
+                    //         foreach ($bbb as $b) {
+                    //             $temp[$kilt] = isset($temp[$kilt]) ? $temp[$kilt] + $b : $b;
+                    //         }
+                    //     }
+                    // }
+                    // foreach ($this::$date_posts as $gref) {
+                    //     foreach ($gref as $fer => $ger) {
+                    //         foreach ($ger as $zer) {
+                    //             $tmp += $zer;
+                    //         }
+                    //     }
+                    // }
+                    // var_dump($this::$postsSentimentChart);
+                    // var_dump($this::$date_posts);
+                    // echo '</pre>';
+
+
+                    // // echo '<br>';
+                    // exit;
+
+
+                    // $this::$totalResourcesDonut[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$date_posts, 'donut')[$c_data['id']];
+                    // $this::$postsSentimentLine[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$postsSentimentChart, 'donut')[$c_data['id']];
                     $this::$postsSentimentChart[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$postsSentimentChart, "chart")[$c_data['id']];
-                    $this::$totalLikesDonut[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalLikesChart, "donut")[$c_data['id']];
-                    $this::$totalCommentsDonut[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalCommentsChart, "donut")[$c_data['id']];
-                    $this::$totalRepostsDonut[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalRepostsChart, "donut")[$c_data['id']];
-                    $this::$totalLikesChart[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalLikesChart, "chart")[$c_data['id']];
-                    $this::$totalCommentsChart[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalCommentsChart, "chart")[$c_data['id']];
-                    $this::$totalRepostsChart[$c_data['id']] = $this->splitDayByday($c_data['id'], $this::$totalRepostsChart, "chart")[$c_data['id']];
+                    // $this::$totalLikesDonut[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalLikesChart, "donut")[$c_data['id']];
+                    // $this::$totalCommentsDonut[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalCommentsChart, "donut")[$c_data['id']];
+                    // $this::$totalRepostsDonut[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalRepostsChart, "donut")[$c_data['id']];
+                    // $this::$totalLikesChart[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalLikesChart, "chart")[$c_data['id']];
+                    // $this::$totalCommentsChart[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$totalCommentsChart, "chart")[$c_data['id']];
+                    // $this::$totalRepostsChart[$c_data['id']] = $this->splitDayByday($c_data['id'], $this::$totalRepostsChart, "chart")[$c_data['id']];
+                    // echo '<br><br><br>';
                     $this::$date_posts[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$date_posts, "chart")[$c_data['id']];
+                    // exit;
                 } else {
                     $this->set_data($c_data['id'], null, 0, 0);
                 }
@@ -125,6 +164,32 @@ class MainController extends AuthController
                     }
                 }
             }
+            echo '<pre>';
+            $temp = [];
+            $tmp = 0;
+            foreach ($this::$postsSentimentChart as $chart) {
+                foreach ($chart as $key => $value) {
+                    foreach ($value as $v) {
+                        $temp[$key] = isset($temp[$key]) ? $temp[$key] + $v : $v;
+                    }
+                }
+            }
+            var_dump($this::$postsSentimentChart[0]['neutral']);
+            // print '<br>';
+            echo '</pre>';
+            echo '<pre>';
+            foreach ($this::$date_posts as $date) {
+                foreach ($date as $key => $value) {
+                    foreach ($value as $v) {
+                        $tmp += $v;
+                    }
+                }
+            }
+            var_dump($this::$date_posts[0]);
+            // var_dump($this::$postsSentimentLine);
+            echo '</pre>';
+            exit;
+
         }
         if (isset($result['r_count'])) {
             foreach ($result['r_count'] as $r) {
@@ -162,6 +227,7 @@ class MainController extends AuthController
         $this::$date_posts[$id]['vk'][$date] = (isset($this::$date_posts[$id]['vk'][$date]) ? $this::$date_posts[$id]['vk'][$date] : 0) + (isset($value['vk']) ? $value['vk'] : 0);
         $this::$postsSentimentChart[$id]['positive'][$date] = (isset($this::$postsSentimentChart[$id]['positive'][$date]) ? $this::$postsSentimentChart[$id]['positive'][$date] : 0) + (isset($value['fb_positive']) ? $value['fb_positive'] : 0) + (isset($value['mm_positive']) ? $value['mm_positive'] : 0) + (isset($value['yt_positive']) ? $value['yt_positive'] : 0) + (isset($value['gg_positive']) ? $value['gg_positive'] : 0) + (isset($value['tw_positive']) ? $value['tw_positive'] : 0) + (isset($value['vk_positive']) ? $value['vk_positive'] : 0) + (isset($value['ok_positive']) ? $value['ok_positive'] : 0) + (isset($value['tt_positive']) ? $value['tt_positive'] : 0) + (isset($value['ig_positive']) ? $value['ig_positive'] : 0) + (isset($value['tg_positive']) ? $value['tg_positive'] : 0) + (isset($value['web_positive']) ? $value['web_positive'] : 0);
         $this::$postsSentimentChart[$id]['neutral'][$date] = (isset($this::$postsSentimentChart[$id]['neutral'][$date]) ? $this::$postsSentimentChart[$id]['neutral'][$date] : 0) + (isset($value['fb_neutral']) ? $value['fb_neutral'] : 0) + (isset($value['mm_neutral']) ? $value['mm_neutral'] : 0) + (isset($value['yt_neutral']) ? $value['yt_neutral'] : 0) + (isset($value['gg_neutral']) ? $value['gg_neutral'] : 0) + (isset($value['tw_neutral']) ? $value['tw_neutral'] : 0) + (isset($value['vk_neutral']) ? $value['vk_neutral'] : 0) + (isset($value['ok_neutral']) ? $value['ok_neutral'] : 0) + (isset($value['tt_neutral']) ? $value['tt_neutral'] : 0) + (isset($value['ig_neutral']) ? $value['ig_neutral'] : 0) + (isset($value['tg_neutral']) ? $value['tg_neutral'] : 0) + (isset($value['web_neutral']) ? $value['web_neutral'] : 0);
+        // $this::$postsSentimentChart[$id]['neutral'][$date] = (isset($this::$postsSentimentChart[$id]['neutral'][$date]) ? $this::$postsSentimentChart[$id]['neutral'][$date] : 0) + (isset($value['fb_neutral']) ? $value['fb_neutral'] : 0);
         $this::$postsSentimentChart[$id]['negative'][$date] = (isset($this::$postsSentimentChart[$id]['negative'][$date]) ? $this::$postsSentimentChart[$id]['negative'][$date] : 0) + (isset($value['fb_negative']) ? $value['fb_negative'] : 0) + (isset($value['mm_negative']) ? $value['mm_negative'] : 0) + (isset($value['yt_negative']) ? $value['yt_negative'] : 0) + (isset($value['gg_negative']) ? $value['gg_negative'] : 0) + (isset($value['tw_negative']) ? $value['tw_negative'] : 0) + (isset($value['vk_negative']) ? $value['vk_negative'] : 0) + (isset($value['ok_negative']) ? $value['ok_negative'] : 0) + (isset($value['tt_negative']) ? $value['tt_negative'] : 0) + (isset($value['ig_negative']) ? $value['ig_negative'] : 0) + (isset($value['tg_negative']) ? $value['tg_negative'] : 0) + (isset($value['web_negative']) ? $value['web_negative'] : 0);
         $this::$totalLikesChart[$id]['fb'][$date] = (isset($this::$totalLikesChart[$id]['fb'][$date]) ? $this::$totalLikesChart[$id]['fb'][$date] : 0) + (isset($value['fb_likes']) ? $value['fb_likes'] : 0);
         $this::$totalLikesChart[$id]['ig'][$date] = (isset($this::$totalLikesChart[$id]['ig'][$date]) ? $this::$totalLikesChart[$id]['ig'][$date] : 0) + (isset($value['ig_likes']) ? $value['ig_likes'] : 0);
@@ -248,7 +314,7 @@ class MainController extends AuthController
         $month_ago = date('Y-m-d', strtotime('-30 days'));
         $start_date = isset($_GET['start_date']) ? Yii::$app->request->get('start_date') : $month_ago;
         $end_date = isset($_GET['end_date']) ? Yii::$app->request->get('end_date') : $today;
-        $lang = isset($_GET['lang'])?(in_array($_GET['lang'], ['ru','kz','en'])?$_GET['lang']:'ru'):'ru';
+        $lang = isset($_GET['lang']) ? (in_array($_GET['lang'], ['ru', 'kz', 'en']) ? $_GET['lang'] : 'ru') : 'ru';
         $result = json_decode(get_web_page("rating.imas.kz/backend/main/search?type=index"), true);
         $this->splitData($result);
         $vars = [
@@ -258,10 +324,10 @@ class MainController extends AuthController
         ];
         // var_dump($result);
         // exit;
-        if($result == "false"){
+        if ($result == "false") {
             $vars['turnedOff'] = true;
         }
-        
+
         return $this->render('index', $vars);
     }
 

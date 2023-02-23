@@ -118,6 +118,7 @@ class MainController extends Controller
                 case 2:
 
                     $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
+                    // var_dump($all_data);exit;
                     $temp_all = [];
                     $subs = $all_data['subs'];
                     unset($all_data['subs']);
