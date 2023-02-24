@@ -225,17 +225,17 @@ class Project extends Model
                     $return['subs'] = $this->helper::createCommand($q);
                 }
                 $query .= ($discussionChart == true ?
-                    " count(distinct case when p.type=1 then t.id end) as vk,"
-                    . " count(distinct case when p.type=2 then t.id end) as fb,"
-                    . " count(distinct case when p.type=3 then t.id end) as tw,"
-                    . " count(distinct case when p.type=4 then t.id end) as ig,"
-                    . " count(distinct case when p.type=5 then t.id end) as gg,"
-                    . " count(distinct case when p.type=6 then t.id end) as yt,"
-                    . " count(distinct case when p.type=7 then t.id end) as ok,"
-                    . " count(distinct case when p.type=8 then t.id end) as mm,"
-                    . " count(distinct case when p.type=9 then t.id end) as tg,"
-                    . " count(distinct case when p.type=10 then t.id end) as tt,"
-                    : "")
+                        " count(distinct case when p.type=1 then t.id end) as vk,"
+                        . " count(distinct case when p.type=2 then t.id end) as fb,"
+                        . " count(distinct case when p.type=3 then t.id end) as tw,"
+                        . " count(distinct case when p.type=4 then t.id end) as ig,"
+                        . " count(distinct case when p.type=5 then t.id end) as gg,"
+                        . " count(distinct case when p.type=6 then t.id end) as yt,"
+                        . " count(distinct case when p.type=7 then t.id end) as ok,"
+                        . " count(distinct case when p.type=8 then t.id end) as mm,"
+                        . " count(distinct case when p.type=9 then t.id end) as tg,"
+                        . " count(distinct case when p.type=10 then t.id end) as tt,"
+                        : "")
                     . ($commentsChart == true ? " sum(case when p.type=1 then p.comments end) as vk_comments,"
                         . " sum(case when p.type=2 then p.comments end) as fb_comments,"
                         . " sum(case when p.type=3 then p.comments end) as tw_comments,"
