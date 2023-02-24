@@ -87,6 +87,8 @@ class MainController extends Controller
         $type = isset($_GET['type']) ? $_GET['type'] : null;
         $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
+        $tempdate = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $start_date) ) ));
+        $start_date = $tempdate;// return $tempdate;
         $city_id = isset($_GET['city_id']) ? (in_array($_GET['city_id'], $project_cities) ? $_GET['city_id'] : -1) : null;
         $res_id = isset($_GET['res_id']) ? (in_array($_GET['res_id'], $project_cities) ? $_GET['res_id'] : -1) : null;
         $first = isset($_GET['first']) ? (in_array($_GET['first'], $project_cities) ? $_GET['first'] : -1) : null;
