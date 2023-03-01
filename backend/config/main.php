@@ -6,7 +6,7 @@ $params = array_merge(
     require __DIR__ . '/params-local.php'
 );
 
-return [
+$config = [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
@@ -39,8 +39,6 @@ return [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
-            'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['en', 'ru', 'kz'],
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
@@ -50,3 +48,13 @@ return [
     ],
     'params' => $params,
 ];
+
+$config['modules']['gii'] = [
+    'class' => 'yii\gii\Module',
+    'allowedIPs' => ['*'],
+
+    // or allow localhost only
+    // 'allowedIPs' => ['127.0.0.1', '::1'],
+];
+
+return $config;

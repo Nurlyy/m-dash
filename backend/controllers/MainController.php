@@ -129,6 +129,7 @@ class MainController extends Controller
                         $temp_all[$data['id']] = [];
                     }
                     foreach ($all_data as $data) {
+                        // var_dump($data);exit;
                         if (isset($data['id']))
                             array_push($temp_all[$data['id']], $data);
                     }
@@ -139,9 +140,15 @@ class MainController extends Controller
                     $city_posts[$city_id] = [];
                     foreach ($r_count as $r) {
                         if ($r['city_id'] == $city_id) {
+                            // echo '<pre>';
+                            // var_dump($projectModel->get_res_posts($r['r_count'], $start_date, $end_date));exit;
+                            // echo '</pre>';
+                            // return $projectModel->get_res_posts($r['r_count'], $start_date, $end_date);
                             array_push($city_posts[$city_id], $projectModel->get_res_posts($r['r_count'], $start_date, $end_date));
                         }
                     }
+                    // var_dump($city_posts);
+                    // exit;
                     $result = array_merge(['all_data' => $all_data], ['city_data' => $cities_data], ['city_posts' => $city_posts], ['r_count' => $r_count]);
                     break;
                 case 3:
