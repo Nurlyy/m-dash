@@ -1,6 +1,8 @@
 <?php
-// var_dump($totalSubsChart);exit;
+
+// var_dump($ratingToggle);exit;
 if ($ratingToggle == 'true') { ?>
+
     <div class="col-12">
         <div class="panel panel-default">
             <div class="panel-header">
@@ -469,6 +471,7 @@ if ($ratingToggle == 'true') { ?>
     }
 
 
+
     <?php if ($discussionChart == 'true') { ?>
         createRadar('total_radar', '<?= Yii::t('frontend', 'Publications') ?>', '<?= Yii::t('frontend', 'Count of posts') ?>', [
             // Формирование объекта с ключ/значениями для js из массива php
@@ -491,6 +494,9 @@ if ($ratingToggle == 'true') { ?>
             } ?>
         ], ['<?= implode("', '", array_unique($keys)) ?>']);
     <?php } ?>
+
+    
+
 
     <?php if ($sentimentChart == 'true') { ?>
         createRadar('total_donut', '<?= Yii::t('frontend', 'Publications') ?>', '<?= Yii::t('frontend', 'Count of posts') ?>', [

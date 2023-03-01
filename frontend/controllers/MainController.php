@@ -105,7 +105,7 @@ class MainController extends AuthController
             foreach ($result['city_data'] as $c_data) {
                 if (isset($result['all_data'][$c_data['id']])) {
                     foreach ($result['all_data'][$c_data['id']] as $value) {
-                        $this->set_data($c_data['id'], $value, explode(" ", $value['date'])[0]);
+                        $this->set_data($c_data['id'], $value, explode(" ", $value['date'])[0], $start_date);
                     }
                     // echo '<pre>';
                     // var_dump($this::$postsSentimentChart);
@@ -162,8 +162,9 @@ class MainController extends AuthController
                         //     $temp_sentiment[$c_data['id']]['negative'] = [];
                         // }
                     }
-                    // var_dump($this::$postsSentimentLine);exit;
-                    $this::$postsSentimentChart = $temp_sentiment;
+                    // var_dump($temp_sentiment);exit;
+                    if (isset($this::$postsSentimentChart[$c_data['id']])) unset($this::$postsSentimentChart[$c_data['id']]);
+                    $this::$postsSentimentChart[$c_data['id']] = $temp_sentiment[$c_data['id']];
 
                     $this::$date_posts[$c_data['id']] = $this->splitDayByDay($c_data['id'], $this::$date_posts, "chart", $start_date)[$c_data['id']];
                     // exit;
@@ -243,12 +244,26 @@ class MainController extends AuthController
         if (isset($result['city_posts'])) {
             $this::$city_posts = $result['city_posts'];
         }
+
+
+        $this::$rating = [];
+        // var_dump($this::$date_posts);exit;
+        foreach ($this::$date_posts as $key => $d_post) {
+            $this::$rating[$key] = 0;
+            foreach ($d_post as $post) {
+                foreach ($post as $p) {
+                    // var_dump($p);exit;
+                    $this::$rating[$key] += $p;
+                }
+            }
+        }
     }
 
-    private function set_data($id, $value, $date)
+    private function set_data($id, $value, $date, $start_date)
     {
-        $this::$rating[$id] = (isset($this::$rating[$id]) ? $this::$rating[$id] : 0) + (isset($value['fb']) ? $value['fb'] : 0) + (isset($value['ig']) ? $value['ig'] : 0) + (isset($value['tg']) ? $value['tg'] : 0) + (isset($value['mm']) ? $value['mm'] : 0) + (isset($value['yt']) ? $value['yt'] : 0) + (isset($value['ok']) ? $value['ok'] : 0) + (isset($value['tw']) ? $value['tw'] : 0) + (isset($value['gg']) ? $value['gg'] : 0) + (isset($value['vk']) ? $value['vk'] : 0) + (isset($value['tt']) ? $value['tt'] : 0);
-
+        if (strtotime($start_date) < strtotime($date)) {
+            $this::$rating[$id] = (isset($this::$rating[$id]) ? $this::$rating[$id] : 0) + (isset($value['fb']) ? $value['fb'] : 0) + (isset($value['ig']) ? $value['ig'] : 0) + (isset($value['tg']) ? $value['tg'] : 0) + (isset($value['mm']) ? $value['mm'] : 0) + (isset($value['yt']) ? $value['yt'] : 0) + (isset($value['ok']) ? $value['ok'] : 0) + (isset($value['tw']) ? $value['tw'] : 0) + (isset($value['gg']) ? $value['gg'] : 0) + (isset($value['vk']) ? $value['vk'] : 0) + (isset($value['tt']) ? $value['tt'] : 0);
+        }
         if (isset($value['fb'])) {
             if (isset($this::$date_posts[$id]['fb'][$date])) {
                 $this::$date_posts[$id]['fb'][$date] += $value['fb'];
@@ -514,6 +529,15 @@ class MainController extends AuthController
                     }
                 }
             }
+            uasort($this::$postsSentimentLine, function ($a, $b) {
+                // foreach($)
+                // var_dump(($a['positive'] + $a['neutral'] + $a['negative']) > ($b['positive'] + $b['neutral'] + $b['negative']));exit;
+                if (($a['positive'] + $a['neutral'] + $a['negative']) == ($b['positive'] + $b['neutral'] + $b['negative']) ) {
+                    return 0;
+                }
+                return (($a['positive'] + $a['neutral'] + $a['negative']) > ($b['positive'] + $b['neutral'] + $b['negative'])) ? -1 : 1;
+            });
+            // var_dump($this::$postsSentimentLine);exit;
             $this::$date_posts = $temp;
             $this::$totalResourcesDonut = $tempDonut;
             ksort($this::$date_posts);
@@ -611,7 +635,21 @@ class MainController extends AuthController
         ) {
             $result = json_decode(get_web_page("rating.imas.kz/backend/main/search?type=3&start_date={$start_date}&end_date={$end_date}&first={$first}&second={$second}&discussionChart={$discussionChart}&sentimentChart={$sentimentChart}&subsChart={$subsChart}&likesChart={$likesChart}&commentsChart={$commentsChart}&repostsChart={$repostsChart}"), true);
             $this->splitData($result, $start_date);
+            // var_dump($this::$rating);exit;
             $dates = $this->getBetweenDates($start_date, $end_date);
+
+            // $this::$rating = [];
+            // // var_dump($this::$date_posts);exit;
+            // foreach ($this::$date_posts as $key => $d_post) {
+            //     $this::$rating[$key] = 0;
+            //     foreach ($d_post as $post) {
+            //         foreach ($post as $p) {
+            //             // var_dump($p);exit;
+            //             $this::$rating[$key] += $p;
+            //         }
+            //     }
+            // }
+
             return $this->render('comparecontent', [
                 'start_date' => $start_date,
                 'end_date' => $end_date,

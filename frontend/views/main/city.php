@@ -465,7 +465,7 @@ $_monthsList = array(
         };
 
         $.ajax({
-            url: '/main/candidate?start_date=' + sdate + '&end_date=' + edate + '&city_id=<?= $cityInformation['id'] ?>',
+            url: '/main/city?start_date=' + sdate + '&end_date=' + edate + '&city_id=<?= $cityInformation['id'] ?>',
             type: 'GET',
             success: function(data) {
                 $('.wrapper-content').html(data);

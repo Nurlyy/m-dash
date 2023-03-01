@@ -83,7 +83,7 @@
     </div>
 
     <div class="col-12">
-        <div class="row" id="comparecontent">
+        <div class="row" style="display:flex; flex-direction:row;" id="comparecontent">
 
         </div>
     </div>
