@@ -49,12 +49,12 @@ $config = [
     'params' => $params,
 ];
 
-$config['modules']['gii'] = [
-    'class' => 'yii\gii\Module',
-    'allowedIPs' => ['*'],
+// $config['modules']['gii'] = [
+//     'class' => 'yii\gii\Module',
+//     'allowedIPs' => ['*'],
 
-    // or allow localhost only
-    // 'allowedIPs' => ['127.0.0.1', '::1'],
-];
+//     // or allow localhost only
+//     // 'allowedIPs' => ['127.0.0.1', '::1'],
+// ];
 
 return $config;
