@@ -15,6 +15,9 @@ use yii\filters\AccessControl;
 use app\models\Projects;
 use app\models\City;
 use app\models\Resources;
+use backend\models\PostsMetrics;
+use backend\models\ResPosts;
+use backend\models\SubFollow;
 
 // use yii\filters\auth\QueryParamAuth;
 
@@ -39,7 +42,7 @@ class MainController extends Controller
             // 'only' => ['search'],
             'rules' => [
                 [
-                    'actions' => ['search'],
+                    'actions' => ['search', 'temp'],
                     'allow' => true,
                     'roles' => ['@', User::STATUS_ACTIVE],
 
@@ -52,11 +55,13 @@ class MainController extends Controller
 
                 ],
                 [
-                    'actions' => ['createproject', 'removeproject', 'getprojects', 
-                                    'temp', 'turnstateproject', 'getfreeusers', 'getproject', 
-                                    'applychanges', 'deleteres', 'deletecity', 'moveresource', 
-                                    'deleteproj', 'getusersinformation', 'deleteuser', 'changestatus', 
-                                    'getcities', 'create-city'],
+                    'actions' => [
+                        'createproject', 'removeproject', 'getprojects',
+                        'temp', 'turnstateproject', 'getfreeusers', 'getproject',
+                        'applychanges', 'deleteres', 'deletecity', 'moveresource',
+                        'deleteproj', 'getusersinformation', 'deleteuser', 'changestatus',
+                        'getcities', 'create-city'
+                    ],
                     'allow' => true,
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     // 'roles' => ['@'],
@@ -70,6 +75,37 @@ class MainController extends Controller
             ],
         ];
         return $behaviors;
+    }
+
+    public function actionTemp()
+    {
+        $city_id = isset($_GET['city_id']) ? $_GET['city_id'] : null;
+        $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
+        $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
+        $resources = Resources::find()->where(['city_id' => $city_id])->all();
+        $posts = [];
+        foreach ($resources as $res) {
+            $item_ids = [];
+            $temp = [];
+            $temp['posts'] = [];
+            $post_metrics = PostsMetrics::getPostsForResource($res->id, $start_date, $end_date);
+            if (!empty($post_metrics)) {
+                foreach ($post_metrics as $_post) {
+                    $temp[$_post['item_id']] = ['metrics' => $_post];
+                    array_push($item_ids, $_post['item_id']);
+                }
+                if (!empty($item_ids)) {
+                    $post_datas = ResPosts::getPostsWithItemId($item_ids, $start_date, $end_date);
+                    foreach ($post_datas as $_post) {
+                        array_push($temp['posts'], array_merge($temp[$_post['item_id']]['metrics'], $_post));
+                        unset($temp[$_post['item_id']]);
+                    }
+                }
+            }
+            $posts[$res->id] = $temp;
+            $posts[$res->id]['subs'] = SubFollow::getSubsForResource($res->id, $start_date, $end_date);
+        }
+        return $posts;
     }
 
     public function actionSearch()
@@ -87,8 +123,8 @@ class MainController extends Controller
         $type = isset($_GET['type']) ? $_GET['type'] : null;
         $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
-        $tempdate = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $start_date) ) ));
-        $start_date = $tempdate;// return $tempdate;
+        $tempdate = date('Y-m-d', (strtotime('-1 day', strtotime($start_date))));
+        $start_date = $tempdate; // return $tempdate;
         $city_id = isset($_GET['city_id']) ? (in_array($_GET['city_id'], $project_cities) ? $_GET['city_id'] : -1) : null;
         $res_id = isset($_GET['res_id']) ? (in_array($_GET['res_id'], $project_cities) ? $_GET['res_id'] : -1) : null;
         $first = isset($_GET['first']) ? (in_array($_GET['first'], $project_cities) ? $_GET['first'] : -1) : null;
@@ -103,19 +139,52 @@ class MainController extends Controller
         if ($project_state == 1) {
             switch ($type) {
                 case 1:
-                    $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
-                    $temp_all = [];
-                    $all_data = $all_data[0];
-                    foreach ($all_data as $data) {
-                        $temp_all[$data['id']] = [];
+                    $cities_data = City::find()->where(['project_id' => $project_id])->asArray()->all();
+                    $posts = [];
+                    if(!empty($cities_data)){
+                        foreach($cities_data as $city){
+                            $resources = Resources::find()->where(['city_id' => $city['id']])->all();
+                            $posts[$city['id']] = [];
+                            foreach ($resources as $res) {
+                                $item_ids = [];
+                                $temp = [];
+                                $temp['posts'] = [];
+                                $post_metrics = PostsMetrics::find()->select(['res_id', 'item_id', 'date', 's_date'])->where(['res_id' => $res->id])->andWhere(['between', 's_date', $start_date . " 23:59:59", $end_date . " 23:59:59"])->asArray()->all();
+                                if (!empty($post_metrics)) {
+
+                                    foreach ($post_metrics as $_post) {
+                                        $temp[$_post['item_id']] = ['metrics' => $_post];
+                                        array_push($item_ids, $_post['item_id']);
+                                    }
+                                    if (!empty($item_ids)) {
+                                        $post_datas = ResPosts::find()->select(['sentiment','item_id'])->where(['in', 'item_id', $item_ids])->andWhere(['between', 's_date', $start_date . " 23:59:59", $end_date . " 23:59:59"])->asArray()->all();
+                                        foreach ($post_datas as $_post) {
+                                            array_push($temp['posts'], array_merge($temp[$_post['item_id']]['metrics'], $_post));
+                                            unset($temp[$_post['item_id']]);
+                                        }
+                                    }
+                                }
+                                $posts[$city['id']][$res->id] = $temp;
+                                // $posts[$city['id']][$res->id]['subs'] = SubFollow::getSubsForResource($res->id, $start_date, $end_date);
+                            }
+                        }
                     }
-                    foreach ($all_data as $data) {
-                        if (isset($data['id']))
-                            array_push($temp_all[$data['id']], $data);
-                    }
-                    $all_data = $temp_all;
-                    $cities_data = $projectModel->get_cities_data($project_id, [$city_id]);
-                    $result = array_merge(['all_data' => $all_data], ['city_data' => $cities_data]);
+                    $result = array_merge(['all_data' => $posts], ['city_data' => $cities_data]);
+
+
+                    // $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
+                    // $temp_all = [];
+                    // $all_data = $all_data[0];
+                    // foreach ($all_data as $data) {
+                    //     $temp_all[$data['id']] = [];
+                    // }
+                    // foreach ($all_data as $data) {
+                    //     if (isset($data['id']))
+                    //         array_push($temp_all[$data['id']], $data);
+                    // }
+                    // $all_data = $temp_all;
+                    // $cities_data = $projectModel->get_cities_data($project_id, [$city_id]);
+                    // $result = array_merge(['all_data' => $all_data], ['city_data' => $cities_data]);
                     break;
                 case 2:
 
@@ -418,21 +487,23 @@ class MainController extends Controller
         }
     }
 
-    public function actionGetcities(){
+    public function actionGetcities()
+    {
         $project_id = $_GET['project_id'];
-        if(isset($project_id)){
+        if (isset($project_id)) {
             // return 'true';
             $cities = City::find()->where(['project_id' => $project_id])->asArray()->all();
-            foreach($cities as &$city){
+            foreach ($cities as &$city) {
                 $city['resources'] = Resources::find()->select(['id', 'name', 'city_id', 'status'])->where(['city_id' => $city['id'], 'status' => 1])->asArray()->all();
             }
-            return $cities; 
+            return $cities;
         }
         return 'false';
     }
 
-    public function actionCreateCity(){
-        if($this->request->isPost){
+    public function actionCreateCity()
+    {
+        if ($this->request->isPost) {
             $project_id = $_POST['project_id'];
             $city_name = $_POST['city_name'];
             $city = new City();

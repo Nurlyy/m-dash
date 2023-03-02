@@ -61,4 +61,18 @@ class ResPosts extends \yii\db\ActiveRecord
             'sentiment' => 'Sentiment',
         ];
     }
+
+    /**
+     * getPostsTypesCount() method for getting posts types count
+     */
+    public static function getPostsForResource($res_id, $start_date, $end_date){
+        $posts = parent::find()->where("res_id={$res_id}")->andWhere(['between', 's_date', "{$start_date}", "{$end_date}" ])->asArray()->all();
+        return $posts;
+    }
+
+
+    public static function getPostsWithItemId($item_ids, $start_date, $end_date){
+        $posts = parent::find()->select(['item_id', 'text'])->where("item_id in (".implode(",", $item_ids).")")->andWhere(['between', 's_date', "{$start_date}", "{$end_date}" ])->asArray()->all();
+        return $posts;
+    }
 }

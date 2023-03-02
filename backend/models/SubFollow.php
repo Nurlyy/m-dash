@@ -51,4 +51,10 @@ class SubFollow extends \yii\db\ActiveRecord
             'date' => 'Date',
         ];
     }
+
+
+    public static function getSubsForResource($res_id, $start_date, $end_date){
+        $subs = parent::find()->select(['res_id', 'count', 'date'])->where("res_id={$res_id}")->andWhere(['between', 'date', "{$start_date}", "{$end_date}" ])->asArray()->all();
+        return $subs;
+    }
 }
