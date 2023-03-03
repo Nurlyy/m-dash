@@ -139,37 +139,110 @@ class MainController extends Controller
         if ($project_state == 1) {
             switch ($type) {
                 case 1:
+                    // return "gfgfdgfd";
                     $cities_data = City::find()->where(['project_id' => $project_id])->asArray()->all();
-                    $posts = [];
-                    if(!empty($cities_data)){
-                        foreach($cities_data as $city){
+                    $return_posts = [];
+                    if (!empty($cities_data)) {
+                        // return "gfdsgfds";
+                        foreach ($cities_data as $city) {
                             $resources = Resources::find()->where(['city_id' => $city['id']])->all();
-                            $posts[$city['id']] = [];
+                            $return_posts[$city['id']] = [];
                             foreach ($resources as $res) {
                                 $item_ids = [];
-                                $temp = [];
-                                $temp['posts'] = [];
-                                $post_metrics = PostsMetrics::find()->select(['res_id', 'item_id', 'date', 's_date'])->where(['res_id' => $res->id])->andWhere(['between', 's_date', $start_date . " 23:59:59", $end_date . " 23:59:59"])->asArray()->all();
+                                $posts = [];
+                                $posts['data'] = [];
+                                $posts['posts'] = [];
+                                // $return_posts[$city['id']][$res->id] = [];
+                                $post_metrics = PostsMetrics::find()->select(['res_id', 'type', 'item_id', 'date', 's_date'])->where(['res_id' => $res->id])->andWhere(['between', 's_date', $start_date . " 23:59:59", $end_date . " 23:59:59"])->asArray()->all();
+                                // return $post_metrics;
                                 if (!empty($post_metrics)) {
 
                                     foreach ($post_metrics as $_post) {
-                                        $temp[$_post['item_id']] = ['metrics' => $_post];
+                                        $posts[$_post['item_id']] = $_post;
                                         array_push($item_ids, $_post['item_id']);
                                     }
                                     if (!empty($item_ids)) {
-                                        $post_datas = ResPosts::find()->select(['sentiment','item_id'])->where(['in', 'item_id', $item_ids])->andWhere(['between', 's_date', $start_date . " 23:59:59", $end_date . " 23:59:59"])->asArray()->all();
+                                        $items_chunks = array_chunk($item_ids, 15);
+                                        $post_datas = [];
+                                        foreach ($items_chunks as $chunk) {
+                                            array_push($post_datas, ResPosts::find()->select(['sentiment', 'item_id', "DATE_FORMAT(s_date, '%Y-%m-%d') as s_date"])->where(['in', 'item_id', $chunk])->asArray()->all());
+                                        }
+                                        // return $post_datas;
                                         foreach ($post_datas as $_post) {
-                                            array_push($temp['posts'], array_merge($temp[$_post['item_id']]['metrics'], $_post));
-                                            unset($temp[$_post['item_id']]);
+                                            foreach ($_post as $_p) {
+                                                if (isset($posts[$_p['item_id']])) {
+                                                    // return $posts['879183930000826'];
+                                                    array_push($posts['posts'], array_merge($posts[$_p['item_id']], $_p, ['id'=>$city['id'], 'date' => $_p['s_date']]));
+                                                    unset($posts[$_p['item_id']]);
+                                                }
+                                            }
                                         }
                                     }
                                 }
-                                $posts[$city['id']][$res->id] = $temp;
-                                // $posts[$city['id']][$res->id]['subs'] = SubFollow::getSubsForResource($res->id, $start_date, $end_date);
+                                return $posts;
+                                foreach ($posts['posts'] as $_post) {
+                                    $posts['data']['vk'] = isset($posts['data']['vk']) ? ($_post['type'] == 1 ? $posts['data']['vk'] += 1 : 0) : 0;
+                                    $posts['data']['fb'] = isset($posts['data']['fb']) ? ($_post['type'] == 2 ? $posts['data']['fb'] += 1 : 0) : 0;
+                                    $posts['data']['tw'] = isset($posts['data']['tw']) ? ($_post['type'] == 3 ? $posts['data']['tw'] += 1 : 0) : 0;
+                                    $posts['data']['ig'] = isset($posts['data']['ig']) ? ($_post['type'] == 4 ? $posts['data']['ig'] += 1 : 0) : 0;
+                                    $posts['data']['gg'] = isset($posts['data']['gg']) ? ($_post['type'] == 5 ? $posts['data']['gg'] += 1 : 0) : 0;
+                                    $posts['data']['yt'] = isset($posts['data']['yt']) ? ($_post['type'] == 6 ? $posts['data']['yt'] += 1 : 0) : 0;
+                                    $posts['data']['ok'] = isset($posts['data']['ok']) ? ($_post['type'] == 7 ? $posts['data']['ok'] += 1 : 0) : 0;
+                                    $posts['data']['mm'] = isset($posts['data']['mm']) ? ($_post['type'] == 8 ? $posts['data']['mm'] += 1 : 0) : 0;
+                                    $posts['data']['tg'] = isset($posts['data']['tg']) ? ($_post['type'] == 9 ? $posts['data']['tg'] += 1 : 0) : 0;
+                                    $posts['data']['tt'] = isset($posts['data']['tt']) ? ($_post['type'] == 10 ? $posts['data']['tt'] += 1 : 0) : 0;
+                                    $posts['data']['vk_positive'] = isset($posts['data']['vk_positive']) ? ($_post['type'] == 1 && $_post['sentiment'] == 1 ? $posts['data']['vk_positive'] += 1 : 0) : 0;
+                                    $posts['data']['vk_neutral'] = isset($posts['data']['vk_neutral']) ? ($_post['type'] == 1 && $_post['sentiment'] == 0 ? $posts['data']['vk_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['vk_negative'] = isset($posts['data']['vk_negative']) ? ($_post['type'] == 1 && $_post['sentiment'] == -1 ? $posts['data']['vk_negative'] += 1 : 0) : 0;
+                                    $posts['data']['fb_positive'] = isset($posts['data']['fb_positive']) ? ($_post['type'] == 2 && $_post['sentiment'] == 1 ? $posts['data']['fb_positive'] += 1 : 0) : 0;
+                                    $posts['data']['fb_neutral'] = isset($posts['data']['fb_neutral']) ? ($_post['type'] == 2 && $_post['sentiment'] == 0 ? $posts['data']['fb_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['fb_negative'] = isset($posts['data']['fb_negative']) ? ($_post['type'] == 2 && $_post['sentiment'] == -1 ? $posts['data']['fb_negative'] += 1 : 0) : 0;
+                                    $posts['data']['tw_positive'] = isset($posts['data']['tw_positive']) ? ($_post['type'] == 3 && $_post['sentiment'] == 1 ? $posts['data']['tw_positive'] += 1 : 0) : 0;
+                                    $posts['data']['tw_neutral'] = isset($posts['data']['tw_neutral']) ? ($_post['type'] == 3 && $_post['sentiment'] == 0 ? $posts['data']['tw_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['tw_negative'] = isset($posts['data']['tw_negative']) ? ($_post['type'] == 3 && $_post['sentiment'] == -1 ? $posts['data']['tw_negative'] += 1 : 0) : 0;
+                                    $posts['data']['ig_positive'] = isset($posts['data']['ig_positive']) ? ($_post['type'] == 4 && $_post['sentiment'] == 1 ? $posts['data']['ig_positive'] += 1 : 0) : 0;
+                                    $posts['data']['ig_neutral'] = isset($posts['data']['ig_neutral']) ? ($_post['type'] == 4 && $_post['sentiment'] == 0 ? $posts['data']['ig_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['ig_negative'] = isset($posts['data']['ig_negative']) ? ($_post['type'] == 4 && $_post['sentiment'] == -1 ? $posts['data']['ig_negative'] += 1 : 0) : 0;
+                                    $posts['data']['gg_positive'] = isset($posts['data']['gg_positive']) ? ($_post['type'] == 5 && $_post['sentiment'] == 1 ? $posts['data']['gg_positive'] += 1 : 0) : 0;
+                                    $posts['data']['gg_neutral'] = isset($posts['data']['gg_neutral']) ? ($_post['type'] == 5 && $_post['sentiment'] == 0 ? $posts['data']['gg_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['gg_negative'] = isset($posts['data']['gg_negative']) ? ($_post['type'] == 5 && $_post['sentiment'] == -1 ? $posts['data']['gg_negative'] += 1 : 0) : 0;
+                                    $posts['data']['yt_positive'] = isset($posts['data']['yt_positive']) ? ($_post['type'] == 6 && $_post['sentiment'] == 1 ? $posts['data']['yt_positive'] += 1 : 0) : 0;
+                                    $posts['data']['yt_neutral'] = isset($posts['data']['yt_neutral']) ? ($_post['type'] == 6 && $_post['sentiment'] == 0 ? $posts['data']['yt_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['yt_negative'] = isset($posts['data']['yt_negative']) ? ($_post['type'] == 6 && $_post['sentiment'] == -1 ? $posts['data']['yt_negative'] += 1 : 0) : 0;
+                                    $posts['data']['ok_positive'] = isset($posts['data']['ok_positive']) ? ($_post['type'] == 7 && $_post['sentiment'] == 1 ? $posts['data']['ok_positive'] += 1 : 0) : 0;
+                                    $posts['data']['ok_neutral'] = isset($posts['data']['ok_neutral']) ? ($_post['type'] == 7 && $_post['sentiment'] == 0 ? $posts['data']['ok_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['ok_negative'] = isset($posts['data']['ok_negative']) ? ($_post['type'] == 7 && $_post['sentiment'] == -1 ? $posts['data']['ok_negative'] += 1 : 0) : 0;
+                                    $posts['data']['mm_positive'] = isset($posts['data']['mm_positive']) ? ($_post['type'] == 8 && $_post['sentiment'] == 1 ? $posts['data']['mm_positive'] += 1 : 0) : 0;
+                                    $posts['data']['mm_neutral'] = isset($posts['data']['mm_neutral']) ? ($_post['type'] == 8 && $_post['sentiment'] == 0 ? $posts['data']['mm_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['mm_negative'] = isset($posts['data']['mm_negative']) ? ($_post['type'] == 8 && $_post['sentiment'] == -1 ? $posts['data']['mm_negative'] += 1 : 0) : 0;
+                                    $posts['data']['tg_positive'] = isset($posts['data']['tg_positive']) ? ($_post['type'] == 9 && $_post['sentiment'] == 1 ? $posts['data']['tg_positive'] += 1 : 0) : 0;
+                                    $posts['data']['tg_neutral'] = isset($posts['data']['tg_neutral']) ? ($_post['type'] == 9 && $_post['sentiment'] == 0 ? $posts['data']['tg_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['tg_negative'] = isset($posts['data']['tg_negative']) ? ($_post['type'] == 9 && $_post['sentiment'] == -1 ? $posts['data']['tg_negative'] += 1 : 0) : 0;
+                                    $posts['data']['tt_positive'] = isset($posts['data']['tt_positive']) ? ($_post['type'] == 10 && $_post['sentiment'] == 1 ? $posts['data']['tt_positive'] += 1 : 0) : 0;
+                                    $posts['data']['tt_neutral'] = isset($posts['data']['tt_neutral']) ? ($_post['type'] == 10 && $_post['sentiment'] == 0 ? $posts['data']['tt_neutral'] += 1 : 0) : 0;
+                                    $posts['data']['tt_negative'] = isset($posts['data']['tt_negative']) ? ($_post['type'] == 10 && $_post['sentiment'] == -1 ? $posts['data']['tt_negative'] += 1 : 0) : 0;
+                                }
+                                // $posts['posts'] = null;
+                                unset($posts['posts']);
+                                foreach ($posts['data'] as $key => $value) {
+                                    // var_dump($value);exit;
+                                    if ($value == 0) {
+                                        unset($posts['data'][$key]);
+                                        // if(isset($posts[$value['item_id']])){
+                                        //     $posts[$value['item_id']] = null;
+                                        //     unset($posts[$value['item_id']]);
+                                        // }
+                                    }
+                                }
+                                if (!empty($posts['data'])) {
+                                    $return_posts[$city['id']][$res->id] = $posts['data'];
+                                }
+                                // array_push($return_posts[$city['id']], $posts);
+                                // $return_posts[$city['id']][$res->id]['subs'] = SubFollow::getSubsForResource($res->id, $start_date, $end_date);
                             }
                         }
                     }
-                    $result = array_merge(['all_data' => $posts], ['city_data' => $cities_data]);
+                    $result = array_merge(['all_data' => $return_posts], ['city_data' => $cities_data]);
 
 
                     // $all_data = $projectModel->get_all_data($city_id, $res_id, $start_date, $end_date, $type);
