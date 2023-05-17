@@ -76,7 +76,7 @@ class ManageController extends AuthController
             $temp['created_date'] = $created_date;
             $temp['user_id'] = $owner;
             if ($owner !== null && $owner !== "" && $project_name != null && $project_name !== "")
-                return send_post("rating.imas.kz/backend/main/createproject", $temp);
+                return send_post("rating.imas.kz/backend/projects/createproject", $temp);
         }
         return $this->render('createproject', ['result' => $result]);
     }
@@ -122,7 +122,7 @@ class ManageController extends AuthController
         // var_dump($project_id);exit;
         $result = json_decode(get_web_page("rating.imas.kz/backend/projects/getproject?project_id={$project_id}"), true);
         // var_dump($result);exit;
-        $users = json_decode(get_web_page("rating.imas.kz/backend/main/getfreeusers"), true);
+        $users = json_decode(get_web_page("rating.imas.kz/backend/users/getfreeusers"), true);
         // echo "<pre>";
         // var_dump($result['project']['cities']);
         // echo "</pre>";
@@ -222,7 +222,7 @@ class ManageController extends AuthController
         // var_dump($_POST['id']);exit;
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         if ($id !== null) {
-            return send_post("rating.imas.kz/backend/main/deleteuser", ['id' => $id]);
+            return send_post("rating.imas.kz/backend/users/deleteuser", ['id' => $id]);
         }
         return 'false';
     }
@@ -232,7 +232,7 @@ class ManageController extends AuthController
         // return "foo";
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         if ($id !== null) {
-            return send_post("rating.imas.kz/backend/main/changestatus", ['id' => $id]);
+            return send_post("rating.imas.kz/backend/users/changestatus", ['id' => $id]);
         }
         return 'false';
     }
@@ -262,7 +262,7 @@ class ManageController extends AuthController
 
     public function actionUsersTable(){
         $this->layout = 'empty';
-        $users = json_decode(get_web_page("rating.imas.kz/backend/main/getusersinformation"), true);
+        $users = json_decode(get_web_page("rating.imas.kz/backend/users/getusersinformation"), true);
         return $this->render('_users_table', ['users' => $users]);
     }
 

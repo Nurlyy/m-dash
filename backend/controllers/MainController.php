@@ -215,16 +215,7 @@ class MainController extends Controller
         }
     }
 
-    public function actionGetfreeusers()
-    {
-        $projectUsers = Projects::find()->select('user_id')->asArray()->all();
-        $project_user_ids = [];
-        foreach ($projectUsers as $users) {
-            array_push($project_user_ids, $users['user_id']);
-        }
-        $users = User::find()->select(['username',  'id'])->where(['not in', 'id', $project_user_ids])->andWhere('status != 3')->all();
-        return $users;
-    }
+    
 
     public function actionApplychanges()
     {
@@ -321,17 +312,5 @@ class MainController extends Controller
         return (in_array(false, $qarray, true)) ? false : true;
     }
 
-    public function actionGetusersinformation()
-    {
-        return Projects::getUsersInformation();
-    }
-
-    public function actionDeleteuser()
-    {
-        $id = isset($_POST['id']) ? $_POST['id'] : null;
-        $user = User::findOne(['id' => intval($id)]);
-        if (Projects::getProjectForUser($user->id) === null) {
-            return $user->delete();
-        }
-    }
+    
 }

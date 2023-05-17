@@ -43,19 +43,7 @@ class ProjectsController extends Controller {
         return $behaviors;
     }
 
-    public function actionChangestatus()
-    {
-        $id = isset($_POST['id']) ? $_POST['id'] : null;
-        $user = User::findOne(['id' => intval($id)]);
-        if (Projects::getProjectForUser($user->id) === null) {
-            if ($user->status == 10) {
-                $user->status = 9;
-            } else if ($user->status == 9) {
-                $user->status = 10;
-            }
-            return $user->save();
-        }
-    }
+    
 
     public function actionDeleteproject()
     {
