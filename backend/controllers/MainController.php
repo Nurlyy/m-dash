@@ -297,6 +297,7 @@ class MainController extends Controller
 
     public function actionApplychanges()
     {
+        // return 'something';
         $cityChanges = isset($_POST['cityChanges']) ? json_decode($_POST['cityChanges'], true) : null;
         $resourcesChanges = isset($_POST['resourcesChanges']) ? json_decode($_POST['resourcesChanges'], true) : null;
         // $createdCities = isset($_POST['createdCities']) ? json_decode($_POST['createdCities'], true) : null;
@@ -331,15 +332,18 @@ class MainController extends Controller
                 array_push($qarray, $city->save());
             }
         }
-
+        // return 'something';
         foreach ($dataRes as $d) {
             foreach ($d as $value) {
+                // var_dump($value['id']);exit;
                 if (isset($value['id'])) {
-                    $resource = Resources::find(['id' => $value['id']]);
+                    $resource = Resources::findOne($value['id']);
+                    // var_dump($resource);exit;
                 } else {
                     $resource = new Resources();
                     $resource->status = 1;
                 }
+                // var_dump($resource);exit;
                 if (isset($value['url'])) {
                     $type = 0;
                     if (strpos($value['url'], 'vk') !== false || strpos($value['url'], 'vkontakte') !== false) {
@@ -368,6 +372,7 @@ class MainController extends Controller
                 }
                 if (isset($value['name'])) {
                     $resource->name = $value['name'];
+                    // return $resource;
                 }
                 if (isset($value['city_id'])) {
                     $resource->city_id = $value['city_id'];
@@ -378,6 +383,7 @@ class MainController extends Controller
                 if (isset($value['description'])) {
                     $resource->description = $value['description'];
                 }
+                
                 array_push($qarray, $resource->save());
             }
         }
