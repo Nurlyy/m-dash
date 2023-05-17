@@ -69,4 +69,8 @@ class PostsMetrics extends \yii\db\ActiveRecord
         $posts = parent::find()->select(['res_id', 'type', 'url', 'item_id', 'date', 's_date', 'comments', 'likes', 'reposts'])->where("res_id={$res_id}")->andWhere(['between', 's_date', "{$start_date}", "{$end_date}" ])->asArray()->all();
         return $posts;
     }
+
+    public function getResPosts(){
+        return $this->hasOne(ResPosts::class, ['item_id' => 'item_id']);
+    }
 }

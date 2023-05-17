@@ -30,7 +30,6 @@ if (!empty($cities)) {
                     </div>
                     <div class="modal-footer">
                         <button type="button" onclick="deleteres(restype, resid)" class="btn btn-white" data-dismiss="modal">Да</button>
-                        <!-- <form action="/manage/deleteresource" method="POST"><input type="hidden" name="res_id" value="<?= $res_id ?>"><input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->getCsrfToken() ?>" /><input type="submit" value="Да" class="btn btn-white" /></form> -->
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
                     </div>
                 </div>

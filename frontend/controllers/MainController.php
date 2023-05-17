@@ -503,8 +503,8 @@ class MainController extends AuthController
         $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11) {
-            $result = json_decode(get_web_page("192.168.0.162:8080/backend/main/search?type=1&start_date={$start_date}&end_date={$end_date}"), true);
-            var_dump($result);exit;
+            $result = json_decode(get_web_page("http://localhost:8080/backend/main/search?type=1&start_date={$start_date}&end_date={$end_date}"), true);
+            // var_dump($result);exit;
             $this->splitData($result, $start_date);
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];
@@ -562,7 +562,7 @@ class MainController extends AuthController
         $city_id = isset($_GET['city_id']) ? $_GET['city_id'] : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11 && is_numeric($city_id)) {
             $result = json_decode(get_web_page("localhost:8080/backend/main/search?type=2&city_id={$city_id}&start_date={$start_date}&end_date={$end_date}"), true);
-            var_dump($result);exit;
+            // var_dump($result);exit;
             $this->splitData($result, $start_date);
             $dates = $this->getBetweenDates($start_date, $end_date);
             $temp = [];
@@ -572,7 +572,7 @@ class MainController extends AuthController
                 }
             }
             $this::$cityInformation = $temp;
-            // var_dump($result['city_posts']);exit;
+            // var_dump($this::$postsSentimentLine);exit;
             return $this->render('city', [
                 'start_date' => $start_date,
                 'end_date' => $end_date,

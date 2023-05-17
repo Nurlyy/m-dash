@@ -33,7 +33,7 @@ class Project extends Model
     public function get_res_posts($res_id, $start_date, $end_date)
     {
         if (isset($res_id)) {
-            $query = "SELECT p.*, r.photo, r.name from res_posts p inner join resources r on p.res_id=r.id where p.res_id = {$res_id} and p.s_date between '{$start_date}' and '{$end_date}' order by p.s_date desc";
+            $query = "SELECT p.*, r.photo, r.name from res_posts p inner join resources r on p.res_id=r.id where p.res_id = {$res_id} and p.s_date between '{$start_date} 23:59:59' and '{$end_date} 23:59:59' order by p.s_date desc";
             return $this->helper::createCommand($query);
             // return $query;
         }
