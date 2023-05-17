@@ -105,6 +105,7 @@ class MainController extends Controller
             $posts[$res->id] = $temp;
             $posts[$res->id]['subs'] = SubFollow::getSubsForResource($res->id, $start_date, $end_date);
         }
+
         return $posts;
     }
 
@@ -214,8 +215,6 @@ class MainController extends Controller
             return "false";
         }
     }
-
-    
 
     public function actionApplychanges()
     {

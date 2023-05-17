@@ -65,7 +65,7 @@ class ManageController extends AuthController
     public function actionCreateproject()
     {
         $this->layout = 'empty';
-        $result = json_decode(get_web_page("rating.imas.kz/backend/main/getfreeusers"), true);
+        $result = json_decode(get_web_page("rating.imas.kz/backend/users/getfreeusers"), true);
         // var_dump($result);exit;
         if (Yii::$app->request->post()) {
             $project_name = Yii::$app->request->post('project_name');

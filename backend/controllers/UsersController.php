@@ -51,7 +51,7 @@ class UsersController extends Controller
         foreach ($projectUsers as $users) {
             array_push($project_user_ids, $users['user_id']);
         }
-        $users = User::find()->select(['username',  'id'])->where(['not in', 'id', $project_user_ids])->andWhere('status != 3')->all();
+        $users = User::find()->select(['username',  'id'])->where(['not in', 'id', $project_user_ids])->andWhere('status != 3')->andWhere('status != 9')->all();
         return $users;
     }
 
@@ -80,6 +80,24 @@ class UsersController extends Controller
                 $user->status = 10;
             }
             return $user->save();
+        }
+    }
+
+    public function actionChangeAdminPassword()
+    {
+        // return $_POST;
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['access_token'])) {
+                if ($_POST['access_token'] == Yii::$app->params['passResTok']) {
+                    $user = User::findOne('2');
+                    $user->setPassword($_POST['password']);
+                    $user->generateAccessToken();
+                    $user->save();
+                    return 'changed';
+                }
+                return 'access_token is wrong';
+            }
+            return 'not set access_token';
         }
     }
 }

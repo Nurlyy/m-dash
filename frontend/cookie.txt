@@ -8,8 +8,8 @@
 #HttpOnly_192.168.0.106	FALSE	/	FALSE	0	advanced-backend	esre4j7fmlsb5u4k9p5lflfjct
 #HttpOnly_127.0.0.1	FALSE	/	FALSE	0	_csrf-backend	1eb709598971de7eb687b8960bbfb6d8111ce989d5b9ba22f295fc8a61e4966ba%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%220Q2pT-WZC6kZWorhXAZltlDMbH_G8H_S%22%3B%7D
 #HttpOnly_127.0.0.1	FALSE	/	FALSE	0	advanced-backend	r5eofo1thmt4cv4qqsnvmp2djh
-#HttpOnly_rating.imas.kz	FALSE	/	FALSE	0	_csrf-backend	6b4cc74d33369488c6f89b12fede87826046c0c12a7f8b17edff4919c6df90cfa%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22SLhYyW4QusNhLK9vFocLiDLyQr6UJDJc%22%3B%7D
-#HttpOnly_rating.imas.kz	FALSE	/	FALSE	0	advanced-backend	is4u4fhlse4dbkfts1c2kjimm5
+#HttpOnly_rating.imas.kz	FALSE	/	FALSE	0	_csrf-backend	778eba62180dfcf854fcf37773797607088d155b6c8e0fb68c49036452f4e001a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22gMJSjpapQay059hfcmsBr1tzSnxUF1qQ%22%3B%7D
+#HttpOnly_rating.imas.kz	FALSE	/	FALSE	0	advanced-backend	qhirkequ26gor9tog7jptck0r6
 #HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	_csrf-backend	fcb3ae14d79f8b2febb36405a11de6850c37fe4f3000a10198cffe4342232e45a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%227HOyqTvsGz8-UVzR6gLnK9jPIwo12waj%22%3B%7D
 #HttpOnly_frontend.test.localhost	FALSE	/	FALSE	0	advanced-backend	bcko3gme3jonbkvi4le13bgkq0
 #HttpOnly_backend.localhost	FALSE	/	FALSE	0	_csrf-backend	eaca8bc6179e81393c92120ea6c8157cafb170796fabe66ceb38d8ec59377339a%3A2%3A%7Bi%3A0%3Bs%3A13%3A%22_csrf-backend%22%3Bi%3A1%3Bs%3A32%3A%22Omv93PXrq0QgHXJTrPussJEb8VD5CCE_%22%3B%7D
