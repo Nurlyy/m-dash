@@ -57,7 +57,7 @@ class ProjectsController extends Controller {
         }
     }
 
-    public function actionDeleteproj()
+    public function actionDeleteproject()
     {
         if (Yii::$app->request->post()) {
             $projid = Yii::$app->request->post('projid');
@@ -123,5 +123,14 @@ class ProjectsController extends Controller {
             $user = null;
         }
         return $projects;
+    }
+
+    public function actionTurnstateproject()
+    {
+        if (Yii::$app->request->isPost && isset($_POST['project_id']) && isset($_POST['state'])) {
+            $project = Projects::findOne(['id' => $_POST['project_id']]);
+            $project->is_active = intval($_POST['state']);
+            return $project->save();
+        }
     }
 }

@@ -215,14 +215,7 @@ class MainController extends Controller
         }
     }
 
-    public function actionTurnstateproject()
-    {
-        if (Yii::$app->request->isPost && isset($_POST['project_id']) && isset($_POST['state'])) {
-            $project = Projects::findOne(['id' => $_POST['project_id']]);
-            $project->is_active = intval($_POST['state']);
-            return $project->save();
-        }
-    }
+    
 
     
 

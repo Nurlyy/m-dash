@@ -57,7 +57,7 @@ class ManageController extends AuthController
     public function actionMainpage()
     {
         $this->layout = 'empty';
-        $result = json_decode(get_web_page("rating.imas.kz/backend/main/getprojects"), true);
+        $result = json_decode(get_web_page("rating.imas.kz/backend/projects/getprojects"), true);
         // var_dump($result);exit;
         return $this->render('mainpage', ['result' => $result]);
     }
@@ -95,7 +95,7 @@ class ManageController extends AuthController
         if (Yii::$app->request->post()) {
             $projid = [];
             $projid['projid'] = Yii::$app->request->post('projid');
-            return send_post("rating.imas.kz/backend/main/deleteproj", $projid);
+            return send_post("rating.imas.kz/backend/projects/deleteproject", $projid);
         }
     }
 
@@ -114,13 +114,13 @@ class ManageController extends AuthController
             $temp['created_date'] = $created_date;
             $temp['id'] = $projectid;
             $temp['user_id'] = $owner;
-            $result = send_post("rating.imas.kz/backend/main/createproject", $temp);
+            $result = send_post("rating.imas.kz/backend/projects/createproject", $temp);
             return $this->redirect('index');
         }
         $project_id = null;
         $project_id = $_GET['project_id'];
         // var_dump($project_id);exit;
-        $result = json_decode(get_web_page("rating.imas.kz/backend/main/getproject?project_id={$project_id}"), true);
+        $result = json_decode(get_web_page("rating.imas.kz/backend/projects/getproject?project_id={$project_id}"), true);
         // var_dump($result);exit;
         $users = json_decode(get_web_page("rating.imas.kz/backend/main/getfreeusers"), true);
         // echo "<pre>";
@@ -150,7 +150,7 @@ class ManageController extends AuthController
             $temp = [];
             $temp['project_id'] = $project_id;
             $temp['state'] = $state;
-            return send_post("rating.imas.kz/backend/main/turnstateproject", $temp);
+            return send_post("rating.imas.kz/backend/projects/turnstateproject", $temp);
             // var_dump($result);
             // exit;
         }
@@ -187,7 +187,7 @@ class ManageController extends AuthController
         $this->layout = 'empty';
         $city_id = isset($_GET['city_id']) ? $_GET['city_id'] : null;
         $project_id = Yii::$app->request->get('project_id');
-        $result = json_decode(get_web_page("rating.imas.kz/backend/main/getproject?project_id={$project_id}"), true);
+        $result = json_decode(get_web_page("rating.imas.kz/backend/projects/getproject?project_id={$project_id}"), true);
         return $this->render("cityedit_modal", ['city_id' => $city_id, 'result' => $result]);
     }
 
@@ -197,7 +197,7 @@ class ManageController extends AuthController
             $projectname = isset($_POST['projectname']) ? $_POST['projectname'] : null;
             $owner = isset($_POST['owner']) ? $_POST['owner'] : null;
             $projectid = isset($_POST['projectid']) ? $_POST['projectid'] : null;
-            $result = send_post("rating.imas.kz/backend/main/createproject", ['name' => $projectname, 'user_id' => $owner, 'id' => $projectid]);
+            $result = send_post("rating.imas.kz/backend/projects/createproject", ['name' => $projectname, 'user_id' => $owner, 'id' => $projectid]);
             return $result;
         }
     }
