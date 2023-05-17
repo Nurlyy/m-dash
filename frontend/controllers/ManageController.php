@@ -206,7 +206,7 @@ class ManageController extends AuthController
     {
         if (Yii::$app->request->post()) {
             $city_id = isset($_POST['city_id']) ? $_POST['city_id'] : null;
-            $result = send_post("rating.imas.kz/backend/main/deletecity", ['city_id' => $city_id]);
+            $result = send_post("rating.imas.kz/backend/cities/deletecity", ['city_id' => $city_id]);
             return $result;
         }
     }
@@ -270,7 +270,7 @@ class ManageController extends AuthController
         // return "true";
         $project_id = $_GET['project_id'];
         if(isset($project_id)){
-            $cities = json_decode(get_web_page("rating.imas.kz/backend/main/getcities?project_id=$project_id"), true);
+            $cities = json_decode(get_web_page("rating.imas.kz/backend/cities/getcities?project_id=$project_id"), true);
             return $this->renderAjax('_cities', ['cities' => $cities, 'project_id' => $project_id]);
         }
         return 'false';
@@ -280,14 +280,14 @@ class ManageController extends AuthController
         if($this->request->isPost){
             $project_id = $_POST['project_id'];
             $city_name = $_POST['city_name'];
-            return send_post("rating.imas.kz/backend/main/create-city", ['project_id' => $project_id, 'city_name' => $city_name]);
+            return send_post("rating.imas.kz/backend/cities/create-city", ['project_id' => $project_id, 'city_name' => $city_name]);
         }
     }
 
     public function actionGetCitiesList(){
         $project_id = $_GET['project_id'];
         if(isset($project_id)){
-            $cities = get_web_page("rating.imas.kz/backend/main/getcities?project_id=$project_id");
+            $cities = get_web_page("rating.imas.kz/backend/cities/getcities?project_id=$project_id");
             return $cities;
         }
         return 'false';

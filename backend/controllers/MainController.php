@@ -408,13 +408,7 @@ class MainController extends Controller
         }
     }
 
-    public function actionDeletecity()
-    {
-        if (Yii::$app->request->post()) {
-            $city_id = Yii::$app->request->post('city_id');
-            return City::findOne(['id' => $city_id])->delete();
-        }
-    }
+    
 
     public function actionMoveresource()
     {
@@ -455,30 +449,7 @@ class MainController extends Controller
         }
     }
 
-    public function actionGetcities()
-    {
-        $project_id = $_GET['project_id'];
-        if (isset($project_id)) {
-            // return 'true';
-            $cities = City::find()->where(['project_id' => $project_id])->asArray()->all();
-            foreach ($cities as &$city) {
-                $city['resources'] = Resources::find()->select(['id', 'name', 'city_id', 'status'])->where(['city_id' => $city['id'], 'status' => 1])->asArray()->all();
-            }
-            return $cities;
-        }
-        return 'false';
-    }
+    
 
-    public function actionCreateCity()
-    {
-        if ($this->request->isPost) {
-            $project_id = $_POST['project_id'];
-            $city_name = $_POST['city_name'];
-            $city = new City();
-            $city->project_id = $project_id;
-            $city->name = $city_name;
-            $city->validate();
-            return $city->save();
-        }
-    }
+    
 }
