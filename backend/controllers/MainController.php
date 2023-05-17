@@ -215,10 +215,6 @@ class MainController extends Controller
         }
     }
 
-    
-
-    
-
     public function actionGetfreeusers()
     {
         $projectUsers = Projects::find()->select('user_id')->asArray()->all();
@@ -325,31 +321,6 @@ class MainController extends Controller
         return (in_array(false, $qarray, true)) ? false : true;
     }
 
-    public function actionDeleteres()
-    {
-        if (Yii::$app->request->post()) {
-            $resid = Yii::$app->request->post('resid');
-            $resource = Resources::findOne(['id' => $resid]);
-            $resource->status = 0;
-            return $resource->save();
-        }
-    }
-
-    
-
-    
-
-    public function actionMoveresource()
-    {
-        if (Yii::$app->request->post()) {
-            $res_id = Yii::$app->request->post('res_id');
-            $newregion = Yii::$app->request->post('newregion');
-            $resource = Resources::findOne(['id' => $res_id]);
-            $resource->city_id = $newregion;
-            return $resource->save();
-        }
-    }
-
     public function actionGetusersinformation()
     {
         return Projects::getUsersInformation();
@@ -363,10 +334,4 @@ class MainController extends Controller
             return $user->delete();
         }
     }
-
-    
-
-    
-
-    
 }
