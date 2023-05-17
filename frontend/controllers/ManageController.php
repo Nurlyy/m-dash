@@ -86,7 +86,7 @@ class ManageController extends AuthController
         if (Yii::$app->request->post()) {
             $resid = [];
             $resid['resid'] = Yii::$app->request->post('resid');
-            return send_post("rating.imas.kz/backend/main/deleteres", $resid);
+            return send_post("rating.imas.kz/backend/resources/deleteres", $resid);
         }
     }
 
@@ -135,7 +135,7 @@ class ManageController extends AuthController
         if (Yii::$app->request->post()) {
             $res_id = isset($_POST['res_id']) ? $_POST['res_id'] : null;
             $newregion = isset($_POST['newregion']) ? $_POST['newregion'] : null;
-            return send_post("rating.imas.kz/backend/main/moveresource", ['res_id' => $res_id, 'newregion' => $newregion]);
+            return send_post("rating.imas.kz/backend/resources/moveresource", ['res_id' => $res_id, 'newregion' => $newregion]);
         }
     }
 
