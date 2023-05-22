@@ -121,21 +121,21 @@ class MainController extends Controller
             array_push($temp, $i['id']);
         }
         $project_cities = $temp;
-        $type = isset($_GET['type']) ? $_GET['type'] : null;
-        $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
-        $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
+        $type = isset($_GET['type']) ? htmlentities($_GET['type']) : null;
+        $start_date = isset($_GET['start_date']) ? htmlentities($_GET['start_date']) : null;
+        $end_date = isset($_GET['end_date']) ? htmlentities($_GET['end_date']) : null;
         $tempdate = date('Y-m-d', (strtotime('-1 day', strtotime($start_date))));
         $start_date = $tempdate; // return $tempdate;
-        $city_id = isset($_GET['city_id']) ? (in_array($_GET['city_id'], $project_cities) ? $_GET['city_id'] : -1) : null;
-        $res_id = isset($_GET['res_id']) ? (in_array($_GET['res_id'], $project_cities) ? $_GET['res_id'] : -1) : null;
-        $first = isset($_GET['first']) ? (in_array($_GET['first'], $project_cities) ? $_GET['first'] : -1) : null;
-        $second = isset($_GET['second']) ? (in_array($_GET['second'], $project_cities) ? $_GET['second'] : -1) : null;
-        $discussionChart = isset($_GET['discussionChart']) ? $_GET['discussionChart'] : false;
-        $sentimentChart = isset($_GET['sentimentChart']) ? $_GET['sentimentChart'] : false;
-        $subsChart = isset($_GET['subsChart']) ? $_GET['subsChart'] : false;
-        $likesChart = isset($_GET['likesChart']) ? $_GET['likesChart'] : false;
-        $commentsChart = isset($_GET['commentsChart']) ? $_GET['commentsChart'] : false;
-        $repostsChart = isset($_GET['repostsChart']) ? $_GET['repostsChart'] : false;
+        $city_id = isset($_GET['city_id']) ? (in_array($_GET['city_id'], $project_cities) ? htmlentities($_GET['city_id']) : -1) : null;
+        $res_id = isset($_GET['res_id']) ? (in_array($_GET['res_id'], $project_cities) ? htmlentities($_GET['res_id']) : -1) : null;
+        $first = isset($_GET['first']) ? (in_array($_GET['first'], $project_cities) ? htmlentities($_GET['first']) : -1) : null;
+        $second = isset($_GET['second']) ? (in_array($_GET['second'], $project_cities) ? htmlentities($_GET['second']) : -1) : null;
+        $discussionChart = isset($_GET['discussionChart']) ? htmlentities($_GET['discussionChart']) : false;
+        $sentimentChart = isset($_GET['sentimentChart']) ? htmlentities($_GET['sentimentChart']) : false;
+        $subsChart = isset($_GET['subsChart']) ? htmlentities($_GET['subsChart']) : false;
+        $likesChart = isset($_GET['likesChart']) ? htmlentities($_GET['likesChart']) : false;
+        $commentsChart = isset($_GET['commentsChart']) ? htmlentities($_GET['commentsChart']) : false;
+        $repostsChart = isset($_GET['repostsChart']) ? htmlentities($_GET['repostsChart']) : false;
         $result = [];
         if ($project_state == 1) {
             switch ($type) {
@@ -240,15 +240,15 @@ class MainController extends Controller
         foreach ($dataCity as $d) {
             foreach ($d as $value) {
                 if (isset($value['id'])) {
-                    $city = City::findOne(['id' => $value['id']]);
+                    $city = City::findOne(['id' => htmlentities($value['id'])]);
                 } else {
                     $city = new City();
                 }
                 if (isset($value['name'])) {
-                    $city->name = $value['name'];
+                    $city->name = htmlentities($value['name']);
                 }
                 if (isset($value['project_id'])) {
-                    $city->project_id = $value['project_id'];
+                    $city->project_id = htmlentities($value['project_id']);
                 }
                 array_push($qarray, $city->save());
             }
@@ -258,7 +258,7 @@ class MainController extends Controller
             foreach ($d as $value) {
                 // var_dump($value['id']);exit;
                 if (isset($value['id'])) {
-                    $resource = Resources::findOne($value['id']);
+                    $resource = Resources::findOne(htmlentities($value['id']));
                     // var_dump($resource);exit;
                 } else {
                     $resource = new Resources();
@@ -289,7 +289,7 @@ class MainController extends Controller
                         $type == 10;
                     } else $type = 0;
                     $resource->type = $type;
-                    $resource->url = $value['url'];
+                    $resource->url = htmlentities($value['url']);
                 }
                 if (isset($value['name'])) {
                     $resource->name = $value['name'];
