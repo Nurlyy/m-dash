@@ -32,7 +32,7 @@ class UsersController extends Controller
                     'allow' => true,
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     'matchCallback' => function($rule, $action){
-                        return Yii::$app->user->identity->isAdmin();
+                        return Yii::$app->user->identity->getIsAdmin();
                     },
                     'denyCallback' => function($rule, $action){
                         return $this->redirect(['/main/search']);

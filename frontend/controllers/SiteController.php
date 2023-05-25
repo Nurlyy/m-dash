@@ -86,7 +86,7 @@ class SiteController extends Controller
     {
         $this->layout = 'inspinia'; 
         if (!Yii::$app->user->isGuest) {
-            if(Yii::$app->user->getIsAdmin()){
+            if(Yii::$app->user->identity->getIsAdmin()){
                 return $this->redirect("/manage/index");
             }
             return $this->redirect("/main/index");
@@ -94,7 +94,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if(Yii::$app->user->getIsAdmin()){
+            if(Yii::$app->user->identity->getIsAdmin()){
                 return $this->redirect("/manage/index");
             }
             return $this->redirect("/main/index");
@@ -113,6 +113,13 @@ class SiteController extends Controller
      * @return mixed
      */
     public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
+
+    public function actionGetLogout()
     {
         Yii::$app->user->logout();
 

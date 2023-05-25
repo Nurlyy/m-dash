@@ -47,7 +47,7 @@ class MainController extends Controller
                     'roles' => ['@', User::STATUS_ACTIVE],
 
                     'matchCallback' => function ($rule, $action) {
-                        return !Yii::$app->user->identity->isAdmin();
+                        return !Yii::$app->user->identity->getIsAdmin();
                     },
                     'denyCallback' => function ($rule, $action) {
                         return $this->redirect(["/main/search"]);
@@ -66,7 +66,7 @@ class MainController extends Controller
                     'roles' => ['@', User::STATUS_SUPERUSER],
                     // 'roles' => ['@'],
                     'matchCallback' => function ($rule, $action) {
-                        return Yii::$app->user->identity->isAdmin();
+                        return Yii::$app->user->identity->getIsAdmin();
                     },
                     'denyCallback' => function ($rule, $action) {
                         return $this->redirect(["/main/search"]);

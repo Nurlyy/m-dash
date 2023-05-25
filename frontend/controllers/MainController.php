@@ -460,7 +460,7 @@ class MainController extends AuthController
                     'roles' => ['@', User::STATUS_ACTIVE],
 
                     'matchCallback' => function ($rule, $action) {
-                        return !Yii::$app->user->identity->isAdmin();
+                        return !Yii::$app->user->identity->getIsAdmin();
                     },
                     'denyCallback' => function ($rule, $action) {
                         return $this->redirect(["/manage/index"]);
@@ -500,8 +500,8 @@ class MainController extends AuthController
     public function actionDashboard()
     {
         $this->layout = 'empty';
-        $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
-        $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
+        $start_date = isset($_GET['start_date']) ? htmlentities($_GET['start_date']) : null;
+        $end_date = isset($_GET['end_date']) ? htmlentities($_GET['end_date']) : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11) {
             $result = json_decode(get_web_page("http://localhost:8080/backend/main/search?type=1&start_date={$start_date}&end_date={$end_date}"), true);
             // var_dump($result);exit;

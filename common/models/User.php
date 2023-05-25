@@ -35,6 +35,11 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
+
+    public function getIsAdmin(){
+        return $this->status === self::STATUS_SUPERUSER;
+    }
+
     public static function tableName()
     {
         return '{{%user}}';
