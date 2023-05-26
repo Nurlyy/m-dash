@@ -7,6 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\data\ActiveDataProvider;
 
 /**
  * User model
@@ -23,6 +24,10 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string $full_name
+ * @property string $identity
+ * @property string $network
+ * @property integer $state
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -63,8 +68,59 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED, self::STATUS_SUPERUSER]],
+            array('identity, network', 'required'),
+			array('identity, network, email', 'length', 'max'=>255),
+			array('full_name', 'length', 'max'=>255),
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('id, identity, network, email, full_name, state', 'safe', 'on'=>'search'),
         ];
     }
+
+    /**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'identity' => 'Identity',
+			'network' => 'Network',
+			'email' => 'Email',
+			'full_name' => 'Full Name',
+			'state' => 'State',
+		);
+	}
+
+    public function search()
+{
+    // Warning: Please modify the following code to remove attributes that
+    // should not be searched.
+
+    $query = User::find();
+
+    $query->andFilterWhere(['id' => $this->id])
+        ->andFilterWhere(['like', 'identity', $this->identity])
+        ->andFilterWhere(['like', 'network', $this->network])
+        ->andFilterWhere(['like', 'email', $this->email])
+        ->andFilterWhere(['like', 'full_name', $this->full_name])
+        ->andFilterWhere(['state' => $this->state]);
+
+    return new ActiveDataProvider([
+        'query' => $query,
+    ]);
+}
+
+    /**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+		);
+	}
 
     /**
      * {@inheritdoc}
@@ -80,12 +136,6 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['access_token'=>$token,'status'=>['or', self::STATUS_ACTIVE, self::STATUS_SUPERUSER]]);
-    }
-
-
-
-    public function isAdmin(){
-        return $this->status == 3;
     }
 
     /**
