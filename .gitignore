@@ -3,6 +3,7 @@
 /yii_test
 /yii_test.bat
 
+
 # phpstorm project files
 .idea
 
@@ -44,3 +45,4 @@ phpunit.phar
 /backend/web/index.php
 /backend/web/index-test.php
 /backend/web/robots.txt
+/.vscode/
