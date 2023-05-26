@@ -21,7 +21,8 @@
         "bower-asset/bootstrap4": "^5.2",
         "codemix/yii2-localeurls": "^1.8",
         "cetver/yii2-language-selector": "^1.0",
-        "cetver/yii2-language-url-manager": "^1.0"
+        "cetver/yii2-language-url-manager": "^1.0",
+        "rmrevin/yii2-ulogin": "~1.4"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
