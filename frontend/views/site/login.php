@@ -6,6 +6,9 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
+use yii\authclient\widgets\AuthChoice;
+
+
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
@@ -38,9 +41,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::submitButton('Войти', ['class' => 'btn btn-primary block full-width m-b', 'name' => 'login-button', 'style' => 'border-radius:15px;']) ?>
         </div>
 
+        <?= yii\authclient\widgets\AuthChoice::widget([
+            'baseAuthUrl' => ['site/auth'],
+            'popupMode' => false,
+        ]) ?>
+
         <?php ActiveForm::end(); ?>
         <div class="my-1 mx-0" style="color:#999;">
             Не зарегистрированы? <?= Html::a('Зарегистрироваться', ['site/signup']) ?>.
         </div>
+        
     </div>
 </div>
