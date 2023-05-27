@@ -68,8 +68,16 @@ return [
                 '<controller>/<action>' => 'site/error',
             ],
         ],
-
-
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'google' => [
+                    'class' => 'yii\authclient\clients\Google',
+                    'clientId' => '219169803119-tjblsl80rgsit6g8jhh29h3660jm844a.apps.googleusercontent.com',
+                    'clientSecret' => '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',
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

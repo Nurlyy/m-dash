@@ -16,12 +16,109 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\User;
+use common\models\Auth;
+use Exception;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+
+
+    public function actions()
+    {
+        return [
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess'],
+            ],
+            'error' => [
+                'class' => \yii\web\ErrorAction::class,
+            ],
+            'captcha' => [
+                'class' => \yii\captcha\CaptchaAction::class,
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
+
+    public function onAuthSuccess($client)
+    {
+        $attributes = $client->getUserAttributes();
+        // return "fjeo";
+
+        /* @var $auth Auth */
+        $auth = Auth::find()->where([
+            'source' => $client->getId(),
+            'source_id' => $attributes['id'],
+        ])->one();
+        
+        if (Yii::$app->user->isGuest) {
+            if ($auth) { // авторизация
+                $user = $auth->user();
+                if($user){
+                    if(Yii::$app->user->login($user, 3600 * 24)){
+                        // $user->generateAuthKey();
+                        // $user->generatePasswordResetToken();
+                        // $user->generateAccessToken();
+                        // $user->generateEmailVerificationToken();
+                        // $user->save();
+                        // var_dump(Yii::$app->user->isGuest);exit;
+                        return $this->redirect('/main/index');
+                    }else{
+                        throw new Exception("ERROR");
+                    }
+                }
+            } else { // регистрация
+                if (isset($attributes['email']) && User::find()->where(['email' => $attributes['email']])->exists()) {
+                    Yii::$app->getSession()->setFlash('error', [
+                        Yii::t('app', "Пользователь с такой электронной почтой как в {client} уже существует, но с ним не связан. Для начала войдите на сайт использую электронную почту, для того, что бы связать её.", ['client' => $client->getTitle()]),
+                    ]);
+                } else {
+                    $password = Yii::$app->security->generateRandomString(12);
+                    // var_dump($attributes['email']);exit;
+                    $user = new User();
+                    $user->username = $attributes['name'];
+                    $user->email = $attributes['email'];
+                    $user->password = $password;
+                    $user->status = 9;
+                    $user->generateAuthKey();
+                    $user->generatePasswordResetToken();
+                    $user->generateAccessToken();
+                    $user->generateEmailVerificationToken();
+                    $transaction = Yii::$app->db->beginTransaction();
+                    if ($user->save()) {
+                        $auth = new Auth();
+                        $auth->user_id = $user->id;
+                        $auth->source = $client->getId();
+                        $auth->source_id = (string)$attributes['id'];
+                        if ($auth->save()) {
+                            $transaction->commit();
+                            if(Yii::$app->user->login($user, 3600 * 24)){
+                                return $this->redirect('/main/index');
+                            }
+                            throw new Exception("ERROR");
+                        } else {
+                            print_r($auth->getErrors());
+                        }
+                    } else {
+                        print_r($user->getErrors());
+                    }
+                }
+            }
+        } else { // Пользователь уже зарегистрирован
+            if (!$auth) { // добавляем внешний сервис аутентификации
+                $auth = new Auth();
+                $auth->user_id = Yii::$app->user->id;
+                $auth->source = $client->getId();
+                $auth->source_id = $attributes['id'];
+                $auth->save();
+            }
+        }
+    }
+
+
     /**
      * {@inheritdoc}
      */
@@ -43,7 +140,7 @@ class SiteController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['login'],
+                        'actions' => ['login', 'auth'],
                         'allow' => true,
                         'roles' => ['?']
                     ]
@@ -61,21 +158,6 @@ class SiteController extends Controller
 
     // public $layout = 'inspinia';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => \yii\web\ErrorAction::class,
-            ],
-            'captcha' => [
-                'class' => \yii\captcha\CaptchaAction::class,
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
-        ];
-    }
 
     /**
      * Logs in a user.
