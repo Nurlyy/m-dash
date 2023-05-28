@@ -82,7 +82,7 @@ class SiteController extends Controller
                     $user->username = $attributes['name'];
                     $user->email = $attributes['email'];
                     $user->password = $password;
-                    $user->status = 9;
+                    $user->status = 10;
                     $user->generateAuthKey();
                     $user->generatePasswordResetToken();
                     $user->generateAccessToken();

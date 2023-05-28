@@ -481,7 +481,7 @@ class MainController extends AuthController
         $start_date = isset($_GET['start_date']) ? Yii::$app->request->get('start_date') : $month_ago;
         $end_date = isset($_GET['end_date']) ? Yii::$app->request->get('end_date') : $today;
         $lang = isset($_GET['lang']) ? (in_array($_GET['lang'], ['ru', 'kz', 'en']) ? $_GET['lang'] : 'ru') : 'ru';
-        $result = json_decode(get_web_page("localhost:8081/backend/main/search?type=index"), true);
+        $result = json_decode(get_web_page("http://localhost:8081/backend/main/search?type=index"), true);
         $this->splitData($result, $start_date);
         $vars = [
             'start_date' => $start_date,
@@ -561,7 +561,7 @@ class MainController extends AuthController
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
         $city_id = isset($_GET['city_id']) ? $_GET['city_id'] : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11 && is_numeric($city_id)) {
-            $result = json_decode(get_web_page("localhost:8081/backend/main/search?type=2&city_id={$city_id}&start_date={$start_date}&end_date={$end_date}"), true);
+            $result = json_decode(get_web_page("http://localhost:8081/backend/main/search?type=2&city_id={$city_id}&start_date={$start_date}&end_date={$end_date}"), true);
             // var_dump($result);exit;
             $this->splitData($result, $start_date);
             $dates = $this->getBetweenDates($start_date, $end_date);
@@ -602,7 +602,7 @@ class MainController extends AuthController
         $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
         $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
         if (strlen($start_date) < 11 && strlen($end_date) < 11) {
-            $result = json_decode(get_web_page("localhost:8081/backend/main/search?type=index&start_date={$start_date}&end_date={$end_date}"), true);
+            $result = json_decode(get_web_page("http://localhost:8081/backend/main/search?type=index&start_date={$start_date}&end_date={$end_date}"), true);
             $this->splitData($result, $start_date);
             return $this->render('compare', [
                 // 'result' => $result,
@@ -634,7 +634,7 @@ class MainController extends AuthController
             && strlen($subsChart) <= 5 && strlen($likesChart) <= 5
             && strlen($commentsChart) <= 5 && strlen($repostsChart) <= 5 && strlen($rating) <= 5
         ) {
-            $result = json_decode(get_web_page("localhost:8081/backend/main/search?type=3&start_date={$start_date}&end_date={$end_date}&first={$first}&second={$second}&discussionChart={$discussionChart}&sentimentChart={$sentimentChart}&subsChart={$subsChart}&likesChart={$likesChart}&commentsChart={$commentsChart}&repostsChart={$repostsChart}"), true);
+            $result = json_decode(get_web_page("http://localhost:8081/backend/main/search?type=3&start_date={$start_date}&end_date={$end_date}&first={$first}&second={$second}&discussionChart={$discussionChart}&sentimentChart={$sentimentChart}&subsChart={$subsChart}&likesChart={$likesChart}&commentsChart={$commentsChart}&repostsChart={$repostsChart}"), true);
             $this->splitData($result, $start_date);
             // var_dump($this::$rating);exit;
             $dates = $this->getBetweenDates($start_date, $end_date);
